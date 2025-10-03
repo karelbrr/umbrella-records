@@ -113,12 +113,8 @@
 }
 
 @layer base {
-  .font-array-bold {
-    font-family: var(--font-array);
-  }
-
-  .font-melodrama {
-    font-family: var(--font-melodrama);
+  .font-satoshi {
+    font-family: var(--font-satoshi);
   }
 
   html,

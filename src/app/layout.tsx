@@ -4,6 +4,7 @@ import "./globals.css";
 import localFont from "next/font/local";
 import SmoothScrollProvider from "@/components/SmoothScrollProvider";
 import Navbar from "@/components/Navbar";
+import { ReactQueryProvider } from "./providers";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -15,9 +16,9 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const array = localFont({
+const satoshi = localFont({
   src: "./Satoshi-Variable.ttf",
-  variable: "--font-array",
+  variable: "--font-satoshi",
 });
 
 export const metadata: Metadata = {
@@ -33,12 +34,14 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${array.variable}  antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${satoshi.variable}  antialiased`}
       >
-        <SmoothScrollProvider>
-          <Navbar />
-          {children}
-        </SmoothScrollProvider>
+        <ReactQueryProvider>
+          <SmoothScrollProvider>
+            <Navbar />
+            {children}
+          </SmoothScrollProvider>
+        </ReactQueryProvider>
       </body>
     </html>
   );

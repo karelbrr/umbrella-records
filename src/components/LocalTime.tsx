@@ -32,7 +32,7 @@ export default function LocalTime() {
   }, []);
 
   return (
-    <div className="text-white font-array-bold">
+    <div className="text-white font-satoshi font-light">
       {time}
     </div>
   );
