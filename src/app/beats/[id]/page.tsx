@@ -5,6 +5,9 @@ import { useQuery } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
 import { useState } from "react";
 import AudioPlayer from "@/components/AudioPlayer";
+import { AlertCircleIcon } from "lucide-react";
+
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 export interface AudioDetails {
   id: string;
@@ -40,6 +43,7 @@ function Page() {
 
   return (
     <section className="px-32 pt-[10vh] h-[90vh] bg-black">
+      <div></div>
       <AudioDetailHeader
         data={data ? data : ({} as AudioDetails)}
         isLoading={isLoading}
@@ -50,9 +54,29 @@ function Page() {
         related beats
       </h3>
       <div className={`grid gap-x-10 grid-cols-5`}></div>
-
       {isAudioPlayerShown && (
-        <AudioPlayer media_url={data?.media_url} isLoading={isLoading} />
+        <AudioPlayer
+          media_url={data?.media_url}
+          isLoading={isLoading}
+          error={error}
+        />
+      )}
+      {error && (
+        <Alert
+          variant="destructive"
+          className="fixed w-1/4 top-[10vh] left-1/2 z-[1000] -translate-x-1/2"
+        >
+          <AlertCircleIcon />
+          <AlertTitle>Error Loading Data</AlertTitle>
+          <AlertDescription>
+            <p>There was an issue fetching data from the database.</p>
+            <ul className="list-inside list-disc text-sm">
+              <li>Check your internet connection</li>
+              <li>Verify server status</li>
+              <li>Contact your system administrator if the problem persists</li>
+            </ul>
+          </AlertDescription>
+        </Alert>
       )}
     </section>
   );

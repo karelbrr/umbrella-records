@@ -5,9 +5,11 @@ import { Skeleton } from "./ui/skeleton";
 function AudioPlayer({
   media_url,
   isLoading,
+  error
 }: {
   media_url: string | undefined;
   isLoading: boolean;
+  error: any;
 }) {
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [progress, setProgress] = useState<number>(0);
@@ -113,7 +115,7 @@ function AudioPlayer({
     <section className="fixed bottom-0 px-32 left-0 w-full h-[200px] flex flex-col justify-center bg-black">
       <div
         ref={progressRef}
-        className="bg-zinc-300/50 h-[1px] py-0.5 w-full relative cursor-pointer "
+        className={`bg-zinc-300/50 h-[1px] py-0.5 w-full relative cursor-pointer ${isLoading && "opacity-30 animate-pulse" || error && "opacity-30 animate-pulse"} `}
         onPointerDown={onPointerDown}
         role="slider"
         aria-valuemin={0}
@@ -140,7 +142,7 @@ function AudioPlayer({
       </div>
 
       <div className="flex justify-center items-center mt-5 gap-5 text-white">
-        {isLoading ? (
+        {isLoading || error ? (
           <LoaderCircle className="animate-spin opacity-50"/>
         ) : (
           <button
@@ -153,7 +155,7 @@ function AudioPlayer({
           </button>
         )}
 
-        {isLoading ? (
+        {isLoading || error ? (
           <Skeleton className="w-20 h-5" />
         ) : (
           <p className="text-sm font-satoshi">
