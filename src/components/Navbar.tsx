@@ -7,9 +7,9 @@ function Navbar() {
   const pathname = usePathname();
   return (
     <header
-      className={`flex h-[10vh] opacity-90 px-32 justify-between fixed z-1000 ${
+      className={`flex h-[10vh] opacity-90 container left-1/2 px-4 transform -translate-x-1/2 fixed z-1000 ${
         pathname !== "/" && "bg-black backdrop-blur-xl"
-      } w-full `}
+      } w-full`}
     >
       <div className="w-2/12 flex items-center">
         <LocalTime />

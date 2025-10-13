@@ -18,6 +18,7 @@ import { useState } from "react";
 import AudioPlayer from "@/components/AudioPlayer";
 import FetchError from "@/components/FetchError";
 import { getDaysSinceUpload } from "@/lib/get-beat";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export interface AudioDetails {
   id: string;
@@ -54,18 +55,8 @@ function Page() {
   });
 
   return (
-    <div className="min-h-screen bg-black pb-32">
-      {/* Back Navigation */}
-      <div className="border-b border-border">
-        <div className="container mx-auto px-4 py-4">
-          <Link href="/">
-            <Button variant="ghost" size="sm" className="gap-2">
-              <ArrowLeft className="h-4 w-4" />
-              Back to Beats
-            </Button>
-          </Link>
-        </div>
-      </div>
+    <div className="min-h-screen bg-black pb-32  pt-[5vh]">
+
 
       {/* Hero Section */}
       <div className="container mx-auto px-4 py-12 md:py-20">
@@ -102,15 +93,24 @@ function Page() {
           </div>
 
           {/* Beat Info - with entrance animation */}
-          <div className="space-y-8  delay-150">
+          <div className="space-y-8  ">
             {/* Title & Artist */}
             <div className="space-y-3">
-              <h1 className="text-5xl md:text-6xl lg:text-7xl font-satoshi tracking-tighter text-balance leading-none">
-                {data?.name}
-              </h1>
-              <p className="text-2xl text-muted-foreground font-satoshi font-medium">
-                {/* {data?.producer} */} 2mjz
-              </p>
+              {isLoading || error ? (
+                <Skeleton className="w-[500px] h-14 mt-2" />
+              ) : (
+                <h1 className="text-5xl md:text-6xl  lg:text-7xl font-satoshi tracking-tighter text-balance leading-none">
+                  {data?.name}
+                </h1>
+              )}
+
+              {isLoading || error ? (
+                <Skeleton className="w-[100px] h-8 mt-[20px] " />
+              ) : (
+                <p className="text-2xl text-muted-foreground  font-satoshi font-medium">
+                  {/* {data?.producer} */} 2mjz
+                </p>
+              )}
             </div>
 
             {/* Price & Actions */}
@@ -119,6 +119,7 @@ function Page() {
               <div className="hidden md:flex gap-3 flex-1">
                 <Button
                   size="lg"
+                  disabled={isLoading}
                   className="gap-2 h-12 px-8 text-base font-satoshi font-semibold"
                 >
                   <Play className="h-5 w-5 fill-current" />
@@ -139,19 +140,37 @@ function Page() {
             <div className="grid grid-cols-2 font-satoshi gap-4 pt-4">
               <div className="space-y-2 p-4 bg-card/30 border border-border">
                 <div className="text-sm text-muted-foreground ">BPM</div>
-                <div className="text-3xl font-bold ">{data?.bpm}</div>
+                {isLoading || error ? (
+                  <Skeleton className="w-[80px] h-8 mt-3 " />
+                ) : (
+                  <div className="text-3xl font-bold ">{data?.bpm}</div>
+                )}
               </div>
               <div className="space-y-2 p-4 bg-card/30 border border-border">
                 <div className="text-sm text-muted-foreground ">KEY</div>
-                <div className="text-3xl font-bold">{data?.key}</div>
+                {isLoading || error ? (
+                  <Skeleton className="w-[80px] h-8 mt-3 " />
+                ) : (
+                  <div className="text-3xl font-bold">{data?.key}</div>
+                )}
               </div>
               <div className="space-y-2 p-4 bg-card/30 border border-border">
                 <div className="text-sm text-muted-foreground ">GENRE</div>
-                <div className="text-xl font-bold">{data?.genres?.genre || "unknown"}</div>
+                {isLoading || error ? (
+                  <Skeleton className="w-[80px] h-8 mt-3 " />
+                ) : (
+                  <div className="text-xl font-bold">
+                    {data?.genres?.genre || "unknown"}
+                  </div>
+                )}
               </div>
               <div className="space-y-2 p-4 bg-card/30 border border-border">
                 <div className="text-sm text-muted-foreground ">DURATION</div>
-                <div className="text-xl font-bold ">{data?.length}</div>
+                {isLoading || error ? (
+                  <Skeleton className="w-[80px] h-8 mt-3 " />
+                ) : (
+                  <div className="text-xl font-bold ">{data?.length}</div>
+                )}
               </div>
             </div>
 
@@ -168,13 +187,22 @@ function Page() {
             </div> */}
 
             {/* Description */}
-            {data?.description && (
+            {isLoading || error ? (
+              <div className="pt-4">
+                <Skeleton className="w-[300px] h-6" />
+                <div className="flex flex-col space-y-3">
+                  <Skeleton className="w-full h-5 mt-3" />
+                  <Skeleton className="w-full h-5" />
+                  <Skeleton className="w-[500px] h-5" />
+                </div>
+              </div>
+            ) : (
               <div className="space-y-3 pt-4">
                 <h2 className="text-xl font-bold font-satoshi tracking-tight">
                   About This Beat
                 </h2>
                 <p className="text-muted-foreground font-satoshi leading-relaxed text-lg">
-                  {data.description}
+                  {data?.description || "--"} 
                 </p>
               </div>
             )}
@@ -183,17 +211,17 @@ function Page() {
             <div className="flex flex-wrap gap-6 pt-4 text-sm font-satoshi text-muted-foreground">
               <div className="flex items-center gap-2">
                 <Calendar className="h-4 w-4" />
-                <span>{
-                  typeof data?.created_at === "string" || data?.created_at instanceof Date
+                <span>
+                  {typeof data?.created_at === "string" ||
+                  data?.created_at instanceof Date
                     ? getDaysSinceUpload(data.created_at as string | Date)
-                    : "--"
-                }</span>
+                    : "--"}
+                </span>
               </div>
               <div className="flex items-center gap-2">
                 <Clock className="h-4 w-4" />
-                <span>{data?.length}</span>
+                <span>{data?.length || "--"}</span>
               </div>
-             
             </div>
           </div>
         </div>

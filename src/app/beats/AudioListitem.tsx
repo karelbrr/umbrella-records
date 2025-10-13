@@ -14,7 +14,7 @@ import { Button } from "@/components/ui/button";
 export default function AudioListItem({ itemsPerRow, name, bpm, id, genre }: Props) {
   return (
     <a href={`/beats/${id}`}>
-      <div className="group relative overflow-hidden h-[400px] bg-card/30 border border-border transition-all ">
+      <div className="group relative overflow-hidden h-auto bg-card/30 border border-border transition-all ">
         {/* Cover Image */}
         <div className="relative aspect-square overflow-hidden bg-muted">
           <Image
