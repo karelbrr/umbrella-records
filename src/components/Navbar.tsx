@@ -18,13 +18,13 @@ function Navbar() {
         <div className="">
           <a
             href="/"
-            className={`hover:opacity-70  transition font-satoshi font-light text-white`}
+            className={`hover:opacity-70  transition font-satoshi font-medium  text-white`}
           >
             home
           </a>
           <a
             href="/beats"
-            className={`hover:opacity-70 transition ml-2 font-light font-satoshi text-white`}
+            className={`hover:opacity-70 transition ml-2 font-medium  font-satoshi text-white`}
           >
             beats/tracks
           </a>
@@ -32,7 +32,7 @@ function Navbar() {
       </nav>
       <div className="w-2/12 flex items-center justify-end  ">
         <p
-          className={`hover:opacity-70 transition ml-2 text-lg  font-satoshi font-light text-white`}
+          className={`hover:opacity-70 transition ml-2 text-lg font-medium  font-satoshi  text-white`}
         >
           socials
         </p>

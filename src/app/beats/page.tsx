@@ -1,15 +1,27 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { AudioList } from "./AudioList";
 import ItemsPerRowButton from "./ItemsPerRowButton";
 
 export default function Page() {
   const [itemsPerRow, setItemsPerRow] = useState<number>(5);
+  // Load from localStorage on mount
+  useEffect(() => {
+    const stored = localStorage.getItem("itemsPerRow");
+    if (stored) {
+      setItemsPerRow(Number(stored));
+    }
+  }, []);
+
+  // Save to localStorage when itemsPerRow changes
+  useEffect(() => {
+    localStorage.setItem("itemsPerRow", String(itemsPerRow));
+  }, [itemsPerRow]);
 
   return (
     <section className="px-32 pt-[10vh]  bg-black">
       <div className="flex items-center justify-between">
-        <h1 className="text-[44px] opacity-90 font-extralight font-satoshi text-white">
+        <h1 className="text-[44px] font-satoshi text-white font-semibold tracking-tight line-clamp-1 font-satoshi">
           beats/tracks
         </h1>
         <ItemsPerRowButton
@@ -18,6 +30,7 @@ export default function Page() {
         />
       </div>
       <AudioList itemsPerRow={itemsPerRow} />
+      
     </section>
   );
 }
