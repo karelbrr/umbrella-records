@@ -5,7 +5,10 @@ import { usePathname } from "next/navigation";
 
 function Navbar() {
   const pathname = usePathname();
-  return (
+
+  const showHeader =
+    pathname !== "/login" && !pathname.startsWith("/admin/dashboard");
+  return showHeader ? (
     <header
       className={`flex h-[10vh] opacity-90 container left-1/2 px-4 transform -translate-x-1/2 fixed z-1000 ${
         pathname !== "/" && "bg-black backdrop-blur-xl"
@@ -38,7 +41,7 @@ function Navbar() {
         </p>
       </div>
     </header>
-  );
+  ) : null;
 }
 
 export default Navbar;

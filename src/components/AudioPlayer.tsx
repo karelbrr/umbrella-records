@@ -5,7 +5,7 @@ import { Skeleton } from "./ui/skeleton";
 function AudioPlayer({
   media_url,
   isLoading,
-  error
+  error,
 }: {
   media_url: string | undefined;
   isLoading: boolean;
@@ -31,8 +31,14 @@ function AudioPlayer({
     const audio = audioRef.current;
     if (!audio) return;
 
-    const onLoaded = () => {
+    const onLoaded = async () => {
       setDuration(audio.duration || 0);
+      try {
+        await audio.play();
+        setIsPlaying(true);
+      } catch (err) {
+        console.log("Autoplay blocked:", err);
+      }
     };
 
     const onTimeUpdate = () => {
@@ -112,10 +118,13 @@ function AudioPlayer({
   };
 
   return (
-    <section className="fixed bottom-0 px-32 left-0 w-full h-[200px] flex flex-col justify-center bg-black">
+    <section className="fixed bottom-0 px-32 left-0 w-full h-[100px] flex flex-col justify-center bg-black">
       <div
         ref={progressRef}
-        className={`bg-zinc-300/50 h-[1px] py-0.5 w-full relative cursor-pointer ${isLoading && "opacity-30 animate-pulse" || error && "opacity-30 animate-pulse"} `}
+        className={`bg-zinc-300/50 h-[1px] py-0.5 w-full relative cursor-pointer ${
+          (isLoading && "opacity-30 animate-pulse") ||
+          (error && "opacity-30 animate-pulse")
+        } `}
         onPointerDown={onPointerDown}
         role="slider"
         aria-valuemin={0}
@@ -143,7 +152,7 @@ function AudioPlayer({
 
       <div className="flex justify-center items-center mt-5 gap-5 text-white">
         {isLoading || error ? (
-          <LoaderCircle className="animate-spin opacity-50"/>
+          <LoaderCircle className="animate-spin opacity-50" />
         ) : (
           <button
             onClick={togglePlay}
@@ -159,7 +168,7 @@ function AudioPlayer({
           <Skeleton className="w-20 h-5" />
         ) : (
           <p className="text-sm font-satoshi">
-            {formatTime(currentTime)} // {formatTime(duration)}
+            {formatTime(currentTime)} / {formatTime(duration)}
           </p>
         )}
       </div>

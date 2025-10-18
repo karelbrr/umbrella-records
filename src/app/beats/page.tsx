@@ -19,7 +19,7 @@ export default function Page() {
   }, [itemsPerRow]);
 
   return (
-    <section className="px-32 pt-[10vh]  bg-black">
+    <section className="container m-auto px-4 pt-[10vh]  bg-black">
       <div className="flex items-center justify-between">
         <h1 className="text-[44px] font-satoshi text-white font-semibold tracking-tight line-clamp-1 font-satoshi">
           beats/tracks

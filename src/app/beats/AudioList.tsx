@@ -42,7 +42,7 @@ export function AudioList({ itemsPerRow }: Props) {
 
   return (
     <div
-      className={`grid gap-x-10 mt-5 min-h-[83vh] ${
+      className={`grid gap-x-7 mt-5 min-h-[83vh] ${
         itemsPerRow === 5
           ? "grid-cols-5"
           : itemsPerRow === 6

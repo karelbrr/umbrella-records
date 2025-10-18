@@ -1,7 +1,7 @@
 "use client";
 interface Props {
   id: string;
-  itemsPerRow: number;
+  itemsPerRow?: number;
   name: string;
   bpm: number;
   genre?: string;
@@ -11,7 +11,13 @@ import Image from "next/image";
 import { Play } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-export default function AudioListItem({ itemsPerRow, name, bpm, id, genre }: Props) {
+export default function AudioListItem({
+  itemsPerRow,
+  name,
+  bpm,
+  id,
+  genre,
+}: Props) {
   return (
     <a href={`/beats/${id}`}>
       <div className="group relative overflow-hidden h-auto bg-card/30 border border-border transition-all ">
@@ -26,14 +32,12 @@ export default function AudioListItem({ itemsPerRow, name, bpm, id, genre }: Pro
 
           {/* Play Button Overlay */}
           <div className="absolute inset-0 flex items-center justify-center bg-black/0 transition-all group-hover:bg-black/60">
-            <a href={`/beats/${id}`}>
-              <Button
-                size="icon"
-                className="h-14 w-14 rounded-full bg-white text-black opacity-0 transition-all group-hover:opacity-100 hover:scale-110"
-              >
-                <Play className="h-6 w-6 fill-current" />
-              </Button>
-            </a>
+            <Button
+              size="icon"
+              className="h-14 w-14 rounded-full bg-white text-black opacity-0 transition-all group-hover:opacity-100 "
+            >
+              <Play className="h-6 w-6 fill-current" />
+            </Button>
           </div>
 
           {/* Price Badge */}
