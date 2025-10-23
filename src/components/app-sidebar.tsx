@@ -13,6 +13,7 @@ import {
   IconHelp,
   IconInnerShadowTop,
   IconListDetails,
+  IconMusic,
   IconReport,
   IconSearch,
   IconSettings,
@@ -46,9 +47,9 @@ const data = {
       icon: IconDashboard,
     },
     {
-      title: "Lifecycle",
-      url: "#",
-      icon: IconListDetails,
+      title: "Projects",
+      url: "/admin/dashboard/projects",
+      icon: IconFolder,
     },
     {
       title: "Analytics",
@@ -56,13 +57,13 @@ const data = {
       icon: IconChartBar,
     },
     {
-      title: "Projects",
-      url: "#",
-      icon: IconFolder,
+      title: "Tracks",
+      url: "/admin/dashboard/tracks",
+      icon: IconMusic,
     },
     {
       title: "Team",
-      url: "#",
+      url: "/admin/dashboard/team",
       icon: IconUsers,
     },
   ],
@@ -170,8 +171,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />
-        <NavDocuments items={data.documents} />
-        <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={data.user} />
