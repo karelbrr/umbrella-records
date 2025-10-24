@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import { AudioList } from "./AudioList";
 import ItemsPerRowButton from "./ItemsPerRowButton";
+import { FiltersBar } from "@/components/filters-bar";
 
 export default function Page() {
   const [itemsPerRow, setItemsPerRow] = useState<number>(5);
@@ -24,11 +25,13 @@ export default function Page() {
         <h1 className="text-[44px] font-satoshi text-white font-semibold tracking-tight line-clamp-1 font-satoshi">
           beats/tracks
         </h1>
+        
         <ItemsPerRowButton
           setItemsPerRow={setItemsPerRow}
           itemsPerRow={itemsPerRow}
         />
       </div>
+      <FiltersBar/>
       <AudioList itemsPerRow={itemsPerRow} />
       
     </section>

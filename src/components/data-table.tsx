@@ -33,7 +33,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Card } from "./ui/card";
 
 export interface Track {
   id: number;
@@ -138,11 +137,11 @@ export function DataTable({ data }: { data: Track[] }) {
     <div className="w-full px-6">
       <div className="flex items-center py-4">
         <Input
-          placeholder="Filter emails..."
-          value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
-          onChange={(event) =>
-            table.getColumn("email")?.setFilterValue(event.target.value)
-          }
+          placeholder="Search Beats"
+          // value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
+          // onChange={(event) =>
+          //   table.getColumn("email")?.setFilterValue(event.target.value)
+          // }
           className="max-w-sm"
         />
         <DropdownMenu>
