@@ -26,12 +26,12 @@ export default function Page() {
           beats/tracks
         </h1>
         
-        <ItemsPerRowButton
+        {/* <ItemsPerRowButton
           setItemsPerRow={setItemsPerRow}
           itemsPerRow={itemsPerRow}
-        />
+        /> */}
       </div>
-      <FiltersBar/>
+      <FiltersBar />
       <AudioList itemsPerRow={itemsPerRow} />
       
     </section>

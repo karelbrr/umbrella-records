@@ -1,15 +1,23 @@
-import { LoaderCircle, Pause, Play } from "lucide-react";
+import { LoaderCircle, Pause, SkipBack, SkipForward, Play } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Skeleton } from "./ui/skeleton";
+import Image from "next/image";
+import { Button } from "./ui/button";
 
 function AudioPlayer({
   media_url,
   isLoading,
   error,
+  name,
+  cover,
+  producer,
 }: {
   media_url: string | undefined;
   isLoading: boolean;
   error: any;
+  name: string | null | undefined;
+  cover: string | null | undefined;
+  producer: string | null | undefined;
 }) {
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [progress, setProgress] = useState<number>(0);
@@ -118,59 +126,97 @@ function AudioPlayer({
   };
 
   return (
-    <section className="fixed bottom-0 px-32 left-0 w-full h-[100px] flex flex-col justify-center bg-black">
-      <div
-        ref={progressRef}
-        className={`bg-zinc-300/50 h-[1px] py-0.5 w-full relative cursor-pointer ${
-          (isLoading && "opacity-30 animate-pulse") ||
-          (error && "opacity-30 animate-pulse")
-        } `}
-        onPointerDown={onPointerDown}
-        role="slider"
-        aria-valuemin={0}
-        aria-valuemax={100}
-        aria-valuenow={Math.floor(progress)}
-      >
-        <div
-          className="h-full absolute top-0 left-0 rounded"
-          style={{
-            width: `${
-              isNaN(progress) ? 0 : Math.max(0, Math.min(100, progress))
-            }%`,
-          }}
-        />
+    <section className="fixed bottom-0 left-0 w-full h-[100px] bg-black border-t">
+      <div className="container mx-auto px-4 h-full flex items-center justify-center">
+        {/* Left: Description / Cover */}
+        <div className="flex items-center gap-3 flex-none w-1/4 min-w-[180px]">
+          <div className="relative h-14 w-14 flex-shrink-0 overflow-hidden bg-gray-200 dark:bg-gray-800">
+            <Image
+              src={cover || "/images/missing-image.png"}
+              alt={"Cover Art"}
+              fill
+              className="object-cover"
+            />
+          </div>
+          <div className="min-w-0">
+            <h4 className="font-semibold text-sm truncate text-white">
+              {name}
+            </h4>
+            <p className="text-xs text-gray-400 truncate">
+              {producer || "2mjz"}
+            </p>
+          </div>
+        </div>
 
-        <div
-          className="absolute top-1/2 transform -translate-y-1/2 w-[1px] h-5 bg-white"
-          style={{
-            left: `calc(${
-              isNaN(progress) ? 0 : Math.max(0, Math.min(100, progress))
-            }% - 6px)`,
-          }}
-        />
-      </div>
+        {/* Center: Player (progress + controls) */}
+        <div className="flex flex-col items-center w-1/2 px-4">
+          <div className="flex items-center gap-2  text-white">
+            <Button size="icon" variant="ghost" className="h-8 w-8">
+              <SkipBack className="h-4 w-4" />
+            </Button>
+            {isLoading || error ? (
+              <LoaderCircle className="animate-spin opacity-50" />
+            ) : (
+              <button
+                onClick={togglePlay}
+                className="hover:opacity-80 disabled:opacity-50"
+                aria-label="Play/Pause"
+                disabled={!media_url}
+              >
+                {isPlaying ? (
+                  <Pause strokeWidth={1} />
+                ) : (
+                  <Play strokeWidth={1} />
+                )}
+              </button>
+            )}
 
-      <div className="flex justify-center items-center mt-5 gap-5 text-white">
-        {isLoading || error ? (
-          <LoaderCircle className="animate-spin opacity-50" />
-        ) : (
-          <button
-            onClick={togglePlay}
-            className="hover:opacity-80 disabled:opacity-50"
-            aria-label="Play/Pause"
-            disabled={!media_url}
-          >
-            {isPlaying ? <Pause strokeWidth={1} /> : <Play strokeWidth={1} />}
-          </button>
-        )}
+            <Button size="icon" variant="ghost" className="h-8 w-8">
+              <SkipForward className="h-4 w-4" />
+            </Button>
+          </div>
+          <div className="w-full flex">
+            <p className=" mt-2 flex justify-center  w-[10%]  text-sm text-muted-foreground">
+              {formatTime(currentTime)}
+            </p>
+            <div
+              ref={progressRef}
+              className={`bg-zinc-300/20 h-[4px] mt-4 w-[80%] relative cursor-pointer ${
+                (isLoading && "opacity-30 animate-pulse") ||
+                (error && "opacity-30 animate-pulse")
+              }`}
+              onPointerDown={onPointerDown}
+              role="slider"
+              aria-valuemin={0}
+              aria-valuemax={100}
+              aria-valuenow={Math.floor(progress)}
+            >
+              <div
+                className="h-full absolute top-0 left-0 rounded"
+                style={{
+                  width: `${
+                    isNaN(progress) ? 0 : Math.max(0, Math.min(100, progress))
+                  }%`,
+                }}
+              />
 
-        {isLoading || error ? (
-          <Skeleton className="w-20 h-5" />
-        ) : (
-          <p className="text-sm font-satoshi">
-            {formatTime(currentTime)} / {formatTime(duration)}
-          </p>
-        )}
+              <div
+                className="absolute top-1/2 transform -translate-y-1/2 w-[2px] h-5 bg-white"
+                style={{
+                  left: `calc(${
+                    isNaN(progress) ? 0 : Math.max(0, Math.min(100, progress))
+                  }% - 6px)`,
+                }}
+              />
+            </div>
+            <p className="mt-2 w-[10%] flex justify-center text-sm text-muted-foreground">
+              {formatTime(duration)}
+            </p>
+          </div>
+        </div>
+
+        {/* Right spacer to keep center alignment */}
+        <div className="flex-none w-1/4 min-w-[180px]" />
       </div>
 
       <audio ref={audioRef} src={media_url} preload="metadata" />

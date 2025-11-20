@@ -5,6 +5,7 @@ import localFont from "next/font/local";
 import SmoothScrollProvider from "@/components/SmoothScrollProvider";
 import Navbar from "@/components/Navbar";
 import { ReactQueryProvider } from "./providers";
+import { Footer } from "@/components/Footer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -40,6 +41,7 @@ export default function RootLayout({
           <SmoothScrollProvider>
             <Navbar />
             {children}
+            <Footer />
           </SmoothScrollProvider>
         </ReactQueryProvider>
       </body>

@@ -12,6 +12,7 @@ interface AudioListItemType {
   id: string;
   name: string;
   bpm: number;
+  img_url: string;
   genres: { genre: string }[] | null;
 }
 
@@ -19,7 +20,7 @@ export function AudioList({ itemsPerRow }: Props) {
   async function fetchBeats() {
     const { data, error } = await supabase
       .from("beats_tracks")
-      .select("id,name,bpm,genres(genre)");
+      .select("id,name,bpm,img_url,genres(genre)");
 
     if (error) throw new Error(error.message);
 
@@ -42,17 +43,7 @@ export function AudioList({ itemsPerRow }: Props) {
 
   return (
     <div
-      className={`grid gap-x-7 mt-5 min-h-[83vh] ${
-        itemsPerRow === 5
-          ? "grid-cols-5"
-          : itemsPerRow === 6
-          ? "grid-cols-6"
-          : itemsPerRow === 7
-          ? "grid-cols-7"
-          : itemsPerRow === 8
-          ? "grid-cols-8"
-          : "grid-cols-5"
-      }`}
+      className={`grid gap-x-7 mt-5 min-h-[83vh] grid-cols-1 gap-y-10 mb-10 lg:mb-0 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5`}
     >
       {isLoading || error
         ? Array.from({ length: skeletonCount }).map((_, i) => (
@@ -70,6 +61,7 @@ export function AudioList({ itemsPerRow }: Props) {
               itemsPerRow={itemsPerRow}
               name={item.name}
               bpm={item.bpm}
+              cover={item.img_url}
               genre={Array.isArray(item.genres) && item.genres.length > 0 ? item.genres[0].genre : "unknown"}
             />
           ))}

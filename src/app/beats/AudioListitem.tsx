@@ -4,6 +4,7 @@ interface Props {
   itemsPerRow?: number;
   name: string;
   bpm: number;
+  cover?: string;
   genre?: string;
 }
 
@@ -16,6 +17,7 @@ export default function AudioListItem({
   name,
   bpm,
   id,
+  cover,
   genre,
 }: Props) {
   return (
@@ -24,8 +26,8 @@ export default function AudioListItem({
         {/* Cover Image */}
         <div className="relative aspect-square overflow-hidden bg-muted">
           <Image
-            src={"/images/missing-image.png"}
-            alt={name}
+            src={cover || "/images/missing-image.png"}
+            alt={name || "Beat Cover"}
             fill
             className="object-cover transition-transform duration-500 group-hover:scale-105"
           />

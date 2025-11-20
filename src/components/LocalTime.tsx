@@ -31,5 +31,5 @@ export default function LocalTime() {
     return () => clearInterval(interval);
   }, []);
 
-  return <div className="text-white font-satoshi font-medium ">{time}</div>;
+  return <div className="text-white font-satoshi text-xs lg:text-lg">{time}</div>;
 }

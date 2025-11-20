@@ -26,23 +26,23 @@ export function FiltersBar({
   onSortChange,
 }: FiltersBarProps) {
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 mt-2">
       {/* Search */}
-      <div className="relative">
+      <div className="relative bg-none">
         <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
         <Input
           type="text"
           placeholder="Search beats, artists, tags..."
           value={searchQuery}
           onChange={(e) => onSearchChange(e.target.value)}
-          className="pl-12 h-12 bg-muted border-border text-base"
+          className="pl-12 h-12 !bg-none border-border text-base"
         />
       </div>
 
       {/* Filters Row */}
       <div className="flex  space-x-3">
         <Select value={genre} onValueChange={onGenreChange}>
-          <SelectTrigger className="h-11 bg-muted border-border">
+          <SelectTrigger className="h-11 space-x-1 bg-none border-border">
             <SelectValue placeholder="Genre" />
           </SelectTrigger>
           <SelectContent>
@@ -55,7 +55,7 @@ export function FiltersBar({
         </Select>
 
         <Select value={keyFilter} onValueChange={onKeyChange}>
-          <SelectTrigger className="h-11 bg-muted border-border">
+          <SelectTrigger className="h-11 space-x-1 bg-none border-border">
             <SelectValue placeholder="Key" />
           </SelectTrigger>
           <SelectContent>
@@ -68,8 +68,8 @@ export function FiltersBar({
         </Select>
 
         <Select value={sortBy} onValueChange={onSortChange}>
-          <SelectTrigger className="h-11 bg-muted border-border col-span-2">
-            <SelectValue placeholder="Sort by" />
+          <SelectTrigger className="h-11 space-x-1 font-satoshi bg-none border-border col-span-2">
+            <SelectValue placeholder="Sort by"/>
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="newest">Newest First</SelectItem>

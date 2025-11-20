@@ -8,6 +8,7 @@ interface AudioListItemType {
   id: string;
   name: string;
   bpm: number;
+  img_url: string;
   genres: { genre: string }[] | null;
 }
 
@@ -15,7 +16,7 @@ function RelatedBeats() {
   async function fetchBeats() {
     const { data, error } = await supabase
       .from("beats_tracks")
-      .select("id,name,bpm,genres(genre)");
+      .select("id,name,bpm,img_url,genres(genre)");
 
     if (error) throw new Error(error.message);
 
@@ -40,7 +41,7 @@ function RelatedBeats() {
       <h1 className="text-[44px] font-satoshi text-white font-semibold tracking-tight line-clamp-1 font-satoshi">
           related beats
         </h1>
-      <div className={`grid grid-cols-5 gap-x-7 mt-5 min-h-[83vh]`}>
+      <div className={`grid grid-cols-1 space-y-5 md:grid-cols-3 lg:grid-cols-5 gap-x-7 mt-5 min-h-[83vh]`}>
         {isLoading || error
           ? Array.from({ length: skeletonCount }).map((_, i) => (
               <div key={i} className={`flex flex-col  items-start `}>
@@ -56,6 +57,7 @@ function RelatedBeats() {
                 id={item.id}
                 name={item.name}
                 bpm={item.bpm}
+                cover={item.img_url}
                 genre={
                   Array.isArray(item.genres) && item.genres.length > 0
                     ? item.genres[0].genre
