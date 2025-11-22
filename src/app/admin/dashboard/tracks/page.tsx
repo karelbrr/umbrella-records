@@ -10,34 +10,42 @@ import data from "../data.json";
 import { supabase } from "@/hooks/createClient";
 import { useQuery } from "@tanstack/react-query";
 
-export interface AudioDetails {
+// export interface AudioDetails {
+//   id: string;
+//   created_at: string | number | Date;
+//   name: string | null;
+//   media_url: string;
+//   bpm: number | null;
+//   key: string | null;
+//   length: string | null;
+//   producer: string | null;
+//   img_url: string | null;
+//   is_new: boolean | null;
+//   description: string | null;
+//   is_desc_ai: boolean | null;
+//   genres: { genre: string } | null;
+//   keys: { key: string } | null;
+// }
+
+export interface BeatTrack {
   id: string;
-  created_at: string | number | Date;
   name: string | null;
-  media_url: string;
   bpm: number | null;
-  key: string | null;
-  length: string | null;
-  producer: string | null;
-  img_url: string | null;
-  description: string | null;
-  is_desc_ai: boolean | null;
-  genres: { genre: string } | null;
-  keys: { key: string } | null;
+  genres: { genre: string }[] | null;
 }
 
 export default function Page() {
-  async function fetchBeats() {
-    const { data, error } = await supabase
+  async function fetchBeats(): Promise<BeatTrack[]> {
+    const res = await supabase
       .from("beats_tracks")
       .select("id,name,bpm,genres(genre)");
 
-    if (error) throw new Error(error.message);
+    if (res.error) throw new Error(res.error.message);
 
-    return data
+    return (res.data ?? []) as BeatTrack[];
   }
 
-  const { data: trackData, error, isLoading } = useQuery<AudioDetails[]>({
+  const { data: trackData, error, isLoading } = useQuery<BeatTrack[]>({
     queryKey: ["beats"],
     queryFn: fetchBeats,
   });
