@@ -5,7 +5,7 @@ function FetchError() {
   return (
     <Alert
       variant="destructive"
-      className="fixed w-1/4 bg-black top-[10vh] left-1/2 z-[1000] -translate-x-1/2"
+      className="fixed w-[90%] md:w-2/3 lg:w-1/4 bg-black top-[10vh] left-1/2 z-[1000] -translate-x-1/2"
     >
       <AlertCircleIcon />
       <AlertTitle>Error Loading Data</AlertTitle>

@@ -126,10 +126,10 @@ function AudioPlayer({
   };
 
   return (
-    <section className="fixed bottom-0 left-0 w-full h-[100px] bg-black border-t">
+    <section className="fixed bottom-0 left-0 w-full z-1000 h-[100px] bg-black border-t">
       <div className="container mx-auto px-4 h-full flex items-center justify-center">
         {/* Left: Description / Cover */}
-        <div className="flex items-center gap-3 flex-none w-1/4 min-w-[180px]">
+        <div className="flex items-center gap-3 flex-none w-1/2 lg:w-1/4 min-w-[180px]">
           <div className="relative h-14 w-14 flex-shrink-0 overflow-hidden bg-gray-200 dark:bg-gray-800">
             <Image
               src={cover || "/images/missing-image.png"}
@@ -149,9 +149,13 @@ function AudioPlayer({
         </div>
 
         {/* Center: Player (progress + controls) */}
-        <div className="flex flex-col items-center w-1/2 px-4">
+        <div className="flex flex-col items-end lg:items-center  w-1/2 px-4">
           <div className="flex items-center gap-2  text-white">
-            <Button size="icon" variant="ghost" className="h-8 w-8">
+            <Button
+              size="icon"
+              variant="ghost"
+              className="h-8 hidden lg:flex w-8"
+            >
               <SkipBack className="h-4 w-4" />
             </Button>
             {isLoading || error ? (
@@ -171,11 +175,15 @@ function AudioPlayer({
               </button>
             )}
 
-            <Button size="icon" variant="ghost" className="h-8 w-8">
-              <SkipForward className="h-4 w-4" />
+            <Button
+              size="icon"
+              variant="ghost"
+              className="h-8 hidden lg:flex w-8"
+            >
+              <SkipForward className="h-4  w-4" />
             </Button>
           </div>
-          <div className="w-full flex">
+          <div className="w-full hidden lg:flex">
             <p className=" mt-2 flex justify-center  w-[10%]  text-sm text-muted-foreground">
               {formatTime(currentTime)}
             </p>
@@ -216,7 +224,7 @@ function AudioPlayer({
         </div>
 
         {/* Right spacer to keep center alignment */}
-        <div className="flex-none w-1/4 min-w-[180px]" />
+        <div className="flex-none hidden lg:flex w-1/4 min-w-[180px]" />
       </div>
 
       <audio ref={audioRef} src={media_url} preload="metadata" />

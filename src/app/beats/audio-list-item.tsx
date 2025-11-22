@@ -1,51 +1,55 @@
 "use client";
 interface Props {
   id: string;
-  itemsPerRow?: number;
   name: string;
   bpm: number;
   cover?: string;
   genre?: string;
+  is_new?: boolean;
+  music_key?: string;
+  height?: number;
 }
 
 import Image from "next/image";
 import { Play } from "lucide-react";
-import { Button } from "@/components/ui/button";
 
 export default function AudioListItem({
-  itemsPerRow,
   name,
   bpm,
   id,
   cover,
   genre,
+  is_new,
+  music_key,
+  height,
 }: Props) {
   return (
-    <a href={`/beats/${id}`}>
-      <div className="group relative overflow-hidden h-auto bg-card/30 border border-border transition-all ">
+    <a
+      href={`/beats/${id}`}
+      className={`${height ? "lg:h-[400px]" : "h-auto"}`}
+    >
+      <div className="group relative overflow-hidden  bg-card/30 border border-border transition-all ">
         {/* Cover Image */}
         <div className="relative aspect-square overflow-hidden bg-muted">
           <Image
             src={cover || "/images/missing-image.png"}
             alt={name || "Beat Cover"}
-            fill
+            width={height ? 400 : 500}
+            height={height ? 400 : 500}
             className="object-cover transition-transform duration-500 group-hover:scale-105"
           />
 
           {/* Play Button Overlay */}
           <div className="absolute inset-0 flex items-center justify-center bg-black/0 transition-all group-hover:bg-black/60">
-            <Button
-              size="icon"
-              className="h-14 w-14 rounded-full bg-white text-black opacity-0 transition-all group-hover:opacity-100 "
-            >
-              <Play className="h-6 w-6 fill-current" />
-            </Button>
+            <Play className="h-6 w-6 fill-current opacity-0 transition-all group-hover:opacity-100 " />
           </div>
 
           {/* Price Badge */}
-          <div className="absolute top-3 right-3 bg-black/80 backdrop-blur-sm px-3 py-1 text-sm font-satoshi">
-            new
-          </div>
+          {is_new && (
+            <div className="absolute top-3 right-3 bg-black/80 backdrop-blur-sm px-3 py-1 text-sm font-satoshi">
+              new
+            </div>
+          )}
         </div>
 
         {/* Beat Info */}
@@ -59,7 +63,7 @@ export default function AudioListItem({
           <div className="flex items-center gap-3 text-xs text-muted-foreground font-satoshi pt-2">
             <span>{bpm} BPM</span>
             <span>•</span>
-            <span>Dm</span>
+            <span>{music_key}</span>
             <span>•</span>
             <span>{genre}</span>
           </div>

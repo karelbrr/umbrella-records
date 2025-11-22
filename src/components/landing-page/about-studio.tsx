@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import ScrollReveal from "../ScrollReveal";
-import SpotlightCard from "../SpotlightCard";
+import SpotlightCard from "../ui/SpotlightCard";
 import { Button } from "../ui/button";
 import Image from "next/image";
 
