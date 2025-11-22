@@ -8,9 +8,9 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import LocalTime from "./local-time";
+import LocalTime from "../components/local-time";
 import { usePathname } from "next/navigation";
-import { Button } from "./ui/button";
+import { Button } from "../components/ui/button";
 import { ChevronDown } from "lucide-react";
 
 export function Navbar() {
