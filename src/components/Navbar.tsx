@@ -13,7 +13,7 @@ import { usePathname } from "next/navigation";
 import { Button } from "./ui/button";
 import { ChevronDown } from "lucide-react";
 
-function Navbar() {
+export function Navbar() {
   const pathname = usePathname();
 
   const showHeader =
@@ -65,4 +65,3 @@ function Navbar() {
   ) : null;
 }
 
-export default Navbar;
