@@ -28,6 +28,7 @@ export interface AudioDetails {
   key: string | null;
   length: string | null;
   producer: string | null;
+  profiles: { username: string } | null;
   img_url: string | null;
   description: string | null;
   is_desc_ai: boolean | null;
@@ -42,7 +43,7 @@ export function BeatDetails() {
   async function fetchBeats() {
     const { data, error } = await supabase
       .from("beats_tracks")
-      .select("*,genres(genre),keys(key)")
+      .select("*,genres(genre),keys(key),profiles(username)")
       .eq("id", id)
       .single();
     if (error) {
@@ -52,7 +53,7 @@ export function BeatDetails() {
   }
 
   const { data, error, isLoading } = useQuery<AudioDetails>({
-    queryKey: ["beats", id],
+    queryKey: ["beatsForBeatsDetails", id],
     queryFn: fetchBeats,
   });
 
@@ -94,7 +95,7 @@ export function BeatDetails() {
                 <Skeleton className="w-[100px] h-8 mt-[20px] " />
               ) : (
                 <p className="text-2xl text-muted-foreground  font-satoshi font-medium">
-                  {/* {data?.producer} */} 2mjz
+                  {data?.profiles?.username ?? "none"}
                 </p>
               )}
             </div>
@@ -234,7 +235,7 @@ export function BeatDetails() {
           error={error}
           name={data?.name}
           cover={data?.img_url}
-          producer={data?.producer}
+          producer={data?.profiles?.username}
         />
       )}
     </div>

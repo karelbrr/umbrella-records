@@ -1,11 +1,12 @@
-import LightRays from "@/components/backgrounds/LightRays";
-import Image from "next/image";
+"use client";
+import { AudioWaveform } from "lucide-react";
+import { GridScan } from "../backgrounds/GridScan";
+import { motion } from "framer-motion";
 
 export function Hero({}) {
   return (
     <section className="max-h-screen relative">
       <div className="relative bg-black w-full h-[100vh]">
-        {/* Background effect */}
         <div
           style={{
             width: "100%",
@@ -13,29 +14,66 @@ export function Hero({}) {
             position: "relative",
           }}
         >
-          <LightRays
-            raysOrigin="top-center"
-            raysColor="#ffffff"
-            raysSpeed={1}
-            lightSpread={1}
-            rayLength={4}
-            followMouse={false}
-            mouseInfluence={0.1}
-            noiseAmount={1.2}
-            distortion={0.05}
-            className="custom-rays"
+          <GridScan
+            sensitivity={0.1}
+            lineThickness={1}
+            linesColor="#382e4e"
+            gridScale={0.05}
+            scanColor="#ffffff"
+            scanOpacity={0.1}
+            bloomIntensity={0.5}
+            scanGlow={0.6}
+            chromaticAberration={0.001}
+            noiseIntensity={0.002}
           />
         </div>
 
         {/* Overlay text */}
         <div className="absolute inset-0 flex flex-col items-center justify-center z-10 text-center text-white">
-          {/* <Image
-            src="/images/main-logo.png"
-            className="pointer-events-none opacity-80 w-[65%] lg:w-1/4"
-            alt="umbrella records"
-            width={800}
-            height={200}
-          /> */}
+          <h1 id="hero" className="scroll-mt-[2000px] text-xl lg:text-4xl font-medium opacity-90 flex items-center  font-satoshi">
+            <motion.span
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, ease: "easeOut", delay: 0.3 }}
+            >
+              rhythm
+            </motion.span>{" "}
+            <motion.span
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, ease: "easeOut", delay: 0.4 }}
+            >
+              <AudioWaveform
+                strokeWidth={1.5}
+                className="mx-2 lg:mx-5 mt-0.5 lg:mt-2"
+              />
+            </motion.span>{" "}
+            <motion.span
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, ease: "easeOut", delay: 0.5 }}
+            >
+              creative{" "}
+            </motion.span>{" "}
+            <motion.span
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, ease: "easeOut", delay: 0.6 }}
+            >
+              <AudioWaveform
+                strokeWidth={1.5}
+                className="mx-2 lg:mx-5 mt-0.5 lg:mt-2"
+              />
+            </motion.span>
+            <motion.span
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, ease: "easeOut", delay: 0.7 }}
+            >
+              sound{" "}
+            </motion.span>{" "}
+          </h1>
+          {/* <p className="opacity-90 mt-3 font-light font-satoshi ">beats crafted with emotion, energy, and a unique vibe.</p> */}
         </div>
       </div>
     </section>

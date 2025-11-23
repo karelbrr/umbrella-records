@@ -5,8 +5,8 @@ export function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-black border-t ">
-      <div className="container mx-auto px-4 py-16 md:py-20 font-satoshi">
+    <footer className="bg-black border-t flex justify-center">
+      <div className="container px-4 py-16 md:py-20 font-satoshi">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-16 mb-12">
           {/* Studio Info */}
           <div className="space-y-4">
@@ -14,7 +14,7 @@ export function Footer() {
               umbrela records
             </h3>
             <p className="text-muted-foreground  text-sm leading-relaxed">
-              A professional recording studio dedicated to audio excellence and
+              A records dedicated to audio excellence and
               creative collaboration.
             </p>
           </div>
@@ -25,34 +25,26 @@ export function Footer() {
             <ul className="space-y-2 text-sm">
               <li>
                 <a
-                  href="#"
+                  href="#hero"
                   className="text-muted-foreground hover:text-white transition-colors"
                 >
-                  About
+                  hero
                 </a>
               </li>
               <li>
                 <a
-                  href="#"
+                  href="#quote"
                   className="text-muted-foreground hover:text-white transition-colors"
                 >
-                  Equipment
+                  quote
                 </a>
               </li>
               <li>
                 <a
-                  href="#"
+                  href="#latest-beats"
                   className="text-muted-foreground hover:text-white transition-colors"
                 >
-                  Booking
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className=" text-muted-foreground hover:text-white transition-colors"
-                >
-                  Contact
+                  latest beats
                 </a>
               </li>
             </ul>
@@ -65,8 +57,6 @@ export function Footer() {
               <p className=" text-muted-foreground">help@umbrellarecords.com</p>
             </div>
           </div>
-
-          
         </div>
 
         {/* Bottom Bar */}

@@ -27,13 +27,16 @@ interface AudioListItemType {
   producer?: string | null;
   genres: { genre: string }[] | null;
   keys?: { key: string }[] | null;
+  profiles?: { username: string }[] | null;
 }
 
 export function AudioList({ beatsFilters, setBeatsFilters }: Props) {
   async function fetchBeats() {
     const { data, error } = await supabase
       .from("beats_tracks")
-      .select("id,name,bpm,img_url,is_new,producer,genres(genre),keys(key)");
+      .select(
+        "id,name,bpm,img_url,is_new,producer,genres(genre),keys(key),profiles(username)"
+      );
 
     if (error) throw new Error(error.message);
 
@@ -48,6 +51,11 @@ export function AudioList({ beatsFilters, setBeatsFilters }: Props) {
         ? Array.isArray(item.keys)
           ? item.keys
           : [item.keys]
+        : [],
+      profiles: item.profiles
+        ? Array.isArray(item.profiles)
+          ? item.profiles
+          : [item.profiles]
         : [],
     }));
   }
@@ -77,27 +85,34 @@ export function AudioList({ beatsFilters, setBeatsFilters }: Props) {
 
     // Genre filter
     if (f.genre) {
-      result = result.filter((item) =>
-        (item.genres || []).some((g) => g.genre === f.genre)
-      );
+      if (f.genre !== "none") {
+        result = result.filter((item) =>
+          (item.genres || []).some((g) => g.genre === f.genre)
+        );
+      }
     }
 
     // Key filter
     if (f.key) {
-      result = result.filter((item) => {
-        // support either a top-level `key` or a `keys` relation array
-        if (item.key && item.key === f.key) return true;
-        if (item.keys && Array.isArray(item.keys)) {
-          return item.keys.some((k) => k.key === f.key);
-        }
-        return false;
-      });
+      if (f.key !== "none") {
+        result = result.filter((item) => {
+          // support either a top-level `key` or a `keys` relation array
+          if (item.key && item.key === f.key) return true;
+          if (item.keys && Array.isArray(item.keys)) {
+            return item.keys.some((k) => k.key === f.key);
+          }
+
+          return false;
+        });
+      }
     }
 
     // Sorting
     if (f.sortBy) {
-      if (f.sortBy === "bpm") {
+      if (f.sortBy === "bpm-asc") {
         result.sort((a, b) => (a.bpm || 0) - (b.bpm || 0));
+      } else if (f.sortBy === "bpm-desc") {
+        result.sort((a, b) => (b.bpm || 0) - (a.bpm || 0));
       } else if (f.sortBy === "newest") {
         // use is_new as a proxy for newness
         result.sort(
@@ -105,6 +120,8 @@ export function AudioList({ beatsFilters, setBeatsFilters }: Props) {
         );
       } else if (f.sortBy === "price-low" || f.sortBy === "price-high") {
         // no price field available — keep original order
+      } else if (f.sortBy === "none") {
+        // no sorting
       }
     }
 
@@ -128,6 +145,7 @@ export function AudioList({ beatsFilters, setBeatsFilters }: Props) {
           ))
         : filteredData?.map((item, index) => (
             <AudioListItem
+              animation_index={index}
               key={item.id}
               id={item.id}
               name={item.name}
@@ -145,8 +163,19 @@ export function AudioList({ beatsFilters, setBeatsFilters }: Props) {
                   ? item.genres[0].genre
                   : "unknown"
               }
+              producer={
+                Array.isArray(item.profiles) && item.profiles.length > 0
+                  ? item.profiles[0].username
+                  : "unknown"
+              }
             />
           ))}
+
+      {filteredData.length === 0 && !isLoading && !error && (
+        <p className="text-center text-lg col-span-full mt-5 font-satoshi text-muted-foreground">
+          No beats found matching the criteria.
+        </p>
+      )}
 
       {error && <FetchError />}
     </div>

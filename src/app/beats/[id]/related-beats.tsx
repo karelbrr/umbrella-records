@@ -14,6 +14,7 @@ interface AudioListItemType {
   is_new: boolean;
   genres: { genre: string }[] | null;
   keys?: { key: string }[] | null;
+  profiles?: { username: string }[] | null;
 }
 
 function RelatedBeats() {
@@ -23,7 +24,9 @@ function RelatedBeats() {
     if (!id) return [];
     const { data, error } = await supabase
       .from("beats_tracks")
-      .select("id,name,bpm,img_url,is_new,genres(genre),keys(key)")
+      .select(
+        "id,name,bpm,img_url,is_new,genres(genre),keys(key),profiles(username)"
+      )
       .neq("id", id);
 
     if (error) throw new Error(error.message);
@@ -41,6 +44,11 @@ function RelatedBeats() {
         ? Array.isArray(item.keys)
           ? item.keys
           : [item.keys]
+        : [],
+      profiles: item.profiles
+        ? Array.isArray(item.profiles)
+          ? item.profiles
+          : [item.profiles]
         : [],
     }));
   }
@@ -84,6 +92,11 @@ function RelatedBeats() {
                 music_key={
                   Array.isArray(item.keys) && item.keys.length > 0
                     ? item.keys[0].key
+                    : "unknown"
+                }
+                producer={
+                  Array.isArray(item.profiles) && item.profiles.length > 0
+                    ? item.profiles[0].username
                     : "unknown"
                 }
               />

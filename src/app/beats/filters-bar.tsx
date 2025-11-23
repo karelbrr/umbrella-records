@@ -1,5 +1,4 @@
 "use client";
-
 import React, { useEffect, useState } from "react";
 import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
@@ -12,7 +11,6 @@ import {
 } from "@/components/ui/select";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/hooks/createClient";
-import { log } from "console";
 
 interface FiltersBarProps {
   beatsFilters?: {
@@ -25,7 +23,6 @@ interface FiltersBarProps {
 }
 
 export function FiltersBar({ beatsFilters, setBeatsFilters }: FiltersBarProps) {
-  // Fetch genres from Supabase
   const { data: genres, isLoading: genresLoading } = useQuery<string[], Error>({
     queryKey: ["genres"],
     queryFn: async () => {
@@ -65,7 +62,10 @@ export function FiltersBar({ beatsFilters, setBeatsFilters }: FiltersBarProps) {
           type="text"
           value={beatsFilters?.search || ""}
           onChange={(e) =>
-            setBeatsFilters((prev: any) => ({ ...prev, search: e.target.value }))
+            setBeatsFilters((prev: any) => ({
+              ...prev,
+              search: e.target.value,
+            }))
           }
           className="pl-12 h-12 !bg-none border-border text-base"
         />
@@ -78,11 +78,13 @@ export function FiltersBar({ beatsFilters, setBeatsFilters }: FiltersBarProps) {
           onValueChange={(v) =>
             setBeatsFilters((prev: any) => ({ ...(prev || {}), genre: v }))
           }
+          defaultValue={"none"}
         >
           <SelectTrigger className="h-11 space-x-1 bg-none border-border">
             <SelectValue placeholder={genresLoading ? "Loading..." : "Genre"} />
           </SelectTrigger>
           <SelectContent>
+            <SelectItem value="none">All Genres</SelectItem>
             {genres?.map((g: string) => (
               <SelectItem key={g} value={g}>
                 {g}
@@ -96,11 +98,13 @@ export function FiltersBar({ beatsFilters, setBeatsFilters }: FiltersBarProps) {
           onValueChange={(v) =>
             setBeatsFilters((prev: any) => ({ ...(prev || {}), key: v }))
           }
+          defaultValue={"none"}
         >
           <SelectTrigger className="h-11 space-x-1 bg-none border-border">
             <SelectValue placeholder={keysLoading ? "Loading..." : "Key"} />
           </SelectTrigger>
           <SelectContent>
+            <SelectItem value="none">All Keys</SelectItem>
             {keys?.map((k: string) => (
               <SelectItem key={k} value={k}>
                 {k}
@@ -111,6 +115,7 @@ export function FiltersBar({ beatsFilters, setBeatsFilters }: FiltersBarProps) {
 
         <Select
           value={beatsFilters?.sortBy}
+          defaultValue="none"
           onValueChange={(v) =>
             setBeatsFilters((prev: any) => ({ ...(prev || {}), sortBy: v }))
           }
@@ -119,8 +124,11 @@ export function FiltersBar({ beatsFilters, setBeatsFilters }: FiltersBarProps) {
             <SelectValue placeholder="Sort by" />
           </SelectTrigger>
           <SelectContent>
+            <SelectItem value="none">Default Sort</SelectItem>
+
             <SelectItem value="newest">Newest First</SelectItem>
-            <SelectItem value="bpm">BPM</SelectItem>
+            <SelectItem value="bpm-asc">BPM ↑</SelectItem>
+            <SelectItem value="bpm-desc">BPM ↓</SelectItem>
           </SelectContent>
         </Select>
       </div>

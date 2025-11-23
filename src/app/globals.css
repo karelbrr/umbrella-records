@@ -120,6 +120,7 @@
   html,
   body {
     @apply h-full overscroll-none;
+
   }
 
   * {

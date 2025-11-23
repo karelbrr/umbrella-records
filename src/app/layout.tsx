@@ -4,8 +4,9 @@ import "./globals.css";
 import localFont from "next/font/local";
 import SmoothScrollProvider from "@/components/SmoothScrollProvider";
 import { ReactQueryProvider } from "./providers";
-import { Navbar } from "@/app/navbar";
-import { Footer } from "@/app/footer";
+import { Navbar } from "./navbar";
+import { Footer } from "./footer";
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",

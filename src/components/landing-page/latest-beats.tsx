@@ -1,10 +1,10 @@
 "use client";
-
 import AudioListItem from "@/app/beats/audio-list-item";
 import { supabase } from "@/hooks/createClient";
 import FetchError from "@/components/fetch-error";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useQuery } from "@tanstack/react-query";
+import { motion } from "framer-motion";
 
 interface AudioListItemType {
   id: string;
@@ -14,13 +14,17 @@ interface AudioListItemType {
   is_new: boolean;
   genres: { genre: string }[] | null;
   keys?: { key: string }[] | null;
+  profiles?: { username: string }[] | null;
 }
 
 function RecentBeats() {
   async function fetchBeats() {
     const { data, error } = await supabase
       .from("beats_tracks")
-      .select("id,name,bpm,img_url,is_new,genres(genre),keys(key)");
+      .select(
+        "id,name,bpm,img_url,is_new,genres(genre),keys(key),profiles(username)"
+      )
+      .order("created_at", { ascending: false });
 
     if (error) throw new Error(error.message);
 
@@ -36,6 +40,11 @@ function RecentBeats() {
           ? item.keys
           : [item.keys]
         : [],
+      profiles: item.profiles
+        ? Array.isArray(item.profiles)
+          ? item.profiles
+          : [item.profiles]
+        : [],
     }));
   }
 
@@ -47,10 +56,19 @@ function RecentBeats() {
   const skeletonCount = 3;
 
   return (
-    <section className="bg-black py-20 lg:px-0 lg:h-screen flex justify-center  flex-col  container px-4 m-auto">
-      <h2 className="text-4xl lg:text-7xl font-medium opacity-95 text-center font-satoshi">
+    <section
+      id="latest-beats"
+      className="bg-black py-20  lg:h-screen flex justify-center  flex-col  container px-4 m-auto"
+    >
+      <motion.h2
+        initial={{ opacity: 0, y: 50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.5 }}
+        transition={{ duration: 1, ease: "easeOut" }}
+        className="text-4xl lg:text-7xl font-medium opacity-95 text-center font-satoshi"
+      >
         latest beats dropped.
-      </h2>
+      </motion.h2>
       <section className="container mt-10 bg-black">
         <div className={`grid grid-cols-1 space-y-5 md:grid-cols-3   gap-x-7 `}>
           {isLoading || error
@@ -62,8 +80,9 @@ function RecentBeats() {
                   <Skeleton className="w-3/4 h-[15px] mt-4 rounded-sm" />
                 </div>
               ))
-            : data?.map((item) => (
+            : data?.map((item, index) => (
                 <AudioListItem
+                  animation_index={index}
                   key={item.id}
                   id={item.id}
                   name={item.name}
@@ -78,6 +97,11 @@ function RecentBeats() {
                   music_key={
                     Array.isArray(item.keys) && item.keys.length > 0
                       ? item.keys[0].key
+                      : "unknown"
+                  }
+                  producer={
+                    Array.isArray(item.profiles) && item.profiles.length > 0
+                      ? item.profiles[0].username
                       : "unknown"
                   }
                 />

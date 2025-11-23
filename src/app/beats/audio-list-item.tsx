@@ -1,5 +1,6 @@
 "use client";
 interface Props {
+  animation_index?: number;
   id: string;
   name: string;
   bpm: number;
@@ -8,12 +9,14 @@ interface Props {
   is_new?: boolean;
   music_key?: string;
   height?: number;
+  producer?: string;
 }
-
 import Image from "next/image";
 import { Play } from "lucide-react";
+import { motion } from "framer-motion";
 
 export default function AudioListItem({
+  animation_index,
   name,
   bpm,
   id,
@@ -22,9 +25,18 @@ export default function AudioListItem({
   is_new,
   music_key,
   height,
+  producer,
 }: Props) {
   return (
-    <a
+    <motion.a
+      initial={{ opacity: 0, y: 50 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: height ? 0.5 : 0.1 }}
+      transition={{
+        duration: 0.4,
+        ease: "easeOut",
+        delay: animation_index ? animation_index * 0.2 : 0,
+      }}
       href={`/beats/${id}`}
       className={`${height ? "lg:h-[400px]" : "h-auto"}`}
     >
@@ -57,7 +69,9 @@ export default function AudioListItem({
           <h3 className="font-bold text-lg tracking-tight line-clamp-1 font-satoshi">
             {name}
           </h3>
-          <p className="text-sm text-muted-foreground font-satoshi">{bpm}</p>
+          <p className="text-sm text-muted-foreground font-satoshi">
+            {producer}
+          </p>
 
           {/* Beat Details */}
           <div className="flex items-center gap-3 text-xs text-muted-foreground font-satoshi pt-2">
@@ -69,6 +83,6 @@ export default function AudioListItem({
           </div>
         </div>
       </div>
-    </a>
+    </motion.a>
   );
 }

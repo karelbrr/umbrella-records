@@ -8,28 +8,29 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import LocalTime from "../components/local-time";
 import { usePathname } from "next/navigation";
 import { Button } from "../components/ui/button";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, Menu, X } from "lucide-react";
+import { useState } from "react";
 
 export function Navbar() {
   const pathname = usePathname();
+  const [isMobile, setIsMobile] = useState<boolean>();
 
   const showHeader =
     pathname !== "/login" && !pathname.startsWith("/admin/dashboard");
   return showHeader ? (
     <header
-      className={`flex h-[10vh] opacity-90 container left-1/2 px-4 transform -translate-x-1/2 fixed z-100 ${
+      className={`flex justify-between lg:justify-normal items-center h-[10vh] opacity-90 lg:container left-1/2 px-4 transform -translate-x-1/2 fixed z-100 w-full ${
         pathname !== "/" && "bg-black backdrop-blur-xl"
-      } w-full`}
+      }`}
     >
-      <div className=" w-1/3 lg:w-3/12 flex items-center">
-        <h1 className="lg:text-lg font-satoshi   text-white">
+      <div className=" w-2/3 lg:w-3/12 flex items-center">
+        <a href="/" className="text-xl mb-1 font-satoshi  text-white">
           umbrella records
-        </h1>
+        </a>
       </div>
-      <nav className="flex w-1/3 lg:w-6/12 items-center justify-center lg:text-lg space-x-3">
+      <nav className="lg:flex w-1/3 hidden  lg:w-6/12 items-center justify-center lg:text-lg space-x-3">
         <div className="">
           <a
             href="/"
@@ -45,7 +46,7 @@ export function Navbar() {
           </a>
         </div>
       </nav>
-      <div className="w-1/3 lg:w-3/12 flex items-center justify-end  ">
+      <div className="w-1/3 hidden  lg:w-3/12 lg:flex items-center justify-end  ">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button
@@ -61,7 +62,36 @@ export function Navbar() {
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
+      <div className="flex md:hidden ">
+        <Button onClick={() => setIsMobile(true)} variant={"ghost"}>
+          <Menu strokeWidth={1} className="scale-200" />
+        </Button>
+      </div>
+      {/* Mobile Menu */}
+
+      {isMobile && (
+        <section className="fixed top-0 md:hidden right-0 w-[60%] h-screen bg-black z-50">
+          <div className="flex justify-end h-[10vh] pr-4 items-center ">
+            <Button variant={"ghost"} onClick={() => setIsMobile(false)}>
+              <X strokeWidth={1} className="scale-200" />
+            </Button>
+          </div>
+          <nav className="flex flex-col items-center justify-center h-[90vh] space-y-4">
+            <a
+              href="/"
+              className={`hover:opacity-70  transition font-satoshi text-2xl text-white`}
+            >
+              home
+            </a>
+            <a
+              href="/beats"
+              className={`hover:opacity-70 transition font-satoshi text-2xl text-white`}
+            >
+              beats
+            </a>
+          </nav>
+        </section>
+      )}
     </header>
   ) : null;
 }
-
