@@ -70,7 +70,12 @@ export function Navbar() {
       {/* Mobile Menu */}
 
       {isMobile && (
-        <section className="fixed top-0 md:hidden right-0 w-[60%] h-screen bg-black z-50">
+        <section
+          className="fixed top-0 md:hidden right-0 w-[60%] bg-black z-50"
+          style={{
+            height: "calc(100vh + env(safe-area-inset-bottom))",
+          }}
+        >
           <div className="flex justify-end h-[10vh] pr-4 items-center ">
             <Button variant={"ghost"} onClick={() => setIsMobile(false)}>
               <X strokeWidth={1} className="scale-200" />
