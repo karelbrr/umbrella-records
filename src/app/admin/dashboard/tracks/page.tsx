@@ -9,14 +9,6 @@ import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import data from "../data.json";
 import { supabase } from "@/hooks/createClient";
 import { useQuery } from "@tanstack/react-query";
-import type { Metadata } from "next";
-
-
-export const metadata = {
-  title: "Tracks | Umbrella Records Admin",
-  description:
-    "Page to edit tracks/beats",
-};
 
 // export interface AudioDetails {
 //   id: string;
