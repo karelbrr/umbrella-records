@@ -12,7 +12,7 @@ import { useQuery } from "@tanstack/react-query";
 import type { Metadata } from "next";
 
 
-export const metadata: Metadata = {
+export const metadata = {
   title: "Tracks | Umbrella Records Admin",
   description:
     "Page to edit tracks/beats",

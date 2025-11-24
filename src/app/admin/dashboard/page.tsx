@@ -7,10 +7,9 @@ import {
   SidebarInset,
   SidebarProvider,
 } from "@/components/ui/sidebar"
-import type { Metadata } from "next";
 
 
-export const metadata: Metadata = {
+export const metadata = {
   title: "Overview | Umbrella Records Admin",
   description:
     "Overview admin page",
