@@ -20,9 +20,9 @@ export function AboutStudio() {
           className="hover:cursor-pointer mt-6 custom-spotlight-card w-48 m-auto"
           spotlightColor="rgba(148, 3, 252, 0.5)"
         >
-          <h4 className="text-center font-satoshi opacity-90 lg:text-xl font-light pb-1">
+          <h3 className="text-center font-satoshi opacity-90 lg:text-xl font-light pb-1">
             explore beats
-          </h4>
+          </h3>
         </SpotlightCard>
       </a>
     </motion.section>

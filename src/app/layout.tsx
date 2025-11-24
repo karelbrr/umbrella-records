@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import localFont from "next/font/local";
 import SmoothScrollProvider from "@/components/SmoothScrollProvider";
@@ -7,20 +6,11 @@ import { ReactQueryProvider } from "./providers";
 import { Navbar } from "./navbar";
 import { Footer } from "./footer";
 
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
 const satoshi = localFont({
   src: "./Satoshi-Variable.ttf",
   variable: "--font-satoshi",
+  display: "swap",
+  preload: true,
 });
 
 export const metadata: Metadata = {
@@ -45,7 +35,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${satoshi.variable}  antialiased bg-black`}
+        className={` ${satoshi.variable}  antialiased bg-black`}
       >
         <ReactQueryProvider>
           <SmoothScrollProvider>

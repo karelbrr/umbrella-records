@@ -1,10 +1,17 @@
+"use client"
 import Link from "next/link";
 import { Twitter, Instagram, Mail, Mic } from "lucide-react";
+import { usePathname } from "next/navigation";
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
+    const pathname = usePathname();
+  
 
-  return (
+  const showHeader =
+    pathname !== "/login" && !pathname.startsWith("/admin/dashboard");
+
+  return showHeader ? (
     <footer className="bg-black border-t flex justify-center">
       <div className="container px-4 py-16 md:py-20 font-satoshi">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-16 mb-12">
@@ -14,8 +21,8 @@ export function Footer() {
               umbrela records
             </h3>
             <p className="text-muted-foreground  text-sm leading-relaxed">
-              A records dedicated to audio excellence and
-              creative collaboration.
+              A records dedicated to audio excellence and creative
+              collaboration.
             </p>
           </div>
 
@@ -70,5 +77,5 @@ export function Footer() {
         </div>
       </div>
     </footer>
-  );
+  ) : "";
 }

@@ -1,5 +1,4 @@
 "use client";
-
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -63,7 +62,7 @@ export function Navbar() {
         </DropdownMenu>
       </div>
       <div className="flex md:hidden ">
-        <Button onClick={() => setIsMobile(true)} variant={"ghost"}>
+        <Button onClick={() => setIsMobile(true)} variant={"ghost"} aria-label="Open menu">
           <Menu strokeWidth={1} className="scale-200" />
         </Button>
       </div>
@@ -76,7 +75,7 @@ export function Navbar() {
             height: "calc(100vh + env(safe-area-inset-bottom))",
           }}
         >
-          <div className="flex justify-end h-[10vh] pr-4 items-center ">
+          <div className="flex justify-end h-[10vh] pr-4 items-center " aria-label="Close menu">
             <Button variant={"ghost"} onClick={() => setIsMobile(false)}>
               <X strokeWidth={1} className="scale-200" />
             </Button>
