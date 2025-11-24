@@ -2,6 +2,7 @@
 import { AudioWaveform } from "lucide-react";
 import { GridScan } from "../backgrounds/GridScan";
 import { motion } from "framer-motion";
+import { Badge } from "../ui/badge";
 
 export function Hero({}) {
   return (
@@ -30,7 +31,12 @@ export function Hero({}) {
 
         {/* Overlay text */}
         <div className="absolute inset-0 flex flex-col items-center justify-center z-10 text-center text-white">
-          <h1 id="hero" className="scroll-mt-[2000px] text-xl lg:text-4xl font-medium opacity-90 flex items-center  font-satoshi">
+          {" "}
+          <Badge variant={"outline"} className="mb-2">demo site - beta v1.0.6</Badge>
+          <h1
+            id="hero"
+            className="scroll-mt-[2000px] text-xl lg:text-4xl font-medium opacity-90 flex items-center  font-satoshi"
+          >
             <motion.span
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
