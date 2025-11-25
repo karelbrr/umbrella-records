@@ -66,9 +66,9 @@ export default function AudioListItem({
 
         {/* Beat Info */}
         <div className="p-4 space-y-2">
-          <h3 className="font-bold text-lg tracking-tight line-clamp-1 font-satoshi">
+          <h2 className="font-bold text-lg tracking-tight line-clamp-1 font-satoshi">
             {name}
-          </h3>
+          </h2>
           <p className="text-sm text-muted-foreground font-satoshi">
             {producer}
           </p>

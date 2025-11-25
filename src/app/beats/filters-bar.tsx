@@ -80,7 +80,10 @@ export function FiltersBar({ beatsFilters, setBeatsFilters }: FiltersBarProps) {
           }
           defaultValue={"none"}
         >
-          <SelectTrigger className="h-11 space-x-1 bg-none border-border">
+          <SelectTrigger
+            className="h-11 space-x-1 bg-none border-border"
+            aria-label="Genre"
+          >
             <SelectValue placeholder={genresLoading ? "Loading..." : "Genre"} />
           </SelectTrigger>
           <SelectContent>
@@ -100,7 +103,10 @@ export function FiltersBar({ beatsFilters, setBeatsFilters }: FiltersBarProps) {
           }
           defaultValue={"none"}
         >
-          <SelectTrigger className="h-11 space-x-1 bg-none border-border">
+          <SelectTrigger
+            className="h-11 space-x-1 bg-none border-border"
+            aria-label="Key"
+          >
             <SelectValue placeholder={keysLoading ? "Loading..." : "Key"} />
           </SelectTrigger>
           <SelectContent>
@@ -120,7 +126,10 @@ export function FiltersBar({ beatsFilters, setBeatsFilters }: FiltersBarProps) {
             setBeatsFilters((prev: any) => ({ ...(prev || {}), sortBy: v }))
           }
         >
-          <SelectTrigger className="h-11 space-x-1 font-satoshi bg-none border-border col-span-2">
+          <SelectTrigger
+            className="h-11 space-x-1 font-satoshi bg-none border-border col-span-2"
+            aria-label="Sort by"
+          >
             <SelectValue placeholder="Sort by" />
           </SelectTrigger>
           <SelectContent>
