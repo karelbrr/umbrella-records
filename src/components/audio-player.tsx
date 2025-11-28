@@ -163,7 +163,7 @@ function AudioPlayer({
               className="w-full"
             />
             <div className="space-y-3 mt-4">
-              <h1 className="text-5xl md:text-6xl  lg:text-7xl font-satoshi tracking-tighter text-balance leading-none">
+              <h1 className="text-4xl md:text-6xl  lg:text-7xl font-satoshi tracking-tighter text-balance leading-none">
                 {name}
               </h1>
 
