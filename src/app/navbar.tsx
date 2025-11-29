@@ -20,8 +20,8 @@ export function Navbar() {
     pathname !== "/login" && !pathname.startsWith("/admin/dashboard");
   return showHeader ? (
     <header
-      className={`flex justify-between lg:justify-normal items-center h-[10vh] opacity-90 lg:container left-1/2 px-4 transform -translate-x-1/2 fixed z-100 w-full ${
-        pathname !== "/" && "bg-black backdrop-blur-xl"
+      className={`flex justify-between lg:justify-normal items-center h-[10vh]  lg:container left-1/2 px-4 transform -translate-x-1/2 fixed z-100 w-full ${
+        pathname !== "/" && "bg-black"
       }`}
     >
       <div className=" w-2/3 lg:w-3/12 flex items-center">

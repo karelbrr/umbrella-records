@@ -5,6 +5,7 @@ import {
   SkipForward,
   Play,
   ChevronDown,
+  Repeat,
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Skeleton } from "./ui/skeleton";
@@ -163,21 +164,18 @@ function AudioPlayer({
               className="w-full"
             />
             <div className="space-y-3 mt-4">
-              <h1 className="text-4xl md:text-6xl  lg:text-7xl font-satoshi tracking-tighter text-balance leading-none">
+              <h1 className="text-4xl md:text-6xl  lg:text-7xl font-satoshi text-center tracking-tighter text-balance leading-none">
                 {name}
               </h1>
 
-              <p className="text-2xl text-muted-foreground  font-satoshi font-medium">
+              <p className="text-2xl text-muted-foreground text-center font-satoshi font-medium">
                 {producer ?? "unknown"}
               </p>
             </div>
-            <div className="w-full justify-between flex mt-4">
-              <p className=" mt-1.5 flex justify-center  w-[10%] text-muted-foreground">
-                {formatTime(currentTime)}
-              </p>
+            <div className="w-full justify-between flex mt-6">
               <div
                 ref={mobileFullscreenProgressRef}
-                className={`bg-zinc-300/20 h-[4px] mt-4 w-[75%] relative cursor-pointer ${
+                className={`bg-zinc-300/20 h-[4px] mt-4 w-full relative cursor-pointer ${
                   (isLoading && "opacity-30 animate-pulse") ||
                   (error && "opacity-30 animate-pulse")
                 }`}
@@ -207,39 +205,52 @@ function AudioPlayer({
                   }}
                 />
               </div>
-              <p className="mt-1.5 w-[10%] flex justify-center  text-muted-foreground">
+            </div>
+            <div className="flex w-full justify-between">
+              <p className=" mt-2.5 flex justify-center  w-[10%] text-muted-foreground">
+                {formatTime(currentTime)}
+              </p>
+              <p className="mt-2.5 w-[10%] flex justify-center  text-muted-foreground">
                 {formatTime(duration)}
               </p>
             </div>
 
-            <div className="flex items-center justify-center gap-2 mt-4  text-white">
-              <Button size="icon" variant="ghost" className="h-8 flex w-8">
-                <SkipBack className="h-4 scale-150 w-4" strokeWidth={1} />
-              </Button>
-              {isLoading || error ? (
-                <LoaderCircle className="animate-spin opacity-50" />
-              ) : (
-                <button
-                  onClick={togglePlay}
-                  className="opacity-80 disabled:opacity-50"
-                  aria-label="Play/Pause"
-                  disabled={!media_url}
-                >
-                  {isPlaying ? (
-                    <Pause strokeWidth={1} className="scale-125" />
-                  ) : (
-                    <Play strokeWidth={1} className="scale-125" />
-                  )}
-                </button>
-              )}
+            <div className="flex items-center justify-between gap-2 mt-8  text-white">
+              <div className="w-[10%]"></div>
+              <div className="flex w-[80%] items-center justify-center gap-2  text-white">
+                <Button size="icon" variant="ghost" className="h-8 flex w-8">
+                  <SkipBack className="h-4 scale-150 w-4" strokeWidth={1} />
+                </Button>
+                {isLoading || error ? (
+                  <LoaderCircle className="animate-spin opacity-50" />
+                ) : (
+                  <button
+                    onClick={togglePlay}
+                    className="opacity-80 disabled:opacity-50"
+                    aria-label="Play/Pause"
+                    disabled={!media_url}
+                  >
+                    {isPlaying ? (
+                      <Pause strokeWidth={1} className="scale-125" />
+                    ) : (
+                      <Play strokeWidth={1} className="scale-125" />
+                    )}
+                  </button>
+                )}
 
-              <Button
-                size="icon"
-                variant="ghost"
-                className="h-8 flex w-8 z-[9999]"
-              >
-                <SkipForward className="h-4 scale-150 w-4" strokeWidth={1} />
-              </Button>
+                <Button
+                  size="icon"
+                  variant="ghost"
+                  className="h-8 flex w-8 z-[9999]"
+                >
+                  <SkipForward className="h-4 scale-150 w-4" strokeWidth={1} />
+                </Button>
+              </div>
+              <div className="w-[10%]">
+                <Button variant={"ghost"}>
+                  <Repeat className="h-4 scale-150 w-4" strokeWidth={1} />
+                </Button>
+              </div>
             </div>
           </div>
         </div>
@@ -410,7 +421,7 @@ function AudioPlayer({
                 variant="ghost"
                 className="h-8 hidden lg:flex w-8 z-[9999]"
               >
-                <SkipForward className="h-4  w-4" />
+                <SkipForward className="h-4 w-4" />
               </Button>
             </div>
           </div>
