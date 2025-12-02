@@ -143,9 +143,9 @@ function AudioPlayer({
   };
 
   return (
-    <section className="relative">
+    <section className="relative w-">
       {isMobilePlayerOpen && (
-        <div className="fixed flex flex-col top-[10vh] left-0 w-full container px-4 h-full bg-black z-[9999]">
+        <div className="fixed flex flex-col top-[10vh] left-0 w-full px-4 h-full bg-black z-[999]">
           <div className="flex w-full justify-start">
             <Button
               variant={"ghost"}
@@ -155,14 +155,15 @@ function AudioPlayer({
               <ChevronDown className="scale-200" strokeWidth={1} />
             </Button>
           </div>
-          <div className="flex flex-col mt-6">
+          <div className="relative mx-auto mt-6 w-full max-w-[40vh] aspect-square shadow-xl">
             <Image
               src={cover || "/images/missing-image.png"}
               alt={"Cover Art"}
-              width={250}
-              height={250}
-              className="w-full"
+              fill // Použijeme fill, aby se obrázek roztáhl do rodičovského divu
+              className="object-cover rounded-md" // rounded pro hezčí vzhled
             />
+          </div>
+          <div className="flex flex-col max-h-[40vh] mt-6">
             <div className="space-y-3 mt-4">
               <h1 className="text-4xl md:text-6xl  lg:text-7xl font-satoshi text-center tracking-tighter text-balance leading-none">
                 {name}
@@ -366,7 +367,7 @@ function AudioPlayer({
       {/* Mobile Player */}
       <section
         onClick={() => setIsMobilePlayerOpen(true)}
-        className="lg:hidden fixed bottom-0 left-0 w-full z-1000 h-[100px] bg-black border-t"
+        className="lg:hidden fixed bottom-0 left-0 w-full z-[99] h-[100px] bg-black border-t"
       >
         <div className="container mx-auto px-4 h-full flex items-center justify-center">
           {/* Left: Description / Cover */}
