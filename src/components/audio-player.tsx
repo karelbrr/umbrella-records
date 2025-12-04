@@ -1,3 +1,4 @@
+"use client";
 import {
   LoaderCircle,
   Pause,
@@ -8,26 +9,12 @@ import {
   Repeat,
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import { Skeleton } from "./ui/skeleton";
 import Image from "next/image";
 import { Button } from "./ui/button";
+import { usePlayer } from "./context/player-context";
+function AudioPlayer() {
+  const { activeBeat, isPlaying, setIsPlaying, togglePlay } = usePlayer();
 
-function AudioPlayer({
-  media_url,
-  isLoading,
-  error,
-  name,
-  cover,
-  producer,
-}: {
-  media_url: string | undefined;
-  isLoading: boolean;
-  error: any;
-  name: string | null | undefined;
-  cover: string | null | undefined;
-  producer: string | null | undefined;
-}) {
-  const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [progress, setProgress] = useState<number>(0);
   const [duration, setDuration] = useState<number>(0);
   const [currentTime, setCurrentTime] = useState<number>(0);
@@ -46,29 +33,43 @@ function AudioPlayer({
     return `${m}:${("0" + s).slice(-2)}`;
   };
 
+  // Main use effect to control the audio
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
 
-    const onLoaded = async () => {
-      setDuration(audio.duration || 0);
-      try {
-        await audio.play();
-        setIsPlaying(true);
-      } catch (err) {
-        console.log("Autoplay blocked:", err);
+    if (isPlaying) {
+      const playPromise = audio.play();
+      if (playPromise !== undefined) {
+        playPromise.catch((error) => {
+          console.error("Playback prevented:", error);
+          setIsPlaying(false);
+        });
       }
-    };
+    } else {
+      audio.pause();
+    }
+  }, [isPlaying, activeBeat, setIsPlaying]);
 
+  useEffect(() => {
+    if (activeBeat) {
+      setProgress(0);
+      setCurrentTime(0);
+    }
+  }, [activeBeat]);
+
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    const onLoaded = () => setDuration(audio.duration || 0);
     const onTimeUpdate = () => {
       if (!isSeeking) {
         setCurrentTime(audio.currentTime);
         setProgress(((audio.currentTime || 0) / (audio.duration || 1)) * 100);
       }
     };
-    const onEnded = () => {
-      setIsPlaying(false);
-    };
+    const onEnded = () => setIsPlaying(false);
 
     audio.addEventListener("loadedmetadata", onLoaded);
     audio.addEventListener("timeupdate", onTimeUpdate);
@@ -79,41 +80,26 @@ function AudioPlayer({
       audio.removeEventListener("timeupdate", onTimeUpdate);
       audio.removeEventListener("ended", onEnded);
     };
-  }, [media_url, isSeeking]);
+  }, [isSeeking, setIsPlaying, activeBeat]);
 
-  const togglePlay = async () => {
-    const audio = audioRef.current;
-    if (!audio) return;
+  if (!activeBeat) return null;
 
-    try {
-      if (audio.paused) {
-        await audio.play();
-        setIsPlaying(true);
-      } else {
-        audio.pause();
-        setIsPlaying(false);
-      }
-    } catch (err) {
-      console.error("Audio play failed:", err);
-      setIsPlaying(!audio.paused && !audio.ended);
-    }
-  };
+  const { media_url, name, img_url: cover, profiles } = activeBeat;
+  const producer = profiles?.username;
+  const isLoading = false;
+  const error = null;
 
   const seekTo = (clientX: number, bar: HTMLDivElement | null) => {
     const audio = audioRef.current;
     if (!audio || !bar || !duration || isNaN(duration) || duration === Infinity)
       return;
-
     const rect = bar.getBoundingClientRect();
-    if (rect.width === 0) return; // <- ochrana
-
+    if (rect.width === 0) return;
     const x = Math.min(Math.max(0, clientX - rect.left), rect.width);
     const pct = x / rect.width;
-    if (!isFinite(pct)) return; // ochrana
-
+    if (!isFinite(pct)) return;
     const newTime = pct * duration;
-    if (!isFinite(newTime)) return; // ochrana
-
+    if (!isFinite(newTime)) return;
     audio.currentTime = newTime;
     setProgress(pct * 100);
     setCurrentTime(newTime);
@@ -124,20 +110,16 @@ function AudioPlayer({
     bar: HTMLDivElement | null
   ) => {
     if (!bar) return;
-
     e.currentTarget.setPointerCapture(e.pointerId);
     setIsSeeking(true);
     seekTo(e.clientX, bar);
-
     const onPointerMove = (ev: PointerEvent) => seekTo(ev.clientX, bar);
     const onPointerUp = (ev: PointerEvent) => {
       seekTo(ev.clientX, bar);
       setIsSeeking(false);
-
       window.removeEventListener("pointermove", onPointerMove);
       window.removeEventListener("pointerup", onPointerUp);
     };
-
     window.addEventListener("pointermove", onPointerMove);
     window.addEventListener("pointerup", onPointerUp);
   };
@@ -145,27 +127,29 @@ function AudioPlayer({
   return (
     <section className="relative w-">
       {isMobilePlayerOpen && (
-        <div className="fixed flex flex-col top-[10vh] left-0 w-full px-4 h-full bg-black z-[999]">
-          <div className="flex w-full justify-start">
+        <div className="fixed flex flex-col top-0 left-0 w-full px-4 h-full bg-black z-[9999]">
+          <div className="flex w-full justify-start mt-5">
             <Button
               variant={"ghost"}
-              className="!p-0"
+              className="p-4"
               onClick={() => setIsMobilePlayerOpen(false)}
             >
               <ChevronDown className="scale-200" strokeWidth={1} />
             </Button>
           </div>
+
           <div className="relative mx-auto mt-6 w-full max-w-[40vh] aspect-square shadow-xl">
             <Image
               src={cover || "/images/missing-image.png"}
               alt={"Cover Art"}
-              fill // Použijeme fill, aby se obrázek roztáhl do rodičovského divu
-              className="object-cover rounded-md" // rounded pro hezčí vzhled
+              fill
+              className="object-cover rounded-md"
             />
           </div>
+
           <div className="flex flex-col max-h-[40vh] mt-6">
             <div className="space-y-3 mt-4">
-              <h1 className="text-4xl md:text-6xl  lg:text-7xl font-satoshi text-center tracking-tighter text-balance leading-none">
+              <h1 className="text-4xl md:text-6xl lg:text-7xl font-satoshi text-center tracking-tighter text-balance leading-none">
                 {name}
               </h1>
 
@@ -173,6 +157,7 @@ function AudioPlayer({
                 {producer ?? "unknown"}
               </p>
             </div>
+
             <div className="w-full justify-between flex mt-6">
               <div
                 ref={mobileFullscreenProgressRef}
@@ -207,21 +192,25 @@ function AudioPlayer({
                 />
               </div>
             </div>
+
             <div className="flex w-full justify-between">
-              <p className=" mt-2.5 flex justify-center  w-[10%] text-muted-foreground">
+              <p className=" mt-2.5 flex justify-center w-[10%] text-muted-foreground">
                 {formatTime(currentTime)}
               </p>
-              <p className="mt-2.5 w-[10%] flex justify-center  text-muted-foreground">
+
+              <p className="mt-2.5 w-[10%] flex justify-center text-muted-foreground">
                 {formatTime(duration)}
               </p>
             </div>
 
-            <div className="flex items-center justify-between gap-2 mt-8  text-white">
+            <div className="flex items-center justify-between gap-2 mt-8 text-white">
               <div className="w-[10%]"></div>
-              <div className="flex w-[80%] items-center justify-center gap-2  text-white">
+
+              <div className="flex w-[80%] items-center justify-center gap-2 text-white">
                 <Button size="icon" variant="ghost" className="h-8 flex w-8">
                   <SkipBack className="h-4 scale-150 w-4" strokeWidth={1} />
                 </Button>
+
                 {isLoading || error ? (
                   <LoaderCircle className="animate-spin opacity-50" />
                 ) : (
@@ -247,6 +236,7 @@ function AudioPlayer({
                   <SkipForward className="h-4 scale-150 w-4" strokeWidth={1} />
                 </Button>
               </div>
+
               <div className="w-[10%]">
                 <Button variant={"ghost"}>
                   <Repeat className="h-4 scale-150 w-4" strokeWidth={1} />
@@ -258,9 +248,11 @@ function AudioPlayer({
       )}
 
       {/* Desktop Player */}
+
       <section className="fixed bottom-0 left-0 w-full z-1000 hidden h-[100px] bg-black lg:block border-t">
         <div className="container mx-auto px-4 h-full flex items-center justify-center">
           {/* Left: Description / Cover */}
+
           <div className="flex items-center gap-3 flex-none w-1/2 lg:w-1/4 min-w-[180px]">
             <div className="relative h-14 w-14 flex-shrink-0 overflow-hidden bg-gray-200 dark:bg-gray-800">
               <Image
@@ -270,10 +262,12 @@ function AudioPlayer({
                 className="object-cover"
               />
             </div>
+
             <div className="min-w-0">
               <h4 className="font-semibold text-sm truncate text-white">
                 {name}
               </h4>
+
               <p className="text-xs text-gray-400 truncate">
                 {producer || "2mjz"}
               </p>
@@ -281,8 +275,9 @@ function AudioPlayer({
           </div>
 
           {/* Center: Player (progress + controls) */}
-          <div className="flex flex-col items-end lg:items-center  w-1/2 px-4">
-            <div className="flex items-center gap-2  text-white">
+
+          <div className="flex flex-col items-end lg:items-center w-1/2 px-4">
+            <div className="flex items-center gap-2 text-white">
               <Button
                 size="icon"
                 variant="ghost"
@@ -290,6 +285,7 @@ function AudioPlayer({
               >
                 <SkipBack className="h-4 w-4" />
               </Button>
+
               {isLoading || error ? (
                 <LoaderCircle className="animate-spin opacity-50" />
               ) : (
@@ -312,13 +308,15 @@ function AudioPlayer({
                 variant="ghost"
                 className="h-8 hidden lg:flex w-8"
               >
-                <SkipForward className="h-4  w-4" />
+                <SkipForward className="h-4 w-4" />
               </Button>
             </div>
+
             <div className="w-full hidden lg:flex">
-              <p className=" mt-2 flex justify-center  w-[10%]  text-sm text-muted-foreground">
+              <p className=" mt-2 flex justify-center w-[10%] text-sm text-muted-foreground">
                 {formatTime(currentTime)}
               </p>
+
               <div
                 ref={desktopProgressRef}
                 className={`bg-zinc-300/20 h-[4px] mt-4 w-[80%] relative cursor-pointer ${
@@ -351,6 +349,7 @@ function AudioPlayer({
                   }}
                 />
               </div>
+
               <p className="mt-2 w-[10%] flex justify-center text-sm text-muted-foreground">
                 {formatTime(duration)}
               </p>
@@ -358,6 +357,7 @@ function AudioPlayer({
           </div>
 
           {/* Right spacer to keep center alignment */}
+
           <div className="flex-none hidden lg:flex w-1/4 min-w-[180px]" />
         </div>
 
@@ -365,12 +365,14 @@ function AudioPlayer({
       </section>
 
       {/* Mobile Player */}
+
       <section
         onClick={() => setIsMobilePlayerOpen(true)}
         className="lg:hidden fixed bottom-0 left-0 w-full z-[99] h-[100px] bg-black border-t"
       >
         <div className="container mx-auto px-4 h-full flex items-center justify-center">
           {/* Left: Description / Cover */}
+
           <div className="flex items-center gap-3 flex-none w-1/2 lg:w-1/4 min-w-[180px]">
             <div className="relative h-14 w-14 flex-shrink-0 overflow-hidden bg-gray-200 dark:bg-gray-800">
               <Image
@@ -380,10 +382,12 @@ function AudioPlayer({
                 className="object-cover"
               />
             </div>
+
             <div className="min-w-0">
               <h4 className="font-semibold text-sm truncate text-white">
                 {name}
               </h4>
+
               <p className="text-xs text-gray-400 truncate">
                 {producer || "2mjz"}
               </p>
@@ -391,8 +395,9 @@ function AudioPlayer({
           </div>
 
           {/* Center: Player (progress + controls) */}
-          <div className="flex flex-col items-end lg:items-center  w-1/2 px-4">
-            <div className="flex items-center gap-2  text-white">
+
+          <div className="flex flex-col items-end lg:items-center w-1/2 pl-4">
+            <div className="flex items-center gap-2 text-white">
               <Button
                 size="icon"
                 variant="ghost"
@@ -400,12 +405,16 @@ function AudioPlayer({
               >
                 <SkipBack className="h-4 w-4" />
               </Button>
+
               {isLoading || error ? (
                 <LoaderCircle className="animate-spin opacity-50" />
               ) : (
                 <button
-                  onClick={togglePlay}
-                  className="hover:opacity-80 disabled:opacity-50"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    togglePlay();
+                  }}
+                  className="hover:opacity-80 disabled:opacity-50 p-5"
                   aria-label="Play/Pause"
                   disabled={!media_url}
                 >
@@ -428,9 +437,10 @@ function AudioPlayer({
           </div>
 
           <div className="w-full hidden lg:flex">
-            <p className=" mt-2 flex justify-center  w-[10%]  text-sm text-muted-foreground">
+            <p className=" mt-2 flex justify-center w-[10%] text-sm text-muted-foreground">
               {formatTime(currentTime)}
             </p>
+
             <div
               ref={mobileCollapsedProgressRef}
               className={`bg-zinc-300/20 h-[4px] mt-4 w-[80%] relative cursor-pointer ${
@@ -463,12 +473,14 @@ function AudioPlayer({
                 }}
               />
             </div>
+
             <p className="mt-2 w-[10%] flex justify-center text-sm text-muted-foreground">
               {formatTime(duration)}
             </p>
           </div>
 
           {/* Right spacer to keep center alignment */}
+
           <div className="flex-none hidden lg:flex w-1/4 min-w-[180px]" />
         </div>
 
