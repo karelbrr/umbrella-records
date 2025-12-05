@@ -11,6 +11,7 @@ import { usePathname } from "next/navigation";
 import { Button } from "../components/ui/button";
 import { ChevronDown, Menu, X } from "lucide-react";
 import { useState } from "react";
+import Image from "next/image";
 
 export function Navbar() {
   const pathname = usePathname();
@@ -25,7 +26,19 @@ export function Navbar() {
       }`}
     >
       <div className=" w-2/3 lg:w-3/12 flex items-center">
-        <a href="/" className="text-xl mb-1 font-satoshi  text-white">
+        {/* <a
+          href="/"
+          className="text-xl mb-1 font-satoshi  opacity-90 text-white"
+        >
+          <Image
+            src={"/logo.svg"}
+            width={30}
+            height={50}
+            alt="logo"
+            style={{ filter: "invert(1) brightness(2)" }}
+          />
+        </a> */}
+        <a href="/" className="text-xl mb-1 font-satoshi text-white">
           umbrella records
         </a>
       </div>
@@ -62,7 +75,11 @@ export function Navbar() {
         </DropdownMenu>
       </div>
       <div className="flex md:hidden ">
-        <Button onClick={() => setIsMobile(true)} variant={"ghost"} aria-label="Open menu">
+        <Button
+          onClick={() => setIsMobile(true)}
+          variant={"ghost"}
+          aria-label="Open menu"
+        >
           <Menu strokeWidth={1} className="scale-200" />
         </Button>
       </div>
@@ -75,7 +92,10 @@ export function Navbar() {
             height: "calc(100vh + env(safe-area-inset-bottom))",
           }}
         >
-          <div className="flex justify-end h-[10vh] pr-4 items-center " aria-label="Close menu">
+          <div
+            className="flex justify-end h-[10vh] pr-4 items-center "
+            aria-label="Close menu"
+          >
             <Button variant={"ghost"} onClick={() => setIsMobile(false)}>
               <X strokeWidth={1} className="scale-200" />
             </Button>

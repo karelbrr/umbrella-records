@@ -16,9 +16,9 @@ export default function Home() {
       <Hero />
       <hr />
       <AboutStudio />
+      {/* <hr />
+      <CollectionsGrid /> */}
       <hr />
-      {/* <CollectionsGrid />
-      <hr /> */}
       <RecentBeats />
     </section>
   );
