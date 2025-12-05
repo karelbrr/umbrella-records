@@ -53,7 +53,7 @@ const collections = [
 
 export function CollectionsGrid() {
   return (
-    <section className="py-12  flex flex-col w-full items-center justify-center h-screen px-4 container m-auto">
+    <section className="py-12  flex flex-col w-full items-center justify-center lg:h-screen px-4 container m-auto">
       <section className="container">
         <div className="flex items-center justify-center mb-8">
           <motion.h2
@@ -71,11 +71,15 @@ export function CollectionsGrid() {
         </div>
 
         <div className="grid grid-cols-1 mt-6 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {collections.map((item) => (
-            <Link
+          {collections.map((item, index) => (
+            <motion.a
               key={item.id}
               href={item.href}
-              className="group relative overflow-hidden border border-zinc-80 h-[400px] transition-all duration-300"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.5 }}
+              transition={{ duration: 1, ease: "easeOut", delay: index * 0.2 }}
+              className="group relative overflow-hidden border border-zinc-80 lg:h-[500px] "
             >
               <SpotlightCard
                 className="custom-spotlight-card rounded-none h-full border-0"
@@ -108,7 +112,7 @@ export function CollectionsGrid() {
                   </div>
                 </div>
               </SpotlightCard>
-            </Link>
+            </motion.a>
           ))}
         </div>
       </section>
