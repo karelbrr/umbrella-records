@@ -72,7 +72,7 @@ export function Footer() {
             © {currentYear} umbrella records. all rights reserved.
           </p>
           <p className="text-xs text-muted-foreground  tracking-wide">
-            designed with precission
+            designed with precission by Karel Braborec
           </p>
         </div>
       </div>
