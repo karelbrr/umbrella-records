@@ -33,6 +33,46 @@ function AudioPlayer() {
     return `${m}:${("0" + s).slice(-2)}`;
   };
 
+  //Use effect to handle keyboard control
+  useEffect(() => {
+    if (!activeBeat || !navigator.mediaSession) return;
+
+    navigator.mediaSession.metadata = new MediaMetadata({
+      title: activeBeat.name || "Unknown Beat",
+      artist: activeBeat.profiles?.username || "Unknown Producer",
+      artwork: [
+        {
+          src: activeBeat.img_url || "/images/missing-image.png",
+          sizes: "512x512",
+          type: "image/jpeg",
+        },
+      ],
+    });
+
+    navigator.mediaSession.setActionHandler("play", () => {
+      togglePlay();
+    });
+
+    navigator.mediaSession.setActionHandler("pause", () => {
+      togglePlay();
+    });
+
+    navigator.mediaSession.setActionHandler("nexttrack", () => {
+      // console.log("Next track pressed");
+    });
+
+    navigator.mediaSession.setActionHandler("previoustrack", () => {
+      // console.log("Prev track pressed");
+    });
+
+    return () => {
+      if (navigator.mediaSession) {
+        navigator.mediaSession.setActionHandler("play", null);
+        navigator.mediaSession.setActionHandler("pause", null);
+      }
+    };
+  }, [activeBeat, togglePlay]);
+
   // Main use effect to control the audio
   useEffect(() => {
     const audio = audioRef.current;

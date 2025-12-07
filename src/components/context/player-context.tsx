@@ -25,14 +25,23 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
   const togglePlay = () => {
     setIsPlaying((prev) => !prev);
   };
-  
+
   const closePlayer = () => {
-      setActiveBeat(null);
-      setIsPlaying(false);
-  }
+    setActiveBeat(null);
+    setIsPlaying(false);
+  };
 
   return (
-    <PlayerContext.Provider value={{ activeBeat, isPlaying, playBeat, togglePlay, setIsPlaying, closePlayer }}>
+    <PlayerContext.Provider
+      value={{
+        activeBeat,
+        isPlaying,
+        playBeat,
+        togglePlay,
+        setIsPlaying,
+        closePlayer,
+      }}
+    >
       {children}
     </PlayerContext.Provider>
   );
