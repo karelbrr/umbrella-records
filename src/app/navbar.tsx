@@ -74,7 +74,7 @@ export function Navbar() {
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      <div className="flex md:hidden ">
+      <div className="flex lg:hidden ">
         <Button
           onClick={() => setIsMobile(true)}
           variant={"ghost"}
@@ -87,7 +87,7 @@ export function Navbar() {
 
       {isMobile && (
         <section
-          className="fixed top-0 md:hidden right-0 w-[60%] bg-black z-50"
+          className="fixed top-0 lg:hidden right-0 w-[60%] bg-black z-50"
           style={{
             height: "calc(100vh + env(safe-area-inset-bottom))",
           }}

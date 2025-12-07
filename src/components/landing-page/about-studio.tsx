@@ -6,7 +6,7 @@ export function AboutStudio() {
   return (
     <motion.section
       id="quote"
-      className="bg-black h-screen flex justify-center items-center flex-col py-20 container px-4 m-auto"
+      className="bg-black lg:h-screen flex justify-center items-center flex-col py-20 container px-4 m-auto"
       initial={{ opacity: 0, y: 50 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.5 }}

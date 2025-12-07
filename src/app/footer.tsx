@@ -1,12 +1,11 @@
-"use client"
+"use client";
 import Link from "next/link";
 import { Twitter, Instagram, Mail, Mic } from "lucide-react";
 import { usePathname } from "next/navigation";
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
-    const pathname = usePathname();
-  
+  const pathname = usePathname();
 
   const showHeader =
     pathname !== "/login" && !pathname.startsWith("/admin/dashboard");
@@ -61,7 +60,7 @@ export function Footer() {
           <div className="space-y-4">
             <h3 className="text-white  text-lg tracking-wide">contact</h3>
             <div className="space-y-2 text-sm">
-              <p className=" text-muted-foreground">help@umbrellarecords.com</p>
+              <p className=" text-muted-foreground">help@umbrellarecords.cz</p>
             </div>
           </div>
         </div>
@@ -72,10 +71,12 @@ export function Footer() {
             © {currentYear} umbrella records. all rights reserved.
           </p>
           <p className="text-xs text-muted-foreground  tracking-wide">
-            designed with precission by Karel Braborec
+            designed with precission by KB7
           </p>
         </div>
       </div>
     </footer>
-  ) : "";
+  ) : (
+    ""
+  );
 }
