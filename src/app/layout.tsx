@@ -5,6 +5,9 @@ import SmoothScrollProvider from "@/components/SmoothScrollProvider";
 import { ReactQueryProvider } from "./providers";
 import { Navbar } from "./navbar";
 import { Footer } from "./footer";
+import { PlayerProvider } from "@/components/context/player-context";
+import AudioPlayer from "@/components/audio-player";
+
 
 const satoshi = localFont({
   src: "./Satoshi-Variable.ttf",
@@ -34,14 +37,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="dark">
-      <body
-        className={` ${satoshi.variable}  antialiased bg-black`}
-      >
+      <body className={` ${satoshi.variable}  antialiased bg-black`}>
         <ReactQueryProvider>
           <SmoothScrollProvider>
-            <Navbar />
-            {children}
-            <Footer />
+            <PlayerProvider>
+              <Navbar />
+              {children}
+              <AudioPlayer />
+              <Footer />
+            </PlayerProvider>
           </SmoothScrollProvider>
         </ReactQueryProvider>
       </body>

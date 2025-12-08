@@ -3,13 +3,12 @@ import { Button } from "@/components/ui/button";
 import { supabase } from "@/hooks/createClient";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
-import { useState } from "react";
-import AudioPlayer from "@/components/audio-player";
 import FetchError from "@/components/fetch-error";
 import { getDaysSinceUpload } from "@/lib/get-beat";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
+
 import {
   ArrowLeft,
   Play,
@@ -17,7 +16,9 @@ import {
   Calendar,
   Clock,
   Music2,
+  Pause,
 } from "lucide-react";
+import { usePlayer } from "@/components/context/player-context";
 
 export interface AudioDetails {
   id: string;
@@ -38,7 +39,6 @@ export interface AudioDetails {
 }
 
 export function BeatDetails() {
-  const [isAudioPlayerShown, setIsAudioPlayerShown] = useState<boolean>(false);
   const { id } = useParams();
   async function fetchBeats() {
     const { data, error } = await supabase
@@ -56,6 +56,8 @@ export function BeatDetails() {
     queryKey: ["beatsForBeatsDetails", id],
     queryFn: fetchBeats,
   });
+
+  const { playBeat, activeBeat, togglePlay, isPlaying } = usePlayer();
 
   return (
     <div className="pb-2">
@@ -102,17 +104,29 @@ export function BeatDetails() {
 
             {/* Price & Actions */}
             <div className="flex items-center gap-4 pt-4">
-              {/* <div className="text-4xl font-bold font-mono">$20</div> */}
               <div className="flex gap-3 flex-1">
-                <Button
-                  size="lg"
-                  disabled={isLoading || !!error}
-                  onClick={() => setIsAudioPlayerShown(true)}
-                  className="gap-2 h-12 px-8 text-base font-satoshi font-semibold"
-                >
-                  <Play className="h-5 w-5 fill-current" />
-                  Play
-                </Button>
+                {isPlaying ? (
+                  <Button
+                    size="lg"
+                    disabled={isLoading || !!error}
+                    onClick={togglePlay}
+                    className="gap-2 h-12 px-8 text-base font-satoshi font-semibold"
+                  >
+                    <Pause className="h-5 w-5 fill-current" />
+                    Pause
+                  </Button>
+                ) : (
+                  <Button
+                    size="lg"
+                    disabled={isLoading || !!error}
+                    onClick={() => data && playBeat(data)}
+                    className="gap-2 h-12 px-8 text-base font-satoshi font-semibold"
+                  >
+                    <Play className="h-5 w-5 fill-current" />
+                    Play
+                  </Button>
+                )}
+
                 {/* <Button
                  size="lg"
                  variant="outline"
@@ -222,22 +236,8 @@ export function BeatDetails() {
         </div>
       </div>
 
-      {/* Related Beats Section */}
-
       {/* Error Alert */}
       {error && <FetchError />}
-
-      {/* Audio Player */}
-      {isAudioPlayerShown && (
-        <AudioPlayer
-          media_url={data?.media_url}
-          isLoading={isLoading}
-          error={error}
-          name={data?.name}
-          cover={data?.img_url}
-          producer={data?.profiles?.username}
-        />
-      )}
     </div>
   );
 }
