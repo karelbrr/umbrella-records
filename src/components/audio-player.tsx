@@ -12,6 +12,7 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { Button } from "./ui/button";
 import { usePlayer } from "./context/player-context";
+import { AnimatePresence, motion } from "framer-motion";
 function AudioPlayer() {
   const { activeBeat, isPlaying, setIsPlaying, togglePlay } = usePlayer();
 
@@ -166,126 +167,147 @@ function AudioPlayer() {
 
   return (
     <section className="relative w-">
-      {isMobilePlayerOpen && (
-        <div className="fixed flex flex-col top-0 left-0 w-full px-4 h-full bg-black z-[9999]">
-          <div className="flex w-full justify-start mt-5">
-            <Button
-              variant={"ghost"}
-              className="p-4"
-              onClick={() => setIsMobilePlayerOpen(false)}
-            >
-              <ChevronDown className="scale-200" strokeWidth={1} />
-            </Button>
-          </div>
-
-          <div className="relative mx-auto mt-6 w-full max-w-[40vh] aspect-square shadow-xl">
-            <Image
-              src={cover || "/images/missing-image.png"}
-              alt={"Cover Art"}
-              fill
-              className="object-cover rounded-md"
-            />
-          </div>
-
-          <div className="flex flex-col max-h-[40vh] mt-6">
-            <div className="space-y-3 mt-4">
-              <h1 className="text-4xl md:text-6xl lg:text-7xl font-satoshi text-center tracking-tighter text-balance leading-none">
-                {name}
-              </h1>
-
-              <p className="text-2xl text-muted-foreground text-center font-satoshi font-medium">
-                {producer ?? "unknown"}
-              </p>
-            </div>
-
-            <div className="w-full justify-between flex mt-6">
-              <div
-                ref={mobileFullscreenProgressRef}
-                className={`bg-zinc-300/20 h-[4px] mt-4 w-full relative cursor-pointer ${
-                  (isLoading && "opacity-30 animate-pulse") ||
-                  (error && "opacity-30 animate-pulse")
-                }`}
-                onPointerDown={(e) =>
-                  onPointerDown(e, mobileFullscreenProgressRef.current)
-                }
-                role="slider"
-                aria-valuemin={0}
-                aria-valuemax={100}
-                aria-valuenow={Math.floor(progress)}
+      <AnimatePresence>
+        {isMobilePlayerOpen && (
+          <motion.div
+            initial={{ y: "100%", opacity: 40 }}
+            animate={{ y: 0, opacity: 100 }}
+            exit={{ y: "100%", opacity: 40 }}
+            transition={{ type: "spring", stiffness: 200, damping: 30 }}
+            className="fixed flex flex-col top-0 left-0 w-full px-5 h-full bg-black z-[9999]"
+          >
+            <div className="flex w-full justify-start mt-5">
+              <Button
+                variant={"ghost"}
+                className="p-4"
+                onClick={() => setIsMobilePlayerOpen(false)}
               >
-                <div
-                  className="h-full absolute top-0 left-0 rounded"
-                  style={{
-                    width: `${
-                      isNaN(progress) ? 0 : Math.max(0, Math.min(100, progress))
-                    }%`,
-                  }}
-                />
+                <ChevronDown className="scale-200" strokeWidth={1} />
+              </Button>
+            </div>
 
-                <div
-                  className="absolute top-1/2 transform -translate-y-1/2 w-[2px] h-5 bg-white"
-                  style={{
-                    left: `calc(${
-                      isNaN(progress) ? 0 : Math.max(0, Math.min(100, progress))
-                    }% - 6px)`,
-                  }}
-                />
+            <div className="relative mx-auto mt-6 w-full max-w-[40vh] aspect-square shadow-xl">
+              <Image
+                src={cover || "/images/missing-image.png"}
+                alt={"Cover Art"}
+                fill
+                className="object-cover rounded-md"
+              />
+            </div>
+
+            <div className="flex flex-col max-h-[40vh] mt-6">
+              <div className="space-y-3 mt-4">
+                <h1 className="text-4xl md:text-6xl lg:text-7xl font-satoshi text-center tracking-tighter text-balance leading-none">
+                  {name}
+                </h1>
+
+                <p className="text-2xl text-muted-foreground text-center font-satoshi font-medium">
+                  {producer ?? "unknown"}
+                </p>
               </div>
-            </div>
 
-            <div className="flex w-full justify-between">
-              <p className=" mt-2.5 flex justify-center w-[10%] text-muted-foreground">
-                {formatTime(currentTime)}
-              </p>
-
-              <p className="mt-2.5 w-[10%] flex justify-center text-muted-foreground">
-                {formatTime(duration)}
-              </p>
-            </div>
-
-            <div className="flex items-center justify-between gap-2 mt-8 text-white">
-              <div className="w-[10%]"></div>
-
-              <div className="flex w-[80%] items-center justify-center gap-2 text-white">
-                <Button size="icon" variant="ghost" className="h-8 flex w-8">
-                  <SkipBack className="h-4 scale-150 w-4" strokeWidth={1} />
-                </Button>
-
-                {isLoading || error ? (
-                  <LoaderCircle className="animate-spin opacity-50" />
-                ) : (
-                  <button
-                    onClick={togglePlay}
-                    className="opacity-80 disabled:opacity-50"
-                    aria-label="Play/Pause"
-                    disabled={!media_url}
-                  >
-                    {isPlaying ? (
-                      <Pause strokeWidth={1} className="scale-125" />
-                    ) : (
-                      <Play strokeWidth={1} className="scale-125" />
-                    )}
-                  </button>
-                )}
-
-                <Button
-                  size="icon"
-                  variant="ghost"
-                  className="h-8 flex w-8 z-[9999]"
+              <div className="w-full justify-between flex mt-6">
+                <div
+                  ref={mobileFullscreenProgressRef}
+                  className={`bg-zinc-300/20 h-[8px] mt-4 w-full relative cursor-pointer ${
+                    (isLoading && "opacity-30 animate-pulse") ||
+                    (error && "opacity-30 animate-pulse")
+                  }`}
+                  onPointerDown={(e) =>
+                    onPointerDown(e, mobileFullscreenProgressRef.current)
+                  }
+                  role="slider"
+                  aria-valuemin={0}
+                  aria-valuemax={100}
+                  aria-valuenow={Math.floor(progress)}
                 >
-                  <SkipForward className="h-4 scale-150 w-4" strokeWidth={1} />
-                </Button>
+                  <div
+                    className="h-full absolute top-0 left-0 rounded"
+                    style={{
+                      width: `${
+                        isNaN(progress)
+                          ? 0
+                          : Math.max(0, Math.min(100, progress))
+                      }%`,
+                    }}
+                  />
+
+                  <div
+                    className="absolute top-1/2 transform -translate-y-1/2 w-[2px] h-5 bg-white"
+                    style={{
+                      left: `calc(${
+                        isNaN(progress)
+                          ? 0
+                          : Math.max(0, Math.min(100, progress))
+                      }% - 6px)`,
+                    }}
+                  />
+                </div>
               </div>
 
-              <div className="w-[10%]">
-                <Button variant={"ghost"}>
-                  <Repeat className="h-4 scale-150 w-4" strokeWidth={1} />
-                </Button>
+              <div className="flex w-full justify-between">
+                <p className=" mt-2.5 flex justify-center w-[10%] text-muted-foreground">
+                  {formatTime(currentTime)}
+                </p>
+
+                <p className="mt-2.5 w-[10%] flex justify-center text-muted-foreground">
+                  {formatTime(duration)}
+                </p>
+              </div>
+
+              <div className="flex items-center justify-between gap-2 mt-8 text-white">
+                <div className="w-[10%]"></div>
+
+                <div className="flex w-[80%] items-center justify-center gap-2 text-white">
+                  <Button
+                    size="icon"
+                    variant="ghost"
+                    className="h-8 flex w-8"
+                    disabled={true}
+                  >
+                    <SkipBack className="h-4 scale-150 w-4" strokeWidth={1} />
+                  </Button>
+
+                  {isLoading || error ? (
+                    <LoaderCircle className="animate-spin opacity-50" />
+                  ) : (
+                    <button
+                      onClick={togglePlay}
+                      className="opacity-80 disabled:opacity-50"
+                      aria-label="Play/Pause"
+                      disabled={!media_url}
+                    >
+                      {isPlaying ? (
+                        <Pause strokeWidth={1} className="scale-125" />
+                      ) : (
+                        <Play strokeWidth={1} className="scale-125" />
+                      )}
+                    </button>
+                  )}
+
+                  <Button
+                    size="icon"
+                    variant="ghost"
+                    className="h-8 flex w-8 z-[9999]"
+                    disabled
+                  >
+                    <SkipForward
+                      className="h-4 scale-150 w-4"
+                      strokeWidth={1}
+                    />
+                  </Button>
+                </div>
+
+                <div className="w-[10%]">
+                  <Button variant={"ghost"} disabled>
+                    <Repeat className="h-4 scale-150 w-4" strokeWidth={1} />
+                  </Button>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
-      )}
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Desktop Player */}
 
