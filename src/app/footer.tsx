@@ -17,7 +17,7 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-16 mb-12">
           {/* Studio Info */}
           <div className="space-y-4">
-            <a
+            {/* <a
               href="/"
               className="text-xl mb-1 font-satoshi  opacity-90 text-white"
             >
@@ -28,7 +28,7 @@ export function Footer() {
                 alt="Umbrella records logo"
                 style={{ filter: "invert(1) brightness(2)" }}
               />
-            </a>
+            </a> */}
             <h3 className="text-white  text-lg tracking-wide">
               umbrela records
             </h3>
