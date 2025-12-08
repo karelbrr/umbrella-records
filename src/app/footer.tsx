@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { Twitter, Instagram, Mail, Mic } from "lucide-react";
 import { usePathname } from "next/navigation";
+import Image from "next/image";
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
@@ -16,6 +17,18 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-16 mb-12">
           {/* Studio Info */}
           <div className="space-y-4">
+            <a
+              href="/"
+              className="text-xl mb-1 font-satoshi  opacity-90 text-white"
+            >
+              <Image
+                src={"/logo2.svg"}
+                width={60}
+                height={50}
+                alt="Umbrella records logo"
+                style={{ filter: "invert(1) brightness(2)" }}
+              />
+            </a>
             <h3 className="text-white  text-lg tracking-wide">
               umbrela records
             </h3>

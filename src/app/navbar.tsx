@@ -12,7 +12,7 @@ import { Button } from "../components/ui/button";
 import { ChevronDown, Menu, X } from "lucide-react";
 import { useState } from "react";
 import Image from "next/image";
-
+import { AnimatePresence, motion } from "framer-motion";
 export function Navbar() {
   const pathname = usePathname();
   const [isMobile, setIsMobile] = useState<boolean>();
@@ -26,10 +26,7 @@ export function Navbar() {
       }`}
     >
       <div className=" w-2/3 lg:w-3/12 flex items-center">
-        <a
-          href="/"
-          className="text-xl mb-1 font-satoshi  opacity-90 text-white"
-        >
+        <a href="/" className="text-xl mb-1 font-satoshi text-white">
           <Image
             src={"/logo2.svg"}
             width={60}
@@ -84,38 +81,43 @@ export function Navbar() {
         </Button>
       </div>
       {/* Mobile Menu */}
-
-      {isMobile && (
-        <section
-          className="fixed top-0 lg:hidden right-0 w-[60%] bg-black z-50"
-          style={{
-            height: "calc(100vh + env(safe-area-inset-bottom))",
-          }}
-        >
-          <div
-            className="flex justify-end h-[13vh] pr-4 items-center "
-            aria-label="Close menu"
+      <AnimatePresence>
+        {isMobile && (
+          <motion.section
+            initial={{ x: "100%" }}
+            animate={{ x: 0 }}
+            exit={{ x: "100%" }}
+            transition={{ type: "spring", stiffness: 300, damping: 30 }}
+            className="fixed top-0 lg:hidden right-0 w-[60%] bg-black z-50"
+            style={{
+              height: "calc(100vh + env(safe-area-inset-bottom))",
+            }}
           >
-            <Button variant={"ghost"} onClick={() => setIsMobile(false)}>
-              <X strokeWidth={1} className="scale-200" />
-            </Button>
-          </div>
-          <nav className="flex flex-col items-center justify-center h-[90vh] space-y-4">
-            <a
-              href="/"
-              className={`hover:opacity-70  transition font-satoshi text-2xl text-white`}
+            <div
+              className="flex justify-end h-[13vh] pr-4 items-center "
+              aria-label="Close menu"
             >
-              home
-            </a>
-            <a
-              href="/beats"
-              className={`hover:opacity-70 transition font-satoshi text-2xl text-white`}
-            >
-              beats
-            </a>
-          </nav>
-        </section>
-      )}
+              <Button variant={"ghost"} onClick={() => setIsMobile(false)}>
+                <X strokeWidth={1} className="scale-200" />
+              </Button>
+            </div>
+            <nav className="flex flex-col items-center justify-center h-[90vh] space-y-4">
+              <a
+                href="/"
+                className={`hover:opacity-70  transition font-satoshi text-2xl text-white`}
+              >
+                home
+              </a>
+              <a
+                href="/beats"
+                className={`hover:opacity-70 transition font-satoshi text-2xl text-white`}
+              >
+                beats
+              </a>
+            </nav>
+          </motion.section>
+        )}
+      </AnimatePresence>
     </header>
   ) : null;
 }

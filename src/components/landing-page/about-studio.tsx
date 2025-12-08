@@ -23,7 +23,7 @@ export function AboutStudio() {
       <a href="/beats">
         <SpotlightCard
           className="hover:cursor-pointer mt-4 custom-spotlight-card w-48 m-auto"
-          spotlightColor="rgba(148, 3, 252, 0.5)"
+          spotlightColor="rgba(255, 255, 252, 0.3)"
         >
           <h3 className="text-center font-satoshi opacity-90 lg:text-xl font-light pb-1">
             explore beats
