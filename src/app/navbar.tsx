@@ -21,26 +21,26 @@ export function Navbar() {
     pathname !== "/login" && !pathname.startsWith("/admin/dashboard");
   return showHeader ? (
     <header
-      className={`flex justify-between lg:justify-normal items-center h-[10vh] opacity-90 lg:container left-1/2 px-4 transform -translate-x-1/2 fixed z-100 w-full ${
+      className={`flex justify-between lg:justify-normal items-center h-[13vh] opacity-90 lg:container left-1/2 px-4 transform -translate-x-1/2 fixed z-100 w-full ${
         pathname !== "/" && "bg-black backdrop-blur-xl"
       }`}
     >
       <div className=" w-2/3 lg:w-3/12 flex items-center">
-        {/* <a
+        <a
           href="/"
           className="text-xl mb-1 font-satoshi  opacity-90 text-white"
         >
           <Image
-            src={"/logo.svg"}
-            width={30}
+            src={"/logo2.svg"}
+            width={60}
             height={50}
-            alt="logo"
+            alt="Umbrella records logo"
             style={{ filter: "invert(1) brightness(2)" }}
           />
-        </a> */}
-        <a href="/" className="text-xl mb-1 font-satoshi text-white">
-          umbrella records
         </a>
+        {/* <a href="/" className="text-xl mb-1 font-satoshi text-white">
+          umbrella records
+        </a> */}
       </div>
       <nav className="lg:flex w-1/3 hidden  lg:w-6/12 items-center justify-center lg:text-lg space-x-3">
         <div className="">

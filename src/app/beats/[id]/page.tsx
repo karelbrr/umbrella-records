@@ -31,7 +31,7 @@ export async function generateMetadata({
 
 function Page() {
   return (
-    <section className="min-h-screen bg-black pb-32 pt-[5vh]">
+    <section className="min-h-screen bg-black pb-32 pt-[6vh]">
       <BeatDetails />
       <RelatedBeats />
     </section>
