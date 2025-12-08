@@ -4,10 +4,12 @@ import { BeatDetails } from "./beat-details";
 import RelatedBeats from "./related-beats";
 
 export async function generateMetadata({
-  params,
+  params: paramsPromise,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }): Promise<Metadata> {
+  const params = await paramsPromise;
+
   const { data, error } = await supabase
     .from("beats_tracks")
     .select("name,description")
@@ -29,7 +31,7 @@ export async function generateMetadata({
 
 function Page() {
   return (
-    <section className="min-h-screen bg-black pb-32 pt-[5vh]">
+    <section className="min-h-screen bg-black pb-32 pt-[6vh]">
       <BeatDetails />
       <RelatedBeats />
     </section>

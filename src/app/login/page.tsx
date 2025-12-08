@@ -1,6 +1,13 @@
 // import Dither from "@/components/Dither";
 import { LoginForm } from "@/components/LoginForm";
 
+
+export const metadata = {
+  title: "Login | Umbrella Records",
+  description:
+    "Login to Umbrella Records to access your account, manage your beats, and explore exclusive content.",
+};
+
 export default function Page() {
   return (
     <div className="flex min-h-svh flex-col items-center justify-center   relative" style={{ width: "100%", height: "600px" }}>

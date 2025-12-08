@@ -28,6 +28,7 @@ interface AudioListItemType {
   genres: { genre: string }[] | null;
   keys?: { key: string }[] | null;
   profiles?: { username: string }[] | null;
+  created_at: string;
 }
 
 export function AudioList({ beatsFilters, setBeatsFilters }: Props) {
@@ -35,7 +36,7 @@ export function AudioList({ beatsFilters, setBeatsFilters }: Props) {
     const { data, error } = await supabase
       .from("beats_tracks")
       .select(
-        "id,name,bpm,img_url,is_new,producer,genres(genre),keys(key),profiles(username)"
+        "id,name,bpm,img_url,is_new,producer,genres(genre),keys(key),created_at,profiles(username)"
       );
 
     if (error) throw new Error(error.message);
@@ -114,9 +115,10 @@ export function AudioList({ beatsFilters, setBeatsFilters }: Props) {
       } else if (f.sortBy === "bpm-desc") {
         result.sort((a, b) => (b.bpm || 0) - (a.bpm || 0));
       } else if (f.sortBy === "newest") {
-        // use is_new as a proxy for newness
+        // sort by created_at (newest first)
         result.sort(
-          (a, b) => (b.is_new === true ? 1 : 0) - (a.is_new === true ? 1 : 0)
+          (a, b) =>
+            new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
         );
       } else if (f.sortBy === "price-low" || f.sortBy === "price-high") {
         // no price field available — keep original order
