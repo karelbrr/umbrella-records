@@ -93,7 +93,7 @@ export function Navbar() {
           }}
         >
           <div
-            className="flex justify-end h-[10vh] pr-4 items-center "
+            className="flex justify-end h-[13vh] pr-4 items-center "
             aria-label="Close menu"
           >
             <Button variant={"ghost"} onClick={() => setIsMobile(false)}>

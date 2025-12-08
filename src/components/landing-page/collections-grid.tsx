@@ -20,7 +20,7 @@ const collections = [
     icon: Flame,
     href: "/beats?genre=trap",
     spotlightColor:
-      "rgba(255, 80, 50, 0.30)" as `rgba(${number}, ${number}, ${number}, ${number})`,
+      "rgba(255, 255, 255, 0.20)" as `rgba(${number}, ${number}, ${number}, ${number})`,
   },
   // {
   //   id: "lofi",

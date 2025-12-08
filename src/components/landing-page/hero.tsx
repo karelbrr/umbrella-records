@@ -33,7 +33,7 @@ export function Hero({}) {
         <div className="absolute inset-0 flex flex-col items-center justify-center z-10 text-center text-white">
           {" "}
           {/* <Badge variant={"outline"} className="mb-2">demo site - beta v1.0.11</Badge> */}
-          <h1>Umbrella Records</h1>
+          {/* <h1 className="text-[100px] font-semibold opacity-90 font-satoshi ">Umbrella Records</h1> */}
           <h2
             id="hero"
             className="scroll-mt-[2000px] text-xl lg:text-4xl font-medium opacity-90 flex items-center  font-satoshi"

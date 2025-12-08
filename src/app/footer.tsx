@@ -68,7 +68,7 @@ export function Footer() {
         {/* Bottom Bar */}
         <div className="border-t pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-xs text-muted-foreground  tracking-wide">
-            © {currentYear} umbrella records. all rights reserved - beta v1.0.13
+            © {currentYear} umbrella records. all rights reserved - beta v1.0.15
           </p>
           <p className="text-xs text-muted-foreground  tracking-wide">
             designed with precission by KB7

@@ -15,9 +15,14 @@ export function AboutStudio() {
       <h2 className="text-4xl lg:text-7xl font-medium opacity-95 text-center font-satoshi">
         where ideas hit harder.
       </h2>
+      {/* <p className="font-satoshi text-lg text-muted-foreground font-light mt-4">
+        This is where ideas find their rhythm. Explore beats that strike exactly
+        where <br /> your inspiration needs it most — a place where sound
+        becomes pure energy.
+      </p> */}
       <a href="/beats">
         <SpotlightCard
-          className="hover:cursor-pointer mt-6 custom-spotlight-card w-48 m-auto"
+          className="hover:cursor-pointer mt-4 custom-spotlight-card w-48 m-auto"
           spotlightColor="rgba(148, 3, 252, 0.5)"
         >
           <h3 className="text-center font-satoshi opacity-90 lg:text-xl font-light pb-1">
