@@ -1,5 +1,5 @@
 import { AudioSection } from "./audio-section";
-
+import { Suspense } from "react";
 export const metadata = {
   title: "Beats | Umbrella Records",
   description:
@@ -8,13 +8,15 @@ export const metadata = {
 
 export default function Page() {
   return (
-    <section className="container m-auto  pt-[10vh] px-4 bg-black">
+    <section className="container m-auto  pt-[12vh] px-4 bg-black">
       <div className="flex items-center justify-between">
         <h1 className="text-[44px] font-satoshi text-white font-semibold tracking-tight line-clamp-1 font-satoshi">
           beats
         </h1>
       </div>
-      <AudioSection />
+      <Suspense fallback={<div>Loading filters...</div>}>
+        <AudioSection />
+      </Suspense>
     </section>
   );
 }

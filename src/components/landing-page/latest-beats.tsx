@@ -24,7 +24,8 @@ function RecentBeats() {
       .select(
         "id,name,bpm,img_url,is_new,genres(genre),keys(key),profiles(username)"
       )
-      .order("created_at", { ascending: false });
+      .order("created_at", { ascending: false })
+      .limit(3);
 
     if (error) throw new Error(error.message);
 

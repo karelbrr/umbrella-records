@@ -1,7 +1,8 @@
 "use client";
-import { useState } from "react";
 import { AudioList } from "./audio-list";
 import { FiltersBar } from "@/app/beats/filters-bar";
+import { useSearchParams, useRouter, usePathname } from "next/navigation";
+import { useCallback } from "react";
 
 interface BeatsFilters {
   genre?: string;
@@ -11,12 +12,36 @@ interface BeatsFilters {
 }
 
 export function AudioSection() {
-  const [beatsFilters, setBeatsFilters] = useState<BeatsFilters>({
-    genre: undefined,
-    key: undefined,
-    sortBy: undefined,
-    search: "",
-  });
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const beatsFilters: BeatsFilters = {
+    genre: searchParams.get("genre") || undefined,
+    key: searchParams.get("key") || undefined,
+    sortBy: searchParams.get("sortBy") || undefined,
+    search: searchParams.get("search") || "",
+  };
+
+  const setBeatsFilters = useCallback(
+    (update: BeatsFilters | ((prev: BeatsFilters) => BeatsFilters)) => {
+      const params = new URLSearchParams(searchParams.toString());
+
+      const newFilters =
+        typeof update === "function" ? update(beatsFilters) : update;
+
+      Object.entries(newFilters).forEach(([key, value]) => {
+        if (value === undefined || value === null || value === "") {
+          params.delete(key);
+        } else {
+          params.set(key, value);
+        }
+      });
+      router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+    },
+    [searchParams, pathname, router, beatsFilters]
+  );
+
   return (
     <>
       <FiltersBar

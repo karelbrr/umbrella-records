@@ -1,12 +1,12 @@
-"use client"
+"use client";
 import Link from "next/link";
 import { Twitter, Instagram, Mail, Mic } from "lucide-react";
 import { usePathname } from "next/navigation";
+import Image from "next/image";
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
-    const pathname = usePathname();
-  
+  const pathname = usePathname();
 
   const showHeader =
     pathname !== "/login" && !pathname.startsWith("/admin/dashboard");
@@ -17,6 +17,18 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-16 mb-12">
           {/* Studio Info */}
           <div className="space-y-4">
+            {/* <a
+              href="/"
+              className="text-xl mb-1 font-satoshi  opacity-90 text-white"
+            >
+              <Image
+                src={"/logo2.svg"}
+                width={60}
+                height={50}
+                alt="Umbrella records logo"
+                style={{ filter: "invert(1) brightness(2)" }}
+              />
+            </a> */}
             <h3 className="text-white  text-lg tracking-wide">
               umbrela records
             </h3>
@@ -61,7 +73,7 @@ export function Footer() {
           <div className="space-y-4">
             <h3 className="text-white  text-lg tracking-wide">contact</h3>
             <div className="space-y-2 text-sm">
-              <p className=" text-muted-foreground">help@umbrellarecords.com</p>
+              <p className=" text-muted-foreground">help@umbrellarecords.cz</p>
             </div>
           </div>
         </div>
@@ -69,13 +81,15 @@ export function Footer() {
         {/* Bottom Bar */}
         <div className="border-t pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-xs text-muted-foreground  tracking-wide">
-            © {currentYear} umbrella records. all rights reserved.
+            © {currentYear} umbrella records. all rights reserved - beta v1.1.0
           </p>
           <p className="text-xs text-muted-foreground  tracking-wide">
-            designed with precission
+            designed with precission by KB7
           </p>
         </div>
       </div>
     </footer>
-  ) : "";
+  ) : (
+    ""
+  );
 }
