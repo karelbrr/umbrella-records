@@ -24,7 +24,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Input } from "@/components/ui/input";
 import {
   Table,
   TableBody,
@@ -34,80 +33,102 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-export interface Track {
-  id: number;
-  title: string;
-  bpm: string;
-  key: string;
-  length: string;
-  reviewer: string;
-  producer: string;
-  genre: string;
-  description: string;
-}
+import { Input } from "@/components/ui/input";
+import { EditTrackSheet } from "./edit-track-sheet";
+import { AudioListItem } from "@/app/admin/dashboard/tracks/page";
+import { formatDate } from "@/hooks/formatDate";
 
-export const columns: ColumnDef<Track>[] = [
+export const columns: ColumnDef<AudioListItem>[] = [
   {
     id: "select",
+    meta: { className: "w-[2%]" },
     header: ({ table }) => (
-      <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && "indeterminate")
-        }
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-      />
+      <div className="">
+        <Checkbox
+          checked={
+            table.getIsAllPageRowsSelected() ||
+            (table.getIsSomePageRowsSelected() && "indeterminate")
+          }
+          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+          aria-label="Select all"
+        />
+      </div>
     ),
+
     cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-      />
+      <div className="">
+        <Checkbox
+          checked={row.getIsSelected()}
+          onCheckedChange={(value) => row.toggleSelected(!!value)}
+          aria-label="Select row"
+        />
+      </div>
     ),
     enableSorting: false,
     enableHiding: false,
   },
+
   {
-    accessorKey: "title",
+    accessorKey: "name",
     header: "Title",
-    cell: ({ row }) => <div>{row.getValue("title")}</div>,
+    meta: { className: "w-[15%]" },
+
+    cell: ({ row }) => (
+      <div className="truncate font-medium">{row.getValue("name")}</div>
+    ),
+  },
+  {
+    accessorKey: "created_at",
+    meta: { className: "w-[8%]" },
+    header: "Created at",
+    cell: ({ row }) => <div>{formatDate(row.getValue("created_at"))}</div>,
   },
   {
     accessorKey: "bpm",
+    meta: { className: "w-[5%]" },
     header: "BPM",
     cell: ({ row }) => <div>{row.getValue("bpm")}</div>,
   },
   {
     accessorKey: "key",
+    meta: { className: "w-[6%]" },
     header: "Key",
     cell: ({ row }) => <div>{row.getValue("key")}</div>,
   },
   {
     accessorKey: "length",
+    meta: { className: "w-[6%]" },
     header: "Length",
     cell: ({ row }) => <div>{row.getValue("length")}</div>,
   },
-  
-  {
-    accessorKey: "producer",
-    header: "Producer",
-    cell: ({ row }) => <div>{row.getValue("producer")}</div>,
-  },
-  {
-    accessorKey: "genre",
-    header: "Genre",
-    cell: ({ row }) => <div>{row.getValue("genre")}</div>,
-  },
+
   {
     accessorKey: "description",
+    meta: { className: "w-[48%] overflow-auto" },
     header: "Description",
-    cell: ({ row }) => <div>{row.getValue("description")}</div>,
+    cell: ({ row }) => (
+      <div className="overflow-auto" title={row.getValue("description")}>
+        {row.getValue("description")}
+      </div>
+    ),
+  },
+  {
+    id: "actions",
+
+    header: () => <div></div>,
+    meta: { className: "w-[5%]" },
+
+    enableHiding: false,
+
+    cell: ({ row }) => (
+      <div className="flex justify-end">
+        <EditTrackSheet track={row.original} />
+      </div>
+    ),
   },
 ];
 
-export function DataTable({ data }: { data: Track[] }) {
+export function DataTable({ data }: { data: AudioListItem[] }) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -171,58 +192,65 @@ export function DataTable({ data }: { data: Track[] }) {
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      
-        <div className="overflow-hidden rounded-md border">
-          <Table>
-            <TableHeader>
-              {table.getHeaderGroups().map((headerGroup) => (
-                <TableRow key={headerGroup.id}>
-                  {headerGroup.headers.map((header) => {
-                    return (
-                      <TableHead key={header.id}>
-                        {header.isPlaceholder
-                          ? null
-                          : flexRender(
-                              header.column.columnDef.header,
-                              header.getContext()
-                            )}
-                      </TableHead>
-                    );
-                  })}
+
+      <div className="overflow-hidden rounded-md border">
+        <Table className="table-fixed">
+          <TableHeader>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <TableRow key={headerGroup.id}>
+                {headerGroup.headers.map((header) => {
+                  return (
+                    <TableHead
+                      key={header.id}
+                      // Zde přidáme logiku pro načtení třídy z 'meta'
+                      className={
+                        (header.column.columnDef.meta as any)?.className || ""
+                      }
+                    >
+                      {header.isPlaceholder
+                        ? null
+                        : flexRender(
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
+                    </TableHead>
+                  );
+                })}
+              </TableRow>
+            ))}
+          </TableHeader>
+          <TableBody className="table-fixed w-full">
+            {table.getRowModel().rows?.length ? (
+              table.getRowModel().rows.map((row) => (
+                <TableRow
+                  key={row.id}
+                  data-state={row.getIsSelected() && "selected"}
+                  className="relative "
+                >
+                  {row.getVisibleCells().map((cell) => (
+                    <TableCell key={cell.id} className="relative z-10">
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
+                    </TableCell>
+                  ))}
                 </TableRow>
-              ))}
-            </TableHeader>
-            <TableBody>
-              {table.getRowModel().rows?.length ? (
-                table.getRowModel().rows.map((row) => (
-                  <TableRow
-                    key={row.id}
-                    data-state={row.getIsSelected() && "selected"}
-                  >
-                    {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id}>
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext()
-                        )}
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                ))
-              ) : (
-                <TableRow>
-                  <TableCell
-                    colSpan={columns.length}
-                    className="h-24 text-center"
-                  >
-                    No results.
-                  </TableCell>
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </div>
-      
+              ))
+            ) : (
+              <TableRow>
+                <TableCell
+                  colSpan={columns.length}
+                  className="h-24 text-center"
+                >
+                  No results.
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </div>
+
       <div className="flex items-center justify-end space-x-2 py-4">
         <div className="text-muted-foreground flex-1 text-sm">
           {table.getFilteredSelectedRowModel().rows.length} of{" "}
