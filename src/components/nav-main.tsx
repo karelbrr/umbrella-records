@@ -18,6 +18,7 @@ export function NavMain({
     title: string;
     url: string;
     icon?: Icon;
+    isDisabled?: boolean;
   }[];
 }) {
   return (
