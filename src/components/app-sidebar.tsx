@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
 import {
   IconCamera,
   IconChartBar,
@@ -18,12 +18,13 @@ import {
   IconSearch,
   IconSettings,
   IconUsers,
-} from "@tabler/icons-react"
+  IconPlus,
+} from "@tabler/icons-react";
 
-import { NavDocuments } from "@/components/nav-documents"
-import { NavMain } from "@/components/nav-main"
-import { NavSecondary } from "@/components/nav-secondary"
-import { NavUser } from "@/components/nav-user"
+import { NavDocuments } from "@/components/nav-documents";
+import { NavMain } from "@/components/nav-main";
+import { NavSecondary } from "@/components/nav-secondary";
+import { NavUser } from "@/components/nav-user";
 import {
   Sidebar,
   SidebarContent,
@@ -32,7 +33,8 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@/components/ui/sidebar"
+} from "@/components/ui/sidebar";
+import Image from "next/image";
 
 const data = {
   user: {
@@ -45,26 +47,37 @@ const data = {
       title: "Dashboard",
       url: "/admin/dashboard",
       icon: IconDashboard,
+      isDisabled: false,
     },
     {
       title: "Projects",
       url: "/admin/dashboard/projects",
       icon: IconFolder,
+      isDisabled: true,
     },
     {
       title: "Analytics",
       url: "/admin/dashboard/analytics",
       icon: IconChartBar,
+      isDisabled: true,
     },
     {
       title: "Tracks",
       url: "/admin/dashboard/tracks",
       icon: IconMusic,
+      isDisabled: false,
+    },
+    {
+      title: "Add Track",
+      url: "/admin/dashboard/add-track",
+      icon: IconPlus,
+      isDisabled: false,
     },
     {
       title: "Team",
       url: "/admin/dashboard/team",
       icon: IconUsers,
+      isDisabled: true,
     },
   ],
   navClouds: [
@@ -149,7 +162,7 @@ const data = {
       icon: IconFileWord,
     },
   ],
-}
+};
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
@@ -162,8 +175,16 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               className="data-[slot=sidebar-menu-button]:!p-1.5"
             >
               <a href="#">
-                <IconInnerShadowTop className="!size-5" />
-                <span className="text-base font-semibold">Umbrella Records</span>
+                <Image
+                  src="/images/ur-logo.png"
+                  alt="Image"
+                  width={20}
+                  height={200}
+                  className=""
+                />
+                <span className="text-base font-semibold">
+                  Umbrella Records
+                </span>
               </a>
             </SidebarMenuButton>
           </SidebarMenuItem>
@@ -176,5 +197,5 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavUser user={data.user} />
       </SidebarFooter>
     </Sidebar>
-  )
+  );
 }
