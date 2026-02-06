@@ -1,5 +1,5 @@
 "use client";
-import AudioListItem from "@/app/beats/audio-list-item";
+import AudioListItem from "@/app/(public)/beats/audio-list-item";
 import { supabase } from "@/hooks/createClient";
 import FetchError from "@/components/fetch-error";
 import { Skeleton } from "@/components/ui/skeleton";

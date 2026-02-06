@@ -8,17 +8,17 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { usePathname } from "next/navigation";
-import { Button } from "../components/ui/button";
 import { ChevronDown, Menu, X } from "lucide-react";
 import { useState } from "react";
 import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
+import { Button } from "@/components/ui/button";
 export function Navbar() {
   const pathname = usePathname();
   const [isMobile, setIsMobile] = useState<boolean>();
 
   const showHeader =
-    pathname !== "/login" && !pathname.startsWith("/admin/dashboard");
+    pathname !== "/login" ;
   return showHeader ? (
     <header
       className={`flex justify-between lg:justify-normal items-center h-[13vh] opacity-90 lg:container left-1/2 px-4 transform -translate-x-1/2 fixed z-100 w-full ${

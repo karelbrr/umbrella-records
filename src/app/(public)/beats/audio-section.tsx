@@ -1,8 +1,9 @@
 "use client";
 import { AudioList } from "./audio-list";
-import { FiltersBar } from "@/app/beats/filters-bar";
+
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { useCallback } from "react";
+import { FiltersBar } from "./filters-bar";
 
 interface BeatsFilters {
   genre?: string;

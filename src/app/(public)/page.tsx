@@ -1,5 +1,5 @@
 import { CollectionsGrid } from "@/components/landing-page/collections-grid";
-import { Hero } from "../components/landing-page/hero";
+import { Hero } from "../../components/landing-page/hero";
 
 import { AboutStudio } from "@/components/landing-page/about-studio";
 import RecentBeats from "@/components/landing-page/latest-beats";

@@ -1,13 +1,9 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { cn } from "@/lib/utils";
 import localFont from "next/font/local";
-import SmoothScrollProvider from "@/components/SmoothScrollProvider";
 import { ReactQueryProvider } from "./providers";
-import { Navbar } from "./navbar";
-import { Footer } from "./footer";
-import { PlayerProvider } from "@/components/context/player-context";
-import AudioPlayer from "@/components/audio-player";
-
+import { AuthProvider } from "@/components/context/auth-provider";
 
 const satoshi = localFont({
   src: "./Satoshi-Variable.ttf",
@@ -17,17 +13,11 @@ const satoshi = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Umbrella Records",
-  description: "Website for recorcing studio and beat store Umbrella Records",
-  icons: {
-    icon: [
-      { url: "/favicon-96x96.png", type: "image/png", sizes: "96x96" },
-      { url: "/favicon.svg", type: "image/svg+xml" },
-    ],
-    shortcut: "/favicon.ico",
-    apple: "/apple-touch-icon.png",
-    other: [{ rel: "manifest", url: "/site.webmanifest" }],
+  title: {
+    template: "%s | Umrella Records",
+    default: "Umbrella Records",
   },
+  description: "Website for recording studio and beat store Umbrella Records",
 };
 
 export default function RootLayout({
@@ -36,18 +26,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark">
-      <body className={` ${satoshi.variable}  antialiased bg-black`}>
-        <ReactQueryProvider>
-          <SmoothScrollProvider>
-            <PlayerProvider>
-              <Navbar />
-              {children}
-              <AudioPlayer />
-              <Footer />
-            </PlayerProvider>
-          </SmoothScrollProvider>
-        </ReactQueryProvider>
+    <html lang="cs" className="dark">
+      <body className={` ${satoshi.variable}  antialiased`}>
+        <AuthProvider>
+          <ReactQueryProvider>{children}</ReactQueryProvider>
+        </AuthProvider>
       </body>
     </html>
   );

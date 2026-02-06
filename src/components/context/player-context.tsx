@@ -1,5 +1,5 @@
 "use client";
-import { AudioDetails } from "@/app/beats/[id]/beat-details";
+import { AudioDetails } from "@/app/(public)/beats/[id]/beat-details";
 import { createContext, useContext, useState, ReactNode } from "react";
 
 interface PlayerContextType {

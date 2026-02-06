@@ -27,8 +27,8 @@ export function NavMain({
         <SidebarMenu></SidebarMenu>
         <SidebarMenu>
           {items.map((item) => (
-            <SidebarMenuItem key={item.title}>
-              <a href={item.url}>
+            <SidebarMenuItem key={item.title} >
+              <a href={item.url} style={{ pointerEvents: item.isDisabled ? "none" : "auto" }}>
                 <SidebarMenuButton tooltip={item.title} disabled={item.isDisabled}>
                   {item.icon && <item.icon />}
                   <span>{item.title}</span>
