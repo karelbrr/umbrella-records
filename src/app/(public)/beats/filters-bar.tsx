@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/select";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/hooks/createClient";
+import { useSongFormOptions } from "@/hooks/useSongOptions";
 
 interface FiltersBarProps {
   beatsFilters?: {
@@ -23,30 +24,7 @@ interface FiltersBarProps {
 }
 
 export function FiltersBar({ beatsFilters, setBeatsFilters }: FiltersBarProps) {
-  const { data: genres, isLoading: genresLoading } = useQuery<string[], Error>({
-    queryKey: ["genres"],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from("genres")
-        .select("genre")
-        .order("genre", { ascending: true });
-      if (error) throw error;
-      return (data || []).map((r: any) => r.genre as string);
-    },
-  });
-
-  // Fetch keys from Supabase
-  const { data: keys, isLoading: keysLoading } = useQuery<string[], Error>({
-    queryKey: ["keys"],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from("keys")
-        .select("key")
-        .order("key", { ascending: true });
-      if (error) throw error;
-      return (data || []).map((r: any) => r.key as string);
-    },
-  });
+  const { genres, keys, isLoading: areSelectsLoading } = useSongFormOptions();
 
   useEffect(() => {
     console.log(beatsFilters);
@@ -84,13 +62,13 @@ export function FiltersBar({ beatsFilters, setBeatsFilters }: FiltersBarProps) {
             className="h-11 space-x-1 bg-none border-border"
             aria-label="Genre"
           >
-            <SelectValue placeholder={genresLoading ? "Loading..." : "Genre"} />
+            <SelectValue placeholder={areSelectsLoading ? "Loading..." : "Genre"} />
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="none">All Genres</SelectItem>
-            {genres?.map((g: string) => (
-              <SelectItem key={g} value={g}>
-                {g}
+            {genres?.map((g: any) => (
+              <SelectItem key={String(g?.id ?? g)} value={String(g?.name ?? g?.genre ?? g)}>
+                {g?.name ?? g?.genre ?? g}
               </SelectItem>
             ))}
           </SelectContent>
@@ -107,13 +85,13 @@ export function FiltersBar({ beatsFilters, setBeatsFilters }: FiltersBarProps) {
             className="h-11 space-x-1 bg-none border-border"
             aria-label="Key"
           >
-            <SelectValue placeholder={keysLoading ? "Loading..." : "Key"} />
+            <SelectValue placeholder={areSelectsLoading ? "Loading..." : "Key"} />
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="none">All Keys</SelectItem>
-            {keys?.map((k: string) => (
-              <SelectItem key={k} value={k}>
-                {k}
+            {keys?.map((k: any) => (
+              <SelectItem key={String(k?.id ?? k)} value={String(k?.name ?? k?.key ?? k)}>
+                {k?.name ?? k?.key ?? k}
               </SelectItem>
             ))}
           </SelectContent>

@@ -1,7 +1,7 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   let response = NextResponse.next({
     request: {
       headers: request.headers,
@@ -42,8 +42,7 @@ export async function middleware(request: NextRequest) {
 
   if (url.pathname.startsWith("/admin") && !user) {
     url.pathname = "/login";
-    // Volitelné: Můžeme si zapamatovat, kam chtěl jít
-    // url.searchParams.set('next', request.nextUrl.pathname)
+    
     return NextResponse.redirect(url);
   }
 

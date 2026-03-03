@@ -2,7 +2,7 @@ import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import AudioListItem from "./audio-list-item";
 import { Skeleton } from "@/components/ui/skeleton";
-import FetchError from "@/components/fetch-error";
+import FetchError from "@/components/ui/fetch-error";
 import { supabase } from "@/hooks/createClient";
 
 interface Props {

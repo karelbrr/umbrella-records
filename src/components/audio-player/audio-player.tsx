@@ -10,9 +10,9 @@ import {
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { Button } from "./ui/button";
-import { usePlayer } from "./context/player-context";
 import { AnimatePresence, motion } from "framer-motion";
+import { Button } from "../ui/button";
+import { usePlayer } from "../context/player-context";
 function AudioPlayer() {
   const { activeBeat, isPlaying, setIsPlaying, togglePlay } = usePlayer();
 

@@ -1,15 +1,24 @@
-"use client"
-import { Button } from "@/components/ui/button"
-import { Separator } from "@/components/ui/separator"
-import { SidebarTrigger } from "@/components/ui/sidebar"
-import { usePathname } from "next/navigation"
-
+"use client";
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
+import { SidebarTrigger } from "@/components/ui/sidebar";
+import { usePathname } from "next/navigation";
 
 export function SiteHeader() {
-  const pathname = usePathname()
-  const replacePath = pathname === "/admin/dashboard" ? "Overview" : pathname.replace("/admin/dashboard/", "")
-  const capitalizeFirst = (str: string): string =>
-    str.length ? str[0].toUpperCase() + str.slice(1) : "";
+  const pathname = usePathname();
+  const replacePath =
+    pathname === "/admin/dashboard"
+      ? "Overview"
+      : pathname.replace("/admin/dashboard/", "");
+
+  const formatTitle = (str: string): string => {
+    if (!str) return "";
+    const cleaned = str.replace(/[-_/]+/g, " ").trim();
+    return cleaned
+      .split(/\s+/)
+      .map((s) => (s ? s.charAt(0).toUpperCase() + s.slice(1) : ""))
+      .join(" ");
+  };
 
   return (
     <header className="flex h-(--header-height) shrink-0 items-center gap-2 border-b transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-(--header-height)">
@@ -19,11 +28,9 @@ export function SiteHeader() {
           orientation="vertical"
           className="mx-2 data-[orientation=vertical]:h-4"
         />
-        <h1 className="text-base font-medium">{capitalizeFirst(replacePath)}</h1>
-        <div className="ml-auto flex items-center gap-2">
-          
-        </div>
+        <h1 className="text-base font-medium">{formatTitle(replacePath)}</h1>
+        <div className="ml-auto flex items-center gap-2"></div>
       </div>
     </header>
-  )
+  );
 }

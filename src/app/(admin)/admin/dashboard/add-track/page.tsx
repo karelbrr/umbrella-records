@@ -1,7 +1,8 @@
-import { TrackUploadForm } from "@/components/track-upload-form";
+import { TrackUploadForm } from "@/components/track-upload-form/track-upload-form";
 import type { ComponentType } from "react";
 
-const TrackUploadFormComponent = TrackUploadForm as unknown as ComponentType<any>;
+const TrackUploadFormComponent =
+  TrackUploadForm as unknown as ComponentType<any>;
 
 export interface AudioListItem {
   id: string;
@@ -22,12 +23,12 @@ export interface AudioListItem {
 
 export default function UploadTrackPage() {
   return (
-    <div className="px-8 py-4">
+    <div className="lg:px-8 px-4 py-4">
       <div className="mb-8">
-        <h1 className="mt-4 text-3xl font-bold tracking-tight text-foreground">
+        <h1 className="mt-4 text-3xl font-bold lg:text-left text-center tracking-tight text-foreground">
           Upload New Track
         </h1>
-        <p className="mt-1 text-muted-foreground">
+        <p className="mt-1  lg:text-left text-center text-muted-foreground">
           Add a new track to your audio library
         </p>
       </div>

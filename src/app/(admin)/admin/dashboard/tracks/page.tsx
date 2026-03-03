@@ -1,11 +1,6 @@
 "use client";
 
-import { AppSidebar } from "@/components/app-sidebar";
-import { ChartAreaInteractive } from "@/components/chart-area-interactive";
 import { DataTable } from "@/components/data-table";
-import { SectionCards } from "@/components/section-cards";
-import { SiteHeader } from "@/components/site-header";
-import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { supabase } from "@/hooks/createClient";
 import { useQuery } from "@tanstack/react-query";
 
@@ -30,28 +25,29 @@ export default function Page() {
   async function fetchBeats() {
     const { data, error } = await supabase
       .from("beats_tracks")
-      .select("*, genres(genre), keys(key), profiles(username)");
+      .select(
+        `
+      *,
+      genres (id, genre),
+      keys (id, key),
+      profiles (id, username)
+    `,
+      )
+      .order("created_at", { ascending: false });
 
     if (error) throw new Error(error.message);
 
     return (data || []).map((item: any) => {
-      
-      const getValue = (data: any, field: string) => {
-        if (!data) return null;
-        if (Array.isArray(data)) {
-          return data.length > 0 ? data[0][field] : null;
-        }
-        return data[field];
+      const unwrapRelation = (relationData: any) => {
+        if (!relationData) return null;
+        return Array.isArray(relationData) ? relationData[0] : relationData;
       };
 
       return {
         ...item,
-        genre: getValue(item.genres, "genre"),
-        key: getValue(item.keys, "key"),
-        producer: getValue(item.profiles, "username"),
-        genres: undefined,
-        keys: undefined,
-        profiles: undefined,
+        genres: unwrapRelation(item.genres),
+        keys: unwrapRelation(item.keys),
+        profiles: unwrapRelation(item.profiles),
       };
     });
   }
@@ -62,14 +58,18 @@ export default function Page() {
   });
 
   return (
-    
-        <div className="flex flex-1 flex-col">
-          <div className="@container/main flex flex-1 flex-col gap-2">
-            <div className="flex flex-col gap-4 md:gap-6 ">
-              <DataTable data={data || []} />
-            </div>
-          </div>
-        </div>
-      
+    <div className="lg:px-8 px-4 py-4">
+      <div className="mb-8">
+        <h1 className="mt-4 text-3xl font-bold tracking-tight lg:text-left text-center text-foreground">
+          Edit the Track
+        </h1>
+        <p className="mt-1 text-muted-foreground lg:text-left text-center">
+          Manage and edit tracks in your audio library from the admin dashboard
+        </p>
+      </div>
+
+      {/* Form */}
+      <DataTable data={data || []} />
+    </div>
   );
 }

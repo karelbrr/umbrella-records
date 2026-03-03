@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { supabase } from "@/hooks/createClient";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
-import FetchError from "@/components/fetch-error";
+import FetchError from "@/components/ui/fetch-error";
 import { getDaysSinceUpload } from "@/lib/get-beat";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";

@@ -1,7 +1,7 @@
 "use client";
 import AudioListItem from "@/app/(public)/beats/audio-list-item";
 import { supabase } from "@/hooks/createClient";
-import FetchError from "@/components/fetch-error";
+import FetchError from "@/components/ui/fetch-error";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
