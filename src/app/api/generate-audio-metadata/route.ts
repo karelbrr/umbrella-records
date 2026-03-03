@@ -9,6 +9,8 @@ const google = createGoogleGenerativeAI({
 });
 
 export async function POST(req: Request) {
+
+  console.log("DEBUG: Délka klíče je:", process.env.GOOGLE_GENERATIVE_AI_API_KEY?.length || "0 (CHYBÍ!)");
   try {
     const { audioUrl } = await req.json();
 
