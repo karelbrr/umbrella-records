@@ -43,7 +43,7 @@ export function LoginForm({
     const result = await login(data.email, data.password);
 
     if (result.error) {
-      setSubmitError("Nesprávný email nebo heslo.");
+      setSubmitError("Incorrect email or password. ");
       console.log("Login error:", result.error);
       setIsLoading(false);
     }
