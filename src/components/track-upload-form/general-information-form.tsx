@@ -14,6 +14,7 @@ import { useSongFormOptions } from "@/hooks/useSongOptions";
 import { Switch } from "../ui/switch";
 import { toast } from "sonner";
 import { uploadFileToSupabase } from "@/hooks/upload";
+import { Badge } from "../ui/badge";
 
 export function GeneralInformationForm({
   errors,
@@ -104,7 +105,6 @@ export function GeneralInformationForm({
       setValue("is_desc_ai", false);
     } finally {
       setIsGenerating(false);
-      
     }
   };
 
@@ -267,7 +267,8 @@ export function GeneralInformationForm({
               htmlFor="is_desc_ai"
               className={`cursor-pointer ${!isUploaded && "text-muted-foreground"}`}
             >
-              {!isUploaded && "Upload an audio file to use "}AI Generation
+              {!isUploaded && "Upload a beat to use "}AI Generation{" "}
+              <Badge variant="outline" className={`bg-purple-700/30 ${isUploaded ? "opacity-100" : "opacity-80"}`}>Beta</Badge>
             </Label>
             <p
               className={`text-sm text-muted-foreground ${!isUploaded && "opacity-50"}`}
