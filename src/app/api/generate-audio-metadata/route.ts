@@ -1,16 +1,13 @@
-
 import { generateObject } from "ai";
 import { z } from "zod";
 
-import { createGoogleGenerativeAI } from '@ai-sdk/google';
-
-const google = createGoogleGenerativeAI({
-  apiKey: process.env.GOOGLE_GENERATIVE_AI_API_KEY, 
-});
+import { createGoogleGenerativeAI } from "@ai-sdk/google";
 
 export async function POST(req: Request) {
+  const google = createGoogleGenerativeAI({
+    apiKey: process.env.GOOGLE_GENERATIVE_AI_API_KEY,
+  });
 
-  console.log("DEBUG: Délka klíče je:", process.env.GOOGLE_GENERATIVE_AI_API_KEY?.length || "0 (CHYBÍ!)");
   try {
     const { audioUrl } = await req.json();
 
