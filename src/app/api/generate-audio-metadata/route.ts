@@ -1,6 +1,12 @@
-import { google } from "@ai-sdk/google";
+
 import { generateObject } from "ai";
 import { z } from "zod";
+
+import { createGoogleGenerativeAI } from '@ai-sdk/google';
+
+const google = createGoogleGenerativeAI({
+  apiKey: process.env.GOOGLE_GENERATIVE_AI_API_KEY, 
+});
 
 export async function POST(req: Request) {
   try {
