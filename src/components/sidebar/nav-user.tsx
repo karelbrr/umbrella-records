@@ -50,7 +50,7 @@ interface Profile {
 export function NavUser({}: {}) {
   const { signOut, user } = useAuth();
 
-  async function fetchBeats<Profile>() {
+  async function fetchUser<Profile>() {
     const { data, error } = await supabase
       .from("profiles")
       .select("*")
@@ -64,7 +64,7 @@ export function NavUser({}: {}) {
 
   const { data, error, isLoading } = useQuery<Profile>({
     queryKey: ["userDetailsForDashboard", user?.id],
-    queryFn: fetchBeats,
+    queryFn: fetchUser,
   });
 
   const { isMobile } = useSidebar();
