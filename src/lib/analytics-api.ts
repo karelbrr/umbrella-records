@@ -141,21 +141,21 @@ export function useTopBeatsPlays() {
   });
 }
 
-// 6. Hook for Top Traffics Sources (Product Sources)
-// export function useTrafficSources() {
-//   return useQuery({
-//     queryKey: ["analytics", "traffic-sources"],
-//     queryFn: async () => {
-//       const { data, error } = await supabase.from("events").select(
-//         `
-//           jsonb_metadata
-//         `,
-//       );
+//6. Hook for Top Traffics Sources (Product Sources)
+export function useTrafficSources() {
+  return useQuery({
+    queryKey: ["analytics", "traffic-sources"],
+    queryFn: async () => {
+      const { data, error } = await supabase.from("events").select(
+        `
+          jsonb_metadata
+        `,
+      );
 
-//       if (error) throw error;
+      if (error) throw error;
 
-//       return data;
-//     },
-//     staleTime: 1000 * 60 * 5,
-//   });
-// }
+      return data;
+    },
+    staleTime: 1000 * 60 * 5,
+  });
+}

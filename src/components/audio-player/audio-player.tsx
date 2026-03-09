@@ -13,7 +13,7 @@ import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 import { Button } from "../ui/button";
 import { usePlayer } from "../context/player-context";
-import { useTrackEvent } from "@/hooks/trackEvent";
+import { useTrackEvent } from "@/hooks/track-event";
 function AudioPlayer() {
   const { activeBeat, isPlaying, setIsPlaying, togglePlay } = usePlayer();
 

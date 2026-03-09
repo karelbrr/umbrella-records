@@ -1,5 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import { supabase } from "./create-client";
+import { getStoredUTMs } from "./get-utm-params";
 
 interface TrackEventParams {
   eventType: "page_view" | "beat_view" | "beat_play";
@@ -8,6 +9,7 @@ interface TrackEventParams {
 }
 
 export function useTrackEvent() {
+  const utms = getStoredUTMs();
   return useMutation({
     mutationFn: async ({
       eventType,
@@ -19,6 +21,7 @@ export function useTrackEvent() {
         referrer: document.referrer,
         browser: navigator.userAgent,
         screen_resolution: `${window.screen.width}x${window.screen.height}`,
+        ...utms,
         ...extraMetadata,
       };
       const { error } = await supabase.from("events").insert({

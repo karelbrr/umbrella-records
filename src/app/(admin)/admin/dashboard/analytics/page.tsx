@@ -56,13 +56,13 @@ export default function Page() {
                 <TrafficChart />
               </section>
 
-              {/* Bottom Row: Bar Chart + Referrer Chart */}
+              {/* Bottom Row: Bar Chart + Referrer */}
               <section
                 aria-label="Details"
                 className="grid gap-6 lg:grid-cols-2"
               >
                 <TopBeatsChart />
-                {/* <ReferrerChart /> */}
+                <ReferrerChart />
               </section>
             </TabsContent>
             <TabsContent value="ai-analytics">

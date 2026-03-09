@@ -1,6 +1,5 @@
 "use client";
-
-import { useTrackEvent } from "@/hooks/trackEvent";
+import { useTrackEvent } from "@/hooks/track-event";
 import { useEffect } from "react";
 
 export function PageTracker({
@@ -14,6 +13,8 @@ export function PageTracker({
 
   useEffect(() => {
     mutate({ eventType, beatId });
+    console.log(`Tracked event: ${eventType}${beatId ? ` for beat ID: ${beatId}` : ""}`); 
+    
   }, [mutate, eventType, beatId]);
 
   return null; 
