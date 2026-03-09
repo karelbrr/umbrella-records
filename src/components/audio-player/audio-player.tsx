@@ -13,6 +13,7 @@ import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 import { Button } from "../ui/button";
 import { usePlayer } from "../context/player-context";
+import { useTrackEvent } from "@/hooks/track-event";
 function AudioPlayer() {
   const { activeBeat, isPlaying, setIsPlaying, togglePlay } = usePlayer();
 
@@ -26,6 +27,8 @@ function AudioPlayer() {
   const desktopProgressRef = useRef<HTMLDivElement | null>(null);
   const mobileCollapsedProgressRef = useRef<HTMLDivElement | null>(null);
   const mobileFullscreenProgressRef = useRef<HTMLDivElement | null>(null);
+  const { mutate: trackEvent } = useTrackEvent();
+  const lastTrackedBeatId = useRef<string | null>(null);
 
   const formatTime = (secs: number) => {
     if (!secs || isNaN(secs) || !isFinite(secs)) return "0:00";
@@ -74,23 +77,33 @@ function AudioPlayer() {
     };
   }, [activeBeat, togglePlay]);
 
-  // Main use effect to control the audio
   useEffect(() => {
     const audio = audioRef.current;
-    if (!audio) return;
+    if (!audio || !activeBeat) return;
 
     if (isPlaying) {
       const playPromise = audio.play();
       if (playPromise !== undefined) {
-        playPromise.catch((error) => {
-          console.error("Playback prevented:", error);
-          setIsPlaying(false);
-        });
+        playPromise
+          .then(() => {
+            if (lastTrackedBeatId.current !== activeBeat.id) {
+              trackEvent({
+                eventType: "beat_play",
+                beatId: activeBeat.id,
+                extraMetadata: { source: "player_main" },
+              });
+              lastTrackedBeatId.current = activeBeat.id;
+            }
+          })
+          .catch((error) => {
+            console.error("Playback prevented:", error);
+            setIsPlaying(false);
+          });
       }
     } else {
       audio.pause();
     }
-  }, [isPlaying, activeBeat, setIsPlaying]);
+  }, [isPlaying, activeBeat, setIsPlaying, trackEvent]);
 
   useEffect(() => {
     if (activeBeat) {
@@ -148,7 +161,7 @@ function AudioPlayer() {
 
   const onPointerDown = (
     e: React.PointerEvent<HTMLDivElement>,
-    bar: HTMLDivElement | null
+    bar: HTMLDivElement | null,
   ) => {
     if (!bar) return;
     e.currentTarget.setPointerCapture(e.pointerId);

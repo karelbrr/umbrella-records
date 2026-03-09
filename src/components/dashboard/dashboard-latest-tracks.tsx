@@ -3,8 +3,8 @@ import { Badge } from "@/components/ui/badge";
 import { Clock, Activity, Music2 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { formatDate } from "@/hooks/formatDate";
-import { supabase } from "@/hooks/createClient";
+import { formatDate } from "@/hooks/format-date";
+import { supabase } from "@/hooks/create-client";
 import { useQuery } from "@tanstack/react-query";
 
 export function DashboardLatestTracks() {

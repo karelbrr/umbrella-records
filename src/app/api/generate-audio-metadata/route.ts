@@ -9,7 +9,12 @@ export async function POST(req: Request) {
   });
 
   try {
-    const { audioUrl } = await req.json();
+    const { audioUrl, allowedGenres } = await req.json();
+
+    const genreEnum =
+      allowedGenres?.length > 0
+        ? z.enum(allowedGenres as [string, ...string[]])
+        : z.string();
 
     if (!audioUrl) {
       return Response.json(
@@ -36,7 +41,7 @@ export async function POST(req: Request) {
           .describe("Name of the track. max 5 words, no special characters."),
         bpm: z.number().describe("BPM (tempo) of the track."),
         key: z.string().describe("Musical key (e.g., C minor, G# Major)."),
-        genre: z.enum(["trap", "synthwave", "edm"]),
+        genre: genreEnum,
         description: z
           .string()
           .describe(

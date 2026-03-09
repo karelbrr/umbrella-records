@@ -1,9 +1,9 @@
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
-import AudioListItem from "./audio-list-item";
 import { Skeleton } from "@/components/ui/skeleton";
 import FetchError from "@/components/ui/fetch-error";
-import { supabase } from "@/hooks/createClient";
+import { supabase } from "@/hooks/create-client";
+import AudioListItem from "./audio-list-item";
 
 interface Props {
   beatsFilters?: {
@@ -11,7 +11,6 @@ interface Props {
     key?: string;
     sortBy?: string;
     keys?: { key: string }[] | null;
-
     search?: string;
   };
   setBeatsFilters?: (value: any) => void;

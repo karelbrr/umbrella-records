@@ -3,9 +3,9 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton"; 
-import { supabase } from "@/hooks/createClient";
 import { useQuery } from "@tanstack/react-query";
 import FetchError from "../ui/fetch-error";
+import { supabase } from "@/hooks/create-client";
 
 interface Profile {
   id: string;

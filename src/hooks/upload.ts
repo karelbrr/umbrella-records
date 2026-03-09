@@ -1,4 +1,4 @@
-import { supabase } from "./createClient";
+import { supabase } from "./create-client";
 
 
 export const uploadFileToSupabase = async (file: File, bucket: string) => {

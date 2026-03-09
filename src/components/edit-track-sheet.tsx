@@ -9,12 +9,12 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { formatDate } from "@/hooks/formatDate";
+import { formatDate } from "@/hooks/format-date";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { supabase } from "@/hooks/createClient";
+import { supabase } from "@/hooks/create-client";
 import { useState, useRef, useEffect } from "react";
 import {
   Select,
@@ -24,7 +24,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useForm, Controller } from "react-hook-form";
-import { useSongFormOptions } from "@/hooks/useSongOptions";
+import { useSongFormOptions } from "@/hooks/use-song-options";
 import Image from "next/image";
 import { uploadFileToSupabase } from "@/hooks/upload";
 import {
@@ -427,7 +427,11 @@ export function EditTrackSheet({ track }: EditTrackSheetProps) {
               <div className="flex items-start gap-6 p-3 rounded-lg border ">
                 <div className="relative shrink-0 overflow-hidden rounded-md border bg-muted shadow-sm">
                   <Image
-                    src={imagePreview || track.img_url || "/missing-image.png"}
+                    src={
+                      imagePreview ||
+                      track.img_url ||
+                      "/images/missing-image.png"
+                    }
                     alt="cover img"
                     className="aspect-square object-cover transition-all "
                     width={120}

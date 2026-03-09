@@ -2,7 +2,7 @@
 import { Session, User } from "@supabase/supabase-js";
 import { useContext, useState, useEffect, createContext } from "react";
 import { useRouter } from "next/navigation";
-import { supabase } from "@/hooks/createClient";
+import { supabase } from "@/hooks/create-client";
 
 type AuthContextType = {
   session: Session | null | undefined;

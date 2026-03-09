@@ -1,4 +1,5 @@
-import { AudioSection } from "./audio-section";
+import { PageTracker } from "@/components/analytics/page-tracker";
+import { AudioSection } from "../../../components/audio-list/audio-section";
 import { Suspense } from "react";
 export const metadata = {
   title: "Beats | Umbrella Records",
@@ -9,6 +10,7 @@ export const metadata = {
 export default function Page() {
   return (
     <section className="container m-auto  pt-[12vh] px-4 bg-black">
+      <PageTracker />
       <div className="flex items-center justify-between">
         <h1 className="text-[44px] font-satoshi text-white font-semibold tracking-tight line-clamp-1 font-satoshi">
           beats
