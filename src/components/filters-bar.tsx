@@ -10,8 +10,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/hooks/createClient";
-import { useSongFormOptions } from "@/hooks/useSongOptions";
+import { supabase } from "@/hooks/create-client";
+import { useSongFormOptions } from "@/hooks/use-song-options";
 
 interface FiltersBarProps {
   beatsFilters?: {

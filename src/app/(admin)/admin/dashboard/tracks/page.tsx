@@ -1,7 +1,7 @@
 "use client";
 
 import { DataTable } from "@/components/data-table";
-import { supabase } from "@/hooks/createClient";
+import { supabase } from "@/hooks/create-client";
 import { useQuery } from "@tanstack/react-query";
 
 export interface AudioListItem {

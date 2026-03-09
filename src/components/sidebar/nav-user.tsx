@@ -36,7 +36,7 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import { useAuth } from "../context/auth-provider";
-import { supabase } from "@/hooks/createClient";
+import { supabase } from "@/hooks/create-client";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 

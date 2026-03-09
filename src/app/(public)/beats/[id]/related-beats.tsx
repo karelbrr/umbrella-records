@@ -1,9 +1,9 @@
 "use client";
-import { supabase } from "@/hooks/createClient";
+import { supabase } from "@/hooks/create-client";
 import FetchError from "@/components/ui/fetch-error";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useQuery } from "@tanstack/react-query";
-import AudioListItem from "../audio-list-item";
+import AudioListItem from "../../../../components/audio-list/audio-list-item";
 import { useParams } from "next/navigation";
 
 interface AudioListItemType {

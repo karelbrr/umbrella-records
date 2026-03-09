@@ -10,11 +10,12 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Controller } from "react-hook-form";
-import { useSongFormOptions } from "@/hooks/useSongOptions";
+import { useSongFormOptions } from "@/hooks/use-song-options";
 import { Switch } from "../ui/switch";
 import { toast } from "sonner";
 import { uploadFileToSupabase } from "@/hooks/upload";
 import { Badge } from "../ui/badge";
+import { Sparkles } from "lucide-react";
 
 export function GeneralInformationForm({
   errors,
@@ -55,10 +56,15 @@ export function GeneralInformationForm({
       const uploadedAudioUrl = await uploadFileToSupabase(audioFile, "tracks");
       setValue("media_url", uploadedAudioUrl, { shouldValidate: true });
 
+      const genreNames = genres.map((g) => g.name);
+
       const response = await fetch("/api/generate-audio-metadata", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ audioUrl: uploadedAudioUrl }),
+        body: JSON.stringify({
+          audioUrl: uploadedAudioUrl,
+          allowedGenres: genreNames,
+        }),
       });
 
       const data = await response.json();
@@ -68,14 +74,20 @@ export function GeneralInformationForm({
       }
       const { name, bpm, key, genre, description } = data.aiMetadata;
 
-      const matchedGenre = genres.find(
-        (g) => g.name.toLowerCase() === genre.toLowerCase(),
-      );
-      if (matchedGenre)
+      const matchedGenre = genres.find((g) => {
+        const dbName = g.name.toLowerCase().replace(/[^a-z0-9]/g, "");
+        const aiName = genre.toLowerCase().replace(/[^a-z0-9]/g, "");
+        return dbName === aiName;
+      });
+
+      if (matchedGenre) {
         setValue("genre", String(matchedGenre.id), {
           shouldValidate: true,
           shouldDirty: true,
         });
+      } else {
+        console.warn("AI returned genre not found in DB:", genre);
+      }
 
       const matchedKey = keys.find(
         (k) => k.name.toLowerCase() === key.toLowerCase(),
@@ -268,7 +280,12 @@ export function GeneralInformationForm({
               className={`cursor-pointer ${!isUploaded && "text-muted-foreground"}`}
             >
               {!isUploaded && "Upload a beat to use "}AI Generation{" "}
-              <Badge variant="outline" className={`bg-purple-700/30 ${isUploaded ? "opacity-100" : "opacity-80"}`}>Beta</Badge>
+              <Badge
+                variant="outline"
+                className={`border-purple-500 text-purple-400 ${!isUploaded && "opacity-50"}`}
+              >
+                <Sparkles className="mr-0.5 h-3 w-3" /> Beta
+              </Badge>
             </Label>
             <p
               className={`text-sm text-muted-foreground ${!isUploaded && "opacity-50"}`}

@@ -1,7 +1,7 @@
 // Metadata mohou být i zde, pokud jsou specifická pro veřejnou část
 import SmoothScrollProvider from "@/components/context/smooth-scroll-provider";
-import { Navbar } from "./navbar";
-import { Footer } from "./footer";
+import { Navbar } from "../../components/navbar";
+import { Footer } from "../../components/footer";
 import { PlayerProvider } from "@/components/context/player-context";
 import AudioPlayer from "@/components/audio-player/audio-player";
 

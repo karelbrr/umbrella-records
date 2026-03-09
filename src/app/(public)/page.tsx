@@ -3,6 +3,7 @@ import { Hero } from "../../components/landing-page/hero";
 
 import { AboutStudio } from "@/components/landing-page/about-studio";
 import RecentBeats from "@/components/landing-page/latest-beats";
+import { PageTracker } from "@/components/analytics/page-tracker";
 
 export const metadata = {
   title: "Umbrella Records",
@@ -13,6 +14,7 @@ export const metadata = {
 export default function Home() {
   return (
     <section>
+      <PageTracker />
       <Hero />
       <hr />
       <AboutStudio />

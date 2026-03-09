@@ -1,12 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
-import { useSortedKeys } from "./useSortedKeys"; // Importujeme tvůj hook
-import { supabase } from "./createClient";
+import { useSortedKeys } from "./use-sorted-keys";
+import { supabase } from "./create-client";
 
 export type SelectItem = {
   id: number;
   name: string;
 };
-
 
 export const useSongFormOptions = () => {
   const { data: genresData, isLoading: genresLoading } = useQuery<SelectItem[]>({
@@ -34,11 +33,8 @@ export const useSongFormOptions = () => {
     staleTime: Infinity,
   });
 
-
   const genresToUse = genresData && genresData.length > 0 ? genresData : [];
   const keysToUse = keysData && keysData.length > 0 ? keysData : [];
-
-
   const sortedKeys = useSortedKeys(keysToUse);
 
   return {

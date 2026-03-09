@@ -16,7 +16,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { supabase } from "@/hooks/createClient";
+import { supabase } from "@/hooks/create-client";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "../context/auth-provider";
 import { uploadFileToSupabase } from "@/hooks/upload";

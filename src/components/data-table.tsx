@@ -31,10 +31,10 @@ import {
 } from "@/components/ui/table";
 import { Input } from "@/components/ui/input";
 import { EditTrackSheet } from "./edit-track-sheet";
-import { formatDate } from "@/hooks/formatDate";
+import { formatDate } from "@/hooks/format-date";
 import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { supabase } from "@/hooks/createClient";
+import { supabase } from "@/hooks/create-client";
 import { toast } from "sonner";
 import {
   AlertDialog,
