@@ -77,7 +77,7 @@ const data = {
       title: "Team",
       url: "/admin/dashboard/team",
       icon: IconUsers,
-      isDisabled: true,
+      isDisabled: false,
     },
   ],
   navClouds: [
@@ -165,7 +165,9 @@ const data = {
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  const NavUserComponent = NavUser as React.ComponentType<{ user: typeof data.user }>;
+  const NavUserComponent = NavUser as React.ComponentType<{
+    user: typeof data.user;
+  }>;
 
   return (
     <Sidebar collapsible="offcanvas" {...props}>
