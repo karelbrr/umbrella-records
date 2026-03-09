@@ -1,1 +1,1 @@
-Current Version - **beta v1.0.1**
+Current Version - **beta v2.1.0**
