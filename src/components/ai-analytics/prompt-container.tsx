@@ -3,7 +3,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Send, BarChart3, TrendingUp, Users } from "lucide-react";
 
-export function DesignInput({ setIsGenerating }: { setIsGenerating: any }) {
+export function PromptContainer({ setIsGenerating }: { setIsGenerating: any }) {
   const suggestions = [
     { label: "Top listened beat", icon: <TrendingUp className="w-3 h-3" /> },
     { label: "Audience from Instagram", icon: <Users className="w-3 h-3" /> },
@@ -25,16 +25,15 @@ export function DesignInput({ setIsGenerating }: { setIsGenerating: any }) {
         xGap={12}
         yGap={36}
       />
-      <div className="z-10 w-full max-w-2xl flex flex-col items-center gap-8">
+      <div className="z-10 w-full max-w-2xl flex flex-col items-center gap-5">
         <div className="space-y-2">
           <h2 className="text-2xl font-semibold tracking-tight text-white flex items-center justify-center gap-2">
-            Ai Visual Analytics
+            Ai Analytics
           </h2>
           <p className="text-zinc-500 text-center text-sm">
             Type your query and I'll generate{" "}
             <span className="font-bold">dynamic charts, graphs,</span> and
             <span className="font-bold"> visual reports</span> from your music
-            data on the fly.{" "}
           </p>
         </div>
 
@@ -67,7 +66,7 @@ export function DesignInput({ setIsGenerating }: { setIsGenerating: any }) {
           </div>
         </div>
 
-        <div className="flex items-center gap-2 mt-4 bg-black rounded-md p-3 ">
+        <div className="flex items-center gap-2 mt-1 bg-black rounded-md p-3 ">
           <div className="opacity-60 flex items-center gap-2">
             <span className="text-[12px] text-zinc-500 font-medium">
               Powered by
