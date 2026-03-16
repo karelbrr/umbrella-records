@@ -1,5 +1,6 @@
 import Dither from "@/components/backgrounds/Dither";
 import { LoginForm } from "@/components/login-form";
+import Image from "next/image";
 
 export const metadata = {
   title: "Login | Umbrella Records Admin",
@@ -8,32 +9,36 @@ export const metadata = {
 
 export default function Page() {
   return (
-    <div
-      className="flex min-h-svh flex-col items-center justify-center   relative"
-      style={{ width: "100%", height: "600px" }}
-    >
-      <div
-        style={{
-          position: "absolute",
-          inset: 0,
-          width: "100%",
-          height: "100%",
-          zIndex: 0,
-        }}
-      >
+    <div className="grid min-h-svh lg:grid-cols-2">
+      <div className="flex flex-col gap-4 p-6 md:p-10">
+        <div className="flex justify-center gap-2 md:justify-start">
+          <a href="/" className="flex items-center gap-2 font-medium">
+            <Image
+              src="/images/ur-logo.png"
+              alt="Umbrella Records Logo"
+              width={60}
+              height={60}
+              className="object-contain"
+              priority
+            />
+          </a>
+        </div>
+        <div className="flex flex-1 items-center justify-center">
+          <div className="w-full max-w-md">
+            <LoginForm />
+          </div>
+        </div>
+      </div>
+      <div className="relative hidden bg-muted lg:block ">
         <Dither
           waveColor={[0.5, 0.5, 0.5]}
           disableAnimation={false}
-          enableMouseInteraction={false}
-          mouseRadius={0.3}
+          mouseRadius={0}
           colorNum={4}
           waveAmplitude={0.3}
           waveFrequency={3}
-          waveSpeed={0.03}
+          waveSpeed={0.02}
         />
-      </div>
-      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-sm md:max-w-3xl z-10">
-        <LoginForm />
       </div>
     </div>
   );
