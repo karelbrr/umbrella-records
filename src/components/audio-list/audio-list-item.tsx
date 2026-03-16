@@ -31,7 +31,7 @@ export default function AudioListItem({
     <motion.a
       initial={{ opacity: 0, y: 50 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: height ? 0.5 : 0.1 }}
+      viewport={{ once: true, amount: 0.1 }}
       transition={{
         duration: 0.4,
         ease: "easeOut",
@@ -46,8 +46,10 @@ export default function AudioListItem({
           <Image
             src={cover || "/images/missing-image.png"}
             alt={name || "Beat Cover"}
-            width={height ? 400 : 500}
-            height={height ? 400 : 500}
+            fill
+            sizes="(max-width: 640px) 100vw,
+         (max-width: 1024px) 50vw,
+         25vw"
             className="object-cover transition-transform duration-500 group-hover:scale-105"
           />
 

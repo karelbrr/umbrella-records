@@ -133,7 +133,7 @@ export function AudioList({ beatsFilters, setBeatsFilters }: Props) {
 
   return (
     <div
-      className={`grid gap-x-7 mt-5 min-h-[83vh] grid-cols-1 gap-y-10 mb-10 lg:mb-0 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5`}
+      className={`grid gap-x-7 mt-5 pb-5 min-h-[83vh] grid-cols-1 gap-y-10 mb-10 lg:mb-0 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5`}
     >
       {isLoading || error
         ? Array.from({ length: skeletonCount }).map((_, i) => (

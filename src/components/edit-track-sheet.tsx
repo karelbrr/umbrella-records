@@ -122,12 +122,37 @@ export function EditTrackSheet({ track }: EditTrackSheetProps) {
     }
   };
 
+  const removeImageFromSupabase = async (imageUrl: string) => {
+    if (imageUrl) {
+      try {
+        const urlParts = imageUrl.split("/images/");
+        const filePath = urlParts[urlParts.length - 1];
+        if (filePath) {
+          const { error } = await supabase.storage
+            .from("images")
+            .remove([filePath]);
+
+          if (error) {
+            console.error(
+              "Error removing image from Supabase Storage:",
+              error.message,
+            );
+          }
+        }
+      } catch (err) {
+        console.error("Failed to parse URL for file deletion:", err);
+      }
+    }
+  }
+
   const queryClient = useQueryClient();
   const updateTrackMutation = useMutation({
     mutationFn: async (values: FormValues) => {
       let finalImgUrl = track.img_url;
 
+
       if (newImageFile) {
+        removeImageFromSupabase(finalImgUrl)
         finalImgUrl = await uploadFileToSupabase(newImageFile, "images");
       }
 

@@ -138,7 +138,7 @@ export function TrackUploadForm() {
       setIsUploaded(true);
       URL.revokeObjectURL(objectUrl);
     };
-    audio.onerror = () => {};
+    audio.onerror = () => { };
   };
 
   const handleRemoveFile = async (e: React.MouseEvent) => {
@@ -215,10 +215,9 @@ export function TrackUploadForm() {
       let finalMediaUrl = formData.media_url;
       let finalImgUrl = formData.img_url;
 
-      if (audioFile) {
+      if (audioFile && !formData.media_url) {
         finalMediaUrl = await uploadFileToSupabase(audioFile, "tracks");
       }
-
       if (coverFile) {
         finalImgUrl = await uploadFileToSupabase(coverFile, "images");
       }
@@ -273,9 +272,8 @@ export function TrackUploadForm() {
         </div>
       )}
       <div
-        className={`grid gap-6 lg:grid-cols-3 ${
-          isUploading || isGenerating ? "pointer-events-none opacity-50 blur-xs" : ""
-        }`}
+        className={`grid gap-6 lg:grid-cols-3 ${isUploading || isGenerating ? "pointer-events-none opacity-50 blur-xs" : ""
+          }`}
       >
         {/* Left Column - Track Details */}
         <GeneralInformationForm

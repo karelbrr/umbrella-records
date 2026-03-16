@@ -1,8 +1,8 @@
 import { DashboardLatestTracks } from "@/components/dashboard/dashboard-latest-tracks";
 
 export const metadata = {
-  title: "Overview | Umbrella Records Admin",
-  description: "Overview admin page",
+  title: "Dashboard | Umbrella Records Admin",
+  description: "Dashboard admin page",
 };
 
 export default function AdminDashboardPage() {

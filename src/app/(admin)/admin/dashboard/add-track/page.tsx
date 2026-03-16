@@ -1,6 +1,13 @@
 import { TrackUploadForm } from "@/components/track-upload-form/track-upload-form";
 import type { ComponentType } from "react";
 
+
+export const metadata = {
+  title: "Upload new track | Umbrella Records Admin",
+  description: "Upload new track admin page",
+};
+
+
 const TrackUploadFormComponent =
   TrackUploadForm as unknown as ComponentType<any>;
 

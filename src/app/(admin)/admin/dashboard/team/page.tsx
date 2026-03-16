@@ -1,5 +1,11 @@
 import { TeamList } from "@/components/team/team-list";
 
+export const metadata = {
+  title: "Team | Umbrella Records Admin",
+  description: "Team admin page",
+};
+
+
 export default function Page() {
   return (
     <div className="lg:px-8 px-4 py-6 space-y-10">
