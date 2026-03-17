@@ -36,6 +36,11 @@ export interface AudioDetails {
   is_new: boolean | null;
   genres: { genre: string } | null;
   keys: { key: string } | null;
+  beat_tags: {
+    tags: {
+      tag_title: string;
+    };
+  }[];
 }
 
 export function BeatDetails() {
@@ -43,9 +48,23 @@ export function BeatDetails() {
   async function fetchBeats() {
     const { data, error } = await supabase
       .from("beats_tracks")
-      .select("*,genres(genre),keys(key),profiles(username)")
+      .select(
+        `
+      *,
+      genres(genre),
+      keys(key),
+      profiles(username),
+      beat_tags (
+        tags (
+          tag_title
+        )
+      )
+    `,
+      )
       .eq("id", id)
       .single();
+
+    console.log("Fetched beat details:", data, "Error:", error);
     if (error) {
       throw new Error(error.message);
     }
@@ -140,36 +159,36 @@ export function BeatDetails() {
 
             {/* Beat Specs Grid */}
             <div className="grid grid-cols-2 font-satoshi gap-4 pt-4">
-              <div className="space-y-2 p-4 bg-card/30 border border-border">
+              <div className="space-y-2 p-4 bg-black border border-border">
                 <div className="text-sm text-muted-foreground ">BPM</div>
                 {isLoading || error ? (
-                  <Skeleton className="w-[80px] h-8 mt-3 " />
+                  <Skeleton className="w-[80px] h-7 mt-3 " />
                 ) : (
                   <div className="text-3xl font-bold ">{data?.bpm}</div>
                 )}
               </div>
-              <div className="space-y-2 p-4 bg-card/30 border border-border">
+              <div className="space-y-2 p-4 bg-black border border-border">
                 <div className="text-sm text-muted-foreground ">KEY</div>
                 {isLoading || error ? (
-                  <Skeleton className="w-[80px] h-8 mt-3 " />
+                  <Skeleton className="w-[80px] h-7 mt-3 " />
                 ) : (
                   <div className="text-3xl font-bold">{data?.keys?.key}</div>
                 )}
               </div>
-              <div className="space-y-2 p-4 bg-card/30 border border-border">
+              <div className="space-y-2 p-4 bg-black border border-border">
                 <div className="text-sm text-muted-foreground ">GENRE</div>
                 {isLoading || error ? (
-                  <Skeleton className="w-[80px] h-8 mt-3 " />
+                  <Skeleton className="w-[80px] h-7 mt-3 " />
                 ) : (
                   <div className="text-xl font-bold">
                     {data?.genres?.genre || "unknown"}
                   </div>
                 )}
               </div>
-              <div className="space-y-2 p-4 bg-card/30 border border-border">
+              <div className="space-y-2 p-4 bg-black border border-border">
                 <div className="text-sm text-muted-foreground ">DURATION</div>
                 {isLoading || error ? (
-                  <Skeleton className="w-[80px] h-8 mt-3 " />
+                  <Skeleton className="w-[80px] h-7 mt-3 " />
                 ) : (
                   <div className="text-xl font-bold ">{data?.length}</div>
                 )}
@@ -177,16 +196,34 @@ export function BeatDetails() {
             </div>
 
             {/* Tags */}
-            {/* <div className="flex flex-wrap gap-2 pt-2">
-             {beat.tags.map((tag) => (
-               <span
-                 key={tag}
-                 className="px-4 py-2 bg-accent/10 border border-accent/20 text-accent text-sm font-mono uppercase tracking-wider"
-               >
-                 {tag}
-               </span>
-             ))}
-            </div> */}
+            {(isLoading || (data?.beat_tags && data.beat_tags.length > 0)) && (
+              <div className="space-y-2">
+                <h2 className="text-xl font-bold font-satoshi tracking-tight">
+                  Tags
+                </h2>
+                <div className="flex flex-wrap gap-2 pt-2">
+                  {isLoading ? (
+                    // Skeleton loader - zobrazí se vždy během načítání
+                    <>
+                      <Skeleton className="h-9 w-20" />
+                      <Skeleton className="h-9 w-24" />
+                      <Skeleton className="h-9 w-16" />
+                      <Skeleton className="h-9 w-28" />
+                    </>
+                  ) : (
+                    // Skutečná data - zobrazí se až po načtení
+                    data?.beat_tags?.map((item, index) => (
+                      <span
+                        key={index}
+                        className="px-4 py-2 bg-accent/10 border border-border font-satoshi text-sm"
+                      >
+                        {item.tags.tag_title}
+                      </span>
+                    ))
+                  )}
+                </div>
+              </div>
+            )}
 
             {/* Description */}
             {isLoading || error ? (

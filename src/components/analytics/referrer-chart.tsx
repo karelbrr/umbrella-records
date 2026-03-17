@@ -60,7 +60,7 @@ export function ReferrerChart() {
   }));
 
   return (
-    <Card className="flex flex-col bg-black border-zinc-800 h-full">
+    <Card className="flex flex-col bg-zinc-950 border-zinc-800 h-full">
       <CardHeader>
         <CardTitle className="text-white">Traffic Sources</CardTitle>
         <CardDescription className="text-zinc-500">
