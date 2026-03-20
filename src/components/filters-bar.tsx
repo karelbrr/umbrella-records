@@ -94,7 +94,7 @@ export function FiltersBar({ beatsFilters, setBeatsFilters }: FiltersBarProps) {
       </div>
 
       {/* Filters Row */}
-      <div className="flex  space-x-3">
+      <div className="flex flex-wrap space-y-3 md:space-y-0 space-x-3">
         <Select
           value={beatsFilters?.genre}
           onValueChange={(v) =>
