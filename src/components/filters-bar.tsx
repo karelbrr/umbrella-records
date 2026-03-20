@@ -20,7 +20,6 @@ import { Checkbox } from "@/components/ui/checkbox"; // Předpokládám shadcn
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
 
-
 interface FiltersBarProps {
   beatsFilters?: {
     genre?: string;
@@ -39,6 +38,25 @@ export function FiltersBar({ beatsFilters, setBeatsFilters }: FiltersBarProps) {
     tags: allTags,
     isLoading: areSelectsLoading,
   } = useSongFormOptions();
+
+  const [localSearch, setLocalSearch] = useState(beatsFilters?.search || "");
+
+  useEffect(() => {
+    setLocalSearch(beatsFilters?.search || "");
+  }, [beatsFilters?.search]);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (localSearch !== (beatsFilters?.search || "")) {
+        setBeatsFilters((prev: any) => ({
+          ...prev,
+          search: localSearch,
+        }));
+      }
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, [localSearch, setBeatsFilters]);
 
   const handleTagToggle = (tagId: string) => {
     setBeatsFilters((prev: any) => {
@@ -69,13 +87,8 @@ export function FiltersBar({ beatsFilters, setBeatsFilters }: FiltersBarProps) {
         <Input
           placeholder="Search beats, artists, tags..."
           type="text"
-          value={beatsFilters?.search || ""}
-          onChange={(e) =>
-            setBeatsFilters((prev: any) => ({
-              ...prev,
-              search: e.target.value,
-            }))
-          }
+          value={localSearch}
+          onChange={(e) => setLocalSearch(e.target.value)}
           className="pl-12 h-12 !bg-none border-border text-base"
         />
       </div>
