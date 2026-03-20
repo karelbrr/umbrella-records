@@ -40,25 +40,12 @@ export function GeneralInformationForm({
   setIsGenerated: any;
   isGenerated: boolean;
 }) {
-  const { genres, keys, isLoading: areSelectsLoading } = useSongFormOptions();
-
-  const { data: allTags, isLoading: tagsLoading } = useQuery<
-    {
-      id: string;
-      tag_title: string;
-    }[]
-  >({
-    queryKey: ["tags"],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from("tags")
-        .select("*")
-        .order("tag_title", { ascending: true });
-
-      if (error) throw error;
-      return data;
-    },
-  });
+  const {
+    genres,
+    keys,
+    tags: allTags,
+    isLoading: areSelectsLoading,
+  } = useSongFormOptions();
 
   const handleAiGeneration = async (isChecked: boolean) => {
     if (!isChecked) return;
@@ -95,8 +82,6 @@ export function GeneralInformationForm({
         throw new Error(data.error);
       }
       const { name, bpm, key, genre, description, tags } = data.aiMetadata;
-
-      console.log(data.aiMetadata);
 
       const matchedGenre = genres.find((g) => {
         const dbName = g.name.toLowerCase().replace(/[^a-z0-9]/g, "");

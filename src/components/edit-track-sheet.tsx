@@ -39,6 +39,7 @@ import {
   RotateCcw,
   Sparkles,
   Tag,
+  Tags,
   Upload,
   Zap,
 } from "lucide-react";
@@ -59,14 +60,25 @@ type FormValues = {
   img_url?: string;
   is_desc_ai: boolean;
   is_new?: boolean;
+  tags: string[];
 };
 
 export function EditTrackSheet({ track }: EditTrackSheetProps) {
   const [open, setOpen] = useState(false);
-  const { genres, keys, isLoading: areSelectsLoading } = useSongFormOptions();
+  const {
+    genres,
+    keys,
+    tags: allTags,
+    isLoading: areSelectsLoading,
+  } = useSongFormOptions();
   const [newImageFile, setNewImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const extractTagIds = (beatTags: any[] | undefined | null): string[] => {
+    if (!beatTags || !Array.isArray(beatTags)) return [];
+    return beatTags.map((bt) => bt?.tags?.id || bt?.tag_id).filter(Boolean);
+  };
 
   const {
     register,
@@ -87,6 +99,7 @@ export function EditTrackSheet({ track }: EditTrackSheetProps) {
       description: track.description ?? "",
       is_desc_ai: !!track.is_desc_ai,
       is_new: !!track.is_new,
+      tags: extractTagIds(track.beat_tags),
     },
   });
 
@@ -111,6 +124,7 @@ export function EditTrackSheet({ track }: EditTrackSheetProps) {
       description: track.description ?? "",
       is_desc_ai: !!track.is_desc_ai,
       is_new: !!track.is_new,
+      tags: extractTagIds(track.beat_tags),
     });
   }, [track, reset]);
 
@@ -143,16 +157,15 @@ export function EditTrackSheet({ track }: EditTrackSheetProps) {
         console.error("Failed to parse URL for file deletion:", err);
       }
     }
-  }
+  };
 
   const queryClient = useQueryClient();
   const updateTrackMutation = useMutation({
     mutationFn: async (values: FormValues) => {
       let finalImgUrl = track.img_url;
 
-
       if (newImageFile) {
-        removeImageFromSupabase(finalImgUrl)
+        removeImageFromSupabase(finalImgUrl);
         finalImgUrl = await uploadFileToSupabase(newImageFile, "images");
       }
 
@@ -176,6 +189,27 @@ export function EditTrackSheet({ track }: EditTrackSheetProps) {
         .select();
 
       if (error) throw new Error(error.message);
+
+      const { error: deleteError } = await supabase
+        .from("beat_tags")
+        .delete()
+        .eq("beat_id", track.id);
+
+      if (deleteError) throw new Error(deleteError.message);
+
+      if (values.tags && values.tags.length > 0) {
+        const tagsToInsert = values.tags.map((tagId: string | number) => ({
+          beat_id: track.id,
+          tag_id: tagId,
+        }));
+
+        const { error: insertError } = await supabase
+          .from("beat_tags")
+          .insert(tagsToInsert);
+
+        if (insertError) throw new Error(insertError.message);
+      }
+
       return data;
     },
     onSuccess: () => {
@@ -191,20 +225,25 @@ export function EditTrackSheet({ track }: EditTrackSheetProps) {
   });
 
   const onSubmit = (values: FormValues) => {
+    const rawOriginalTags = track.beat_tags?.map((t: any) => t.tags?.id) || [];
+    const normalizedFormTags = (values.tags || []).map(String).sort();
+    const normalizedOriginalTags = rawOriginalTags.map(String).sort();
+
     const formPayload = {
       name: values.name || null,
-      bpm: values.bpm || null,
+      bpm: values.bpm ? Number(values.bpm) : null,
       key: values.key ? String(values.key) : null,
       genre: values.genre ? String(values.genre) : null,
       length: values.length || null,
       description: values.description || null,
       is_desc_ai: !!values.is_desc_ai,
       is_new: !!values.is_new,
+      tags: normalizedFormTags,
     };
 
     const original = {
       name: track.name || null,
-      bpm: track.bpm || null,
+      bpm: track.bpm ? Number(track.bpm) : null,
       key: track.key
         ? String(track.key)
         : track.keys?.id
@@ -219,6 +258,7 @@ export function EditTrackSheet({ track }: EditTrackSheetProps) {
       description: track.description || null,
       is_desc_ai: !!track.is_desc_ai,
       is_new: !!track.is_new,
+      tags: normalizedOriginalTags,
     };
 
     const isSame = JSON.stringify(formPayload) === JSON.stringify(original);
@@ -283,7 +323,6 @@ export function EditTrackSheet({ track }: EditTrackSheetProps) {
                 />
               </div>
             </div>
-
             <div className="space-y-3">
               <div className="grid grid-cols-2 gap-4 p-4 rounded-lg border ">
                 {/* BPM */}
@@ -418,7 +457,6 @@ export function EditTrackSheet({ track }: EditTrackSheetProps) {
                 </div>
               </div>
             </div>
-
             {/* Description */}
             <div className="space-y-2 p-4 rounded-lg border ">
               <Label
@@ -442,7 +480,6 @@ export function EditTrackSheet({ track }: EditTrackSheetProps) {
                 </p>
               )}
             </div>
-
             {/* Cover Image */}
             <div className="p-4 rounded-lg border space-y-4">
               <Label className=" text-muted-foreground flex items-center gap-2">
@@ -510,6 +547,73 @@ export function EditTrackSheet({ track }: EditTrackSheetProps) {
                   </div>
                 </div>
               </div>
+            </div>
+
+            {/* TAGS SECTION */}
+            <div className="space-y-2 p-4 rounded-lg border">
+              <div className="space-y-1">
+                <Label className="text-muted-foreground flex items-center gap-2">
+                  <Tags className="h-3.5 w-3.5" /> Tags
+                </Label>
+                <p className="text-xs text-muted-foreground">
+                  Select tags to help categorize your track.
+                </p>
+              </div>
+
+              <Controller
+                name="tags"
+                control={control}
+                defaultValue={[]}
+                render={({ field }) => (
+                  <div className="flex flex-wrap gap-2 pt-2">
+                    {areSelectsLoading
+                      ? [1, 2, 3, 4, 5, 6].map((i) => (
+                          <div
+                            key={i}
+                            className="h-8 w-16 animate-pulse bg-muted rounded-full"
+                          />
+                        ))
+                      : allTags?.map((tag) => {
+                          const currentValues = Array.isArray(field.value)
+                            ? field.value
+                            : [];
+                          const isSelected = currentValues.some(
+                            (id: any) => String(id) === String(tag.id),
+                          );
+
+                          return (
+                            <button
+                              key={tag.id}
+                              type="button"
+                              onClick={() => {
+                                let newValue;
+                                if (isSelected) {
+                                  newValue = currentValues.filter(
+                                    (id: any) => String(id) !== String(tag.id),
+                                  );
+                                } else {
+                                  newValue = [...currentValues, tag.id];
+                                }
+                                field.onChange(newValue);
+                              }}
+                              className={`px-3 py-1 rounded-full border text-xs font-medium transition-colors focus-visible:ring-1 focus:outline-none ${
+                                isSelected
+                                  ? "bg-accent text-accent-foreground border-accent"
+                                  : "bg-transparent border-border hover:bg-accent/10"
+                              }`}
+                            >
+                              {tag.tag_title}
+                            </button>
+                          );
+                        })}
+                  </div>
+                )}
+              />
+              {errors.tags && (
+                <p className="text-sm text-red-500">
+                  {errors.tags.message as string}
+                </p>
+              )}
             </div>
 
             <div className="space-y-6">

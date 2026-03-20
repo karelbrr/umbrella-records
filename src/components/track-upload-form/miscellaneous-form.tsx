@@ -2,27 +2,11 @@ import { Controller } from "react-hook-form";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Switch } from "../ui/switch";
-import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/hooks/create-client";
+
+import { useSongFormOptions } from "@/hooks/use-song-options";
 
 export function MiscellaneousForm({ control }: { control: any }) {
-  const { data: allTags, isLoading: tagsLoading } = useQuery<
-    {
-      id: string;
-      tag_title: string;
-    }[]
-  >({
-    queryKey: ["tags"],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from("tags")
-        .select("*")
-        .order("tag_title", { ascending: true });
-
-      if (error) throw error;
-      return data;
-    },
-  });
+  const { tags: allTags, isLoading: tagsLoading } = useSongFormOptions();
 
   return (
     <Card className="bg-black">

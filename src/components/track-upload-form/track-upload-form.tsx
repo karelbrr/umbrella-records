@@ -244,6 +244,19 @@ export function TrackUploadForm() {
         .select();
 
       if (error) throw new Error(error.message);
+
+      if (formData.tags && formData.tags.length > 0) {
+        const tagsToInsert = formData.tags.map((tagId: string) => ({
+          beat_id: data[0].id,
+          tag_id: tagId,
+        }));
+
+        const { error: tagsError } = await supabase
+          .from("beat_tags")
+          .insert(tagsToInsert);
+
+        if (tagsError) throw new Error(tagsError.message);
+      }
       return data;
     },
 

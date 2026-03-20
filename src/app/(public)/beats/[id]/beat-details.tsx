@@ -64,7 +64,6 @@ export function BeatDetails() {
       .eq("id", id)
       .single();
 
-    console.log("Fetched beat details:", data, "Error:", error);
     if (error) {
       throw new Error(error.message);
     }

@@ -12,6 +12,7 @@ interface Props {
     sortBy?: string;
     keys?: { key: string }[] | null;
     search?: string;
+    tags?: string[];
   };
   setBeatsFilters?: (value: any) => void;
 }
@@ -28,6 +29,12 @@ interface AudioListItemType {
   keys?: { key: string }[] | null;
   profiles?: { username: string }[] | null;
   created_at: string;
+  beat_tags: {
+    tags: {
+      id: string;
+      tag_title: string;
+    };
+  }[];
 }
 
 export function AudioList({ beatsFilters, setBeatsFilters }: Props) {
@@ -35,7 +42,7 @@ export function AudioList({ beatsFilters, setBeatsFilters }: Props) {
     const { data, error } = await supabase
       .from("beats_tracks")
       .select(
-        "id,name,bpm,img_url,is_new,producer,genres(genre),keys(key),created_at,profiles(username)"
+        "id,name,bpm,img_url,is_new,producer,genres(genre),keys(key),created_at,profiles(username),beat_tags(tags(id, tag_title))",
       );
 
     if (error) throw new Error(error.message);
@@ -77,7 +84,7 @@ export function AudioList({ beatsFilters, setBeatsFilters }: Props) {
         const name = (item.name || "").toString().toLowerCase();
         const producer = (item.producer || "").toString().toLowerCase();
         const genreMatch = (item.genres || []).some((g) =>
-          g.genre.toLowerCase().includes(q)
+          g.genre.toLowerCase().includes(q),
         );
         return name.includes(q) || producer.includes(q) || genreMatch;
       });
@@ -87,7 +94,7 @@ export function AudioList({ beatsFilters, setBeatsFilters }: Props) {
     if (f.genre) {
       if (f.genre !== "none") {
         result = result.filter((item) =>
-          (item.genres || []).some((g) => g.genre === f.genre)
+          (item.genres || []).some((g) => g.genre === f.genre),
         );
       }
     }
@@ -117,13 +124,20 @@ export function AudioList({ beatsFilters, setBeatsFilters }: Props) {
         // sort by created_at (newest first)
         result.sort(
           (a, b) =>
-            new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+            new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
         );
       } else if (f.sortBy === "price-low" || f.sortBy === "price-high") {
         // no price field available — keep original order
       } else if (f.sortBy === "none") {
         // no sorting
       }
+    }
+
+    if (f.tags && f.tags.length > 0) {
+      result = result.filter((item) => {
+        const itemTagIds = item.beat_tags?.map((bt) => bt.tags.id) || [];
+        return f.tags?.some((selectedId) => itemTagIds.includes(selectedId));
+      });
     }
 
     return result;
