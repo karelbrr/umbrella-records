@@ -3,8 +3,6 @@ import { DataTable } from "@/components/data-table";
 import { supabase } from "@/hooks/create-client";
 import { useQuery } from "@tanstack/react-query";
 
-
-
 export interface AudioListItem {
   id: string;
   created_at: string | number | Date;
@@ -20,6 +18,12 @@ export interface AudioListItem {
   producer: string | null;
   key: string | null;
   genre: string | null;
+  beat_tags: {
+    tags: {
+      id: string;
+      tag_title: string;
+    };
+  }[];
 }
 
 export default function EditTrackSection() {
@@ -32,6 +36,7 @@ export default function EditTrackSection() {
       genres (id, genre),
       keys (id, key),
       profiles (id, username)
+,beat_tags(tags(id, tag_title))
     `,
       )
       .order("created_at", { ascending: false });

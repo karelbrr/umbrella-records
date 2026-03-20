@@ -9,11 +9,16 @@ export async function POST(req: Request) {
   });
 
   try {
-    const { audioUrl, allowedGenres } = await req.json();
+    const { audioUrl, allowedGenres, allowedTags } = await req.json();
 
     const genreEnum =
       allowedGenres?.length > 0
         ? z.enum(allowedGenres as [string, ...string[]])
+        : z.string();
+
+    const tagsEnum =
+      allowedTags?.length > 0
+        ? z.enum(allowedTags as [string, ...string[]])
         : z.string();
 
     if (!audioUrl) {
@@ -33,6 +38,7 @@ export async function POST(req: Request) {
       1. BPM: Count the beats carefully. Do not just guess based on the genre.
       2. KEY: Analyze the harmonic content to identify the correct musical key.
       3. GENRE: Identify the sub-genre precisely.
+      4. TAGS: Identify tags. you can choose more than 1 -> max 4 or 5
 
       If the audio is a 'trap beat' (as the filename suggests), look for high-hat rolls and heavy 808s which usually put the BPM in the 130-160 range (or 65-80 half-time).`,
       schema: z.object({
@@ -42,6 +48,11 @@ export async function POST(req: Request) {
         bpm: z.number().describe("BPM (tempo) of the track."),
         key: z.string().describe("Musical key (e.g., C minor, G# Major)."),
         genre: genreEnum,
+        tags: z
+          .array(tagsEnum)
+          .min(1)
+          .max(5)
+          .describe("An array of descriptive tags. Pick between 1 and 5 tags."),
         description: z
           .string()
           .describe(

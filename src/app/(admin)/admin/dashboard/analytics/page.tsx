@@ -20,7 +20,7 @@ export default function Page() {
             <h1 className=" text-3xl font-bold lg:text-left text-center tracking-tight text-foreground">
               Dashboard Analytics
             </h1>
-            <p className="text-muted-foreground">
+            <p className="text-muted-foreground lg:text-left text-center">
               Track your beat sales performance and audience engagement
             </p>
           </div>
@@ -59,7 +59,7 @@ export default function Page() {
               {/* Bottom Row: Bar Chart + Referrer */}
               <section
                 aria-label="Details"
-                className="grid gap-6 lg:grid-cols-2"
+                className="grid gap-6 lg:grid-cols-2 "
               >
                 <TopBeatsChart />
                 <ReferrerChart />

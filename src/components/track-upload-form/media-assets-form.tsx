@@ -1,23 +1,7 @@
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Upload, ImageIcon, Music, FileAudio, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { UseFormRegister } from "react-hook-form";
-
-interface FormData {
-  name: string;
-  producer: string;
-  genre: string;
-  key: string;
-  bpm: number | "";
-  length: string;
-  description: string;
-  is_new: boolean;
-  is_desc_ai: boolean;
-  media_url: string;
-  img_url: string;
-}
 
 interface MediaAssetsFormProps {
   fileInputRef: React.RefObject<HTMLInputElement | null>;
@@ -26,7 +10,6 @@ interface MediaAssetsFormProps {
   fileName: string | null;
   handleRemoveFile: (e: React.MouseEvent) => void;
   uploadError: string | null;
-  register: UseFormRegister<FormData>;
   imageInputRef: React.RefObject<HTMLInputElement | null>;
   isImgUrlEntered: boolean;
   handleImageChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
@@ -41,7 +24,6 @@ export function MediaAssetsForm({
   fileName,
   handleRemoveFile,
   uploadError,
-  register,
   imageInputRef,
   isImgUrlEntered,
   handleImageChange,

@@ -60,8 +60,8 @@ export function ReferrerChart() {
   }));
 
   return (
-    <Card className="flex flex-col bg-black border-zinc-800 h-full">
-      <CardHeader>
+    <Card className="bg-zinc-950 border-zinc-800">
+      <CardHeader className="flex flex-col items-stretch space-y-0 border-b border-zinc-800 p-0  pl-5">
         <CardTitle className="text-white">Traffic Sources</CardTitle>
         <CardDescription className="text-zinc-500">
           Where your listeners are coming from

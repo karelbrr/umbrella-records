@@ -20,11 +20,10 @@ import { supabase } from "@/hooks/create-client";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "../context/auth-provider";
 import { uploadFileToSupabase } from "@/hooks/upload";
-import { VisibilityForm } from "./visibility-form";
+import { MiscellaneousForm } from "./miscellaneous-form";
 import { GeneralInformationForm } from "./general-information-form";
-import { set } from "zod";
 
-interface FormData {
+export interface FormData {
   name: string;
   producer: string;
   genre: string;
@@ -36,6 +35,7 @@ interface FormData {
   is_desc_ai: boolean;
   media_url: string;
   img_url: string;
+  tags: string[];
 }
 
 export function TrackUploadForm() {
@@ -75,6 +75,7 @@ export function TrackUploadForm() {
       is_desc_ai: false,
       media_url: "",
       img_url: "",
+      tags: [],
     },
   });
 
@@ -138,7 +139,7 @@ export function TrackUploadForm() {
       setIsUploaded(true);
       URL.revokeObjectURL(objectUrl);
     };
-    audio.onerror = () => { };
+    audio.onerror = () => {};
   };
 
   const handleRemoveFile = async (e: React.MouseEvent) => {
@@ -177,6 +178,7 @@ export function TrackUploadForm() {
 
     setValue("length", "");
     setValue("name", "");
+    setValue("tags", []);
     setValue("bpm", "");
     setValue("key", "");
     setValue("genre", "");
@@ -242,6 +244,19 @@ export function TrackUploadForm() {
         .select();
 
       if (error) throw new Error(error.message);
+
+      if (formData.tags && formData.tags.length > 0) {
+        const tagsToInsert = formData.tags.map((tagId: string) => ({
+          beat_id: data[0].id,
+          tag_id: tagId,
+        }));
+
+        const { error: tagsError } = await supabase
+          .from("beat_tags")
+          .insert(tagsToInsert);
+
+        if (tagsError) throw new Error(tagsError.message);
+      }
       return data;
     },
 
@@ -272,8 +287,11 @@ export function TrackUploadForm() {
         </div>
       )}
       <div
-        className={`grid gap-6 lg:grid-cols-3 ${isUploading || isGenerating ? "pointer-events-none opacity-50 blur-xs" : ""
-          }`}
+        className={`grid gap-6 lg:grid-cols-3 ${
+          isUploading || isGenerating
+            ? "pointer-events-none opacity-50 blur-xs"
+            : ""
+        }`}
       >
         {/* Left Column - Track Details */}
         <GeneralInformationForm
@@ -296,7 +314,6 @@ export function TrackUploadForm() {
           fileName={fileName}
           handleRemoveFile={handleRemoveFile}
           uploadError={uploadError}
-          register={register}
           imageInputRef={imageInputRef}
           isImgUrlEntered={isImgUrlEntered}
           handleImageChange={handleImageChange}
@@ -304,13 +321,17 @@ export function TrackUploadForm() {
           handleRemoveImage={handleRemoveImage}
         />
 
-        {/* Right Column - Visibility */}
-        <VisibilityForm control={control} />
+        {/* Right Column - Miscellaneous */}
+        <MiscellaneousForm control={control} />
       </div>
 
       {/* Footer Actions */}
       <div className="mt-6 flex justify-end gap-3">
-        <Button disabled={isUploading || isGenerating} type="button" variant="outline">
+        <Button
+          disabled={isUploading || isGenerating}
+          type="button"
+          variant="outline"
+        >
           Cancel
         </Button>
 
@@ -332,7 +353,8 @@ export function TrackUploadForm() {
             <AlertDialogHeader>
               <AlertDialogTitle>Ready to upload?</AlertDialogTitle>
               <AlertDialogDescription>
-                You are about to upload <strong>{watch("name") || "this track"}</strong> to the library.
+                You are about to upload{" "}
+                <strong>{watch("name") || "this track"}</strong> to the library.
                 Please ensure all details are correct.
               </AlertDialogDescription>
             </AlertDialogHeader>
@@ -342,7 +364,9 @@ export function TrackUploadForm() {
                 onClick={() => {
                   // close dialog then submit the form reliably
                   setIsDialogOpen(false);
-                  const form = document.getElementById("track-upload-form") as HTMLFormElement | null;
+                  const form = document.getElementById(
+                    "track-upload-form",
+                  ) as HTMLFormElement | null;
                   if (form) {
                     // requestSubmit is preferred over submit to trigger React/validation handlers
                     if (typeof form.requestSubmit === "function") {

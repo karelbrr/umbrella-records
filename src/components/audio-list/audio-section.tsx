@@ -10,6 +10,7 @@ interface BeatsFilters {
   key?: string;
   sortBy?: string;
   search?: string;
+  tags?: string[];
 }
 
 export function AudioSection() {
@@ -22,6 +23,7 @@ export function AudioSection() {
     key: searchParams.get("key") || undefined,
     sortBy: searchParams.get("sortBy") || undefined,
     search: searchParams.get("search") || "",
+    tags: searchParams.get("tags") ? searchParams.get("tags")?.split(",") : [],
   };
 
   const setBeatsFilters = useCallback(
@@ -40,7 +42,7 @@ export function AudioSection() {
       });
       router.replace(`${pathname}?${params.toString()}`, { scroll: false });
     },
-    [searchParams, pathname, router, beatsFilters]
+    [searchParams, pathname, router, beatsFilters],
   );
 
   return (

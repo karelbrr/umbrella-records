@@ -56,7 +56,7 @@ export function MetricCards() {
       {metrics.map((metric) => {
         const Icon = metric.icon;
         return (
-          <Card key={metric.title} className="gap-0 py-0 bg-black">
+          <Card key={metric.title} className="gap-0 py-0 bg-zinc-950">
             <CardContent className="flex items-center gap-4 py-5">
               <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-muted">
                 <Icon className="size-5 text-muted-foreground" />

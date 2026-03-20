@@ -16,6 +16,8 @@ import { toast } from "sonner";
 import { uploadFileToSupabase } from "@/hooks/upload";
 import { Badge } from "../ui/badge";
 import { Sparkles } from "lucide-react";
+import { supabase } from "@/hooks/create-client";
+import { useQuery } from "@tanstack/react-query";
 
 export function GeneralInformationForm({
   errors,
@@ -38,7 +40,12 @@ export function GeneralInformationForm({
   setIsGenerated: any;
   isGenerated: boolean;
 }) {
-  const { genres, keys, isLoading: areSelectsLoading } = useSongFormOptions();
+  const {
+    genres,
+    keys,
+    tags: allTags,
+    isLoading: areSelectsLoading,
+  } = useSongFormOptions();
 
   const handleAiGeneration = async (isChecked: boolean) => {
     if (!isChecked) return;
@@ -57,6 +64,7 @@ export function GeneralInformationForm({
       setValue("media_url", uploadedAudioUrl, { shouldValidate: true });
 
       const genreNames = genres.map((g) => g.name);
+      const tagNames = allTags ? allTags.map((t) => t.tag_title) : [];
 
       const response = await fetch("/api/generate-audio-metadata", {
         method: "POST",
@@ -64,6 +72,7 @@ export function GeneralInformationForm({
         body: JSON.stringify({
           audioUrl: uploadedAudioUrl,
           allowedGenres: genreNames,
+          allowedTags: tagNames,
         }),
       });
 
@@ -72,7 +81,7 @@ export function GeneralInformationForm({
       if (!data.success) {
         throw new Error(data.error);
       }
-      const { name, bpm, key, genre, description } = data.aiMetadata;
+      const { name, bpm, key, genre, description, tags } = data.aiMetadata;
 
       const matchedGenre = genres.find((g) => {
         const dbName = g.name.toLowerCase().replace(/[^a-z0-9]/g, "");
@@ -97,6 +106,33 @@ export function GeneralInformationForm({
           shouldValidate: true,
           shouldDirty: true,
         });
+
+      if (tags && Array.isArray(tags) && allTags) {
+        const matchedTagIds = tags
+          .map((aiTagName: string) => {
+            // Robustní porovnání (lowercase + trim)
+            const foundTag = allTags.find(
+              (dbTag) =>
+                dbTag.tag_title.toLowerCase().trim() ===
+                aiTagName.toLowerCase().trim(),
+            );
+            return foundTag ? foundTag.id : null;
+          })
+          .filter((id) => id !== null); // Odstraníme tagy, které jsme v DB nenašli
+
+        // Nastavení do react-hook-form
+        setValue("tags", matchedTagIds, {
+          shouldValidate: true,
+          shouldDirty: true,
+        });
+
+        if (matchedTagIds.length === 0) {
+          console.warn(
+            "AI returned tags, but none matched your database titles:",
+            tags,
+          );
+        }
+      }
 
       if (bpm)
         setValue("bpm", bpm, { shouldValidate: true, shouldDirty: true });
