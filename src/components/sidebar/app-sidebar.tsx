@@ -35,6 +35,7 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import Image from "next/image";
+import { Database } from "lucide-react";
 
 const data = {
   user: {
@@ -53,7 +54,7 @@ const data = {
       title: "Projects",
       url: "/admin/dashboard/projects",
       icon: IconFolder,
-      isDisabled: true,
+      isDisabled: false,
     },
     {
       title: "Analytics",
@@ -77,6 +78,12 @@ const data = {
       title: "Team",
       url: "/admin/dashboard/team",
       icon: IconUsers,
+      isDisabled: false,
+    },
+    {
+      title: "Data",
+      url: "/admin/dashboard/data",
+      icon: Database,
       isDisabled: false,
     },
   ],
@@ -184,7 +191,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                   alt="Image"
                   width={20}
                   height={200}
-                  className=""
                 />
                 <span className="text-base font-semibold">
                   Umbrella Records

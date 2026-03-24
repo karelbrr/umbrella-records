@@ -72,7 +72,7 @@ export const columns: ColumnDef<AudioListItem>[] = [
     id: "select",
     meta: { className: "table-cell w-[2%]" },
     header: ({ table }) => (
-      <div className="">
+      <div >
         <Checkbox
           checked={
             table.getIsAllPageRowsSelected() ||
@@ -85,7 +85,7 @@ export const columns: ColumnDef<AudioListItem>[] = [
     ),
 
     cell: ({ row }) => (
-      <div className="">
+      <div >
         <Checkbox
           checked={row.getIsSelected()}
           onCheckedChange={(value) => row.toggleSelected(!!value)}

@@ -6,14 +6,19 @@ import { usePathname } from "next/navigation";
 
 export function SiteHeader() {
   const pathname = usePathname();
-  const replacePath =
-    pathname === "/admin/dashboard"
-      ? "Overview"
-      : pathname.replace("/admin/dashboard/", "");
+  const getHeaderName = (path: string) => {
+    if (path === "/admin/dashboard" || path === "/admin/dashboard/") {
+      return "Overview";
+    }
+    const remainingPath = path.replace("/admin/dashboard/", "");
+    const firstSegment = remainingPath.split("/")[0];
+
+    return firstSegment;
+  };
 
   const formatTitle = (str: string): string => {
     if (!str) return "";
-    const cleaned = str.replace(/[-_/]+/g, " ").trim();
+    const cleaned = str.replace(/[-_]+/g, " ").trim();
     return cleaned
       .split(/\s+/)
       .map((s) => (s ? s.charAt(0).toUpperCase() + s.slice(1) : ""))
@@ -28,7 +33,9 @@ export function SiteHeader() {
           orientation="vertical"
           className="mx-2 data-[orientation=vertical]:h-4"
         />
-        <h1 className="text-base font-medium">{formatTitle(replacePath)}</h1>
+        <h1 className="text-base font-medium">
+          {formatTitle(getHeaderName(pathname))}
+        </h1>
         <div className="ml-auto flex items-center gap-2"></div>
       </div>
     </header>

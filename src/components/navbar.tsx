@@ -17,8 +17,7 @@ export function Navbar() {
   const pathname = usePathname();
   const [isMobile, setIsMobile] = useState<boolean>();
 
-  const showHeader =
-    pathname !== "/login" ;
+  const showHeader = pathname !== "/login";
   return showHeader ? (
     <header
       className={`flex justify-between lg:justify-normal items-center h-[13vh] opacity-90 lg:container left-1/2 px-4 transform -translate-x-1/2 fixed z-100 w-full ${
@@ -40,7 +39,7 @@ export function Navbar() {
         </a> */}
       </div>
       <nav className="lg:flex w-1/3 hidden  lg:w-6/12 items-center justify-center lg:text-lg space-x-3">
-        <div className="">
+        <div>
           <a
             href="/"
             className={`hover:opacity-70  transition font-satoshi   text-white`}

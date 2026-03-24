@@ -672,7 +672,7 @@ export function EditTrackSheet({ track }: EditTrackSheetProps) {
               </div>
 
               {/* Form Actions */}
-              <div className="">
+              <div >
                 <Button
                   type="submit"
                   className="w-full h-12 shadow-md transition-all hover:shadow-primary/20"
