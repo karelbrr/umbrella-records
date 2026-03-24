@@ -35,7 +35,7 @@ export async function generateMetadata({
     openGraph: {
       title: title,
       description: description,
-      url: `https://umbrellarecords.cz/beat/${id}`, // Nahraď svou skutečnou doménou
+      url: `https://umbrellarecords.cz/beat/${id}`,
       siteName: "Umbrella Records",
       images: [
         {

@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { useParams } from "next/navigation";
-import { useForm, useFieldArray, Controller } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/hooks/create-client";
 import { formatDate } from "@/hooks/format-date";
@@ -14,7 +14,6 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Checkbox } from "@/components/ui/checkbox";
 import {
   Select,
   SelectContent,
@@ -22,16 +21,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  Plus,
-  Type,
-  List,
-  CheckSquare,
-  Captions,
-  Trash2,
-  Loader2,
-} from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
+import { ProjectNotesEditor } from "@/components/projects/project-notes-editor";
 
 type BlockType = "text" | "bullet" | "checkbox";
 
@@ -78,23 +70,23 @@ export default function ProjectDetailPage() {
     },
   });
 
-  const { register, control, handleSubmit, reset, watch, setValue, getValues } =
-    useForm<FormValues>({
-      defaultValues: {
-        title: "",
-        project_status: "idea",
-        blocks: [],
-      },
-    });
-
-  const { fields, append, remove, insert } = useFieldArray({
-    control,
-    name: "blocks",
+  const form = useForm<FormValues>({
+    defaultValues: {
+      title: "",
+      project_status: "idea",
+      blocks: [],
+    },
   });
+  const {
+    register,
+    handleSubmit,
+    control,
+    watch,
+    reset,
+    formState: { errors },
+  } = form;
 
   const currentBlocks = watch("blocks") || [];
-
-  const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
   useEffect(() => {
     if (projectData && blocksData) {
@@ -111,7 +103,6 @@ export default function ProjectDetailPage() {
     }
   }, [projectData, blocksData, reset]);
 
-  // --- 3. SAVE MUTATION ---
   const saveMutation = useMutation({
     mutationFn: async (values: FormValues) => {
       const { error: projectError } = await supabase
@@ -176,52 +167,25 @@ export default function ProjectDetailPage() {
     saveMutation.mutate(data);
   };
 
-  const addBlock = (type: BlockType) => {
-    append({
-      id: crypto.randomUUID(),
-      type,
-      content: "",
-      checked: false,
-    });
-
-    setTimeout(() => {
-      const lastIndex = getValues("blocks").length - 1;
-      inputRefs.current[lastIndex]?.focus();
-    }, 0);
-  };
-  const handleInputChange = (index: number, value: string) => {
-    if (value === "[] " || value === "[ ] ") {
-      setValue(`blocks.${index}.type`, "checkbox");
-      setValue(`blocks.${index}.content`, "");
-      return;
-    }
-
-    if (value === "- ") {
-      setValue(`blocks.${index}.type`, "bullet");
-      setValue(`blocks.${index}.content`, "");
-      return;
-    }
-    setValue(`blocks.${index}.content`, value);
-  };
-
-  if (projectLoading || blocksLoading) {
-    return (
-      <div className="flex h-[50vh] items-center justify-center">
-        <Loader2 className="size-8 animate-spin text-muted-foreground" />
-      </div>
-    );
-  }
-
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="p-4 md:p-6 lg:p-8">
       {/* --- PROJECT HEADER --- */}
       <div className="mb-8 space-y-4">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-          <Input
-            {...register("title")}
-            className="h-auto border-none bg-transparent p-0 text-3xl font-bold tracking-tight shadow-none placeholder:text-muted-foreground focus-visible:ring-0"
-            placeholder="Untitled Project"
-          />
+          <div>
+            <Input
+              {...register("title", {
+                required: "Provide Project name to create a new project",
+              })}
+              className="h-auto border-none bg-transparent p-0 w-[1000px] !text-3xl font-bold tracking-tight shadow-none placeholder:text-muted-foreground focus-visible:ring-0"
+              placeholder="Untitled Project"
+            />
+            {errors.title && (
+              <p className="ml-2 text-sm font-medium text-red-800">
+                {errors.title.message as string}
+              </p>
+            )}
+          </div>
           <Controller
             control={control}
             name="project_status"
@@ -249,177 +213,12 @@ export default function ProjectDetailPage() {
             }}
           />
         </div>
-
-        <div className="flex items-center gap-2 text-muted-foreground">
-          <Captions className="size-4" />
-          <span className="text-sm">Name of The Project</span>
-        </div>
       </div>
 
       <div className="grid gap-6 lg:grid-cols-3">
         {/* --- MAIN WORKSPACE --- */}
         <div className="space-y-6 lg:col-span-2">
-          <Card className="border-border bg-transparent">
-            <CardHeader className="pb-4 border-b border-border/50">
-              <div className="flex items-center justify-between">
-                <CardTitle className="text-base font-medium">
-                  Project Notes
-                </CardTitle>
-                <div className="flex items-center gap-1">
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => addBlock("text")}
-                    className="h-7 gap-1.5 text-xs text-muted-foreground"
-                  >
-                    <Type className="size-3" /> Text
-                  </Button>
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => addBlock("bullet")}
-                    className="h-7 gap-1.5 text-xs text-muted-foreground"
-                  >
-                    <List className="size-3" /> Bullet
-                  </Button>
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => addBlock("checkbox")}
-                    className="h-7 gap-1.5 text-xs text-muted-foreground"
-                  >
-                    <CheckSquare className="size-3" /> Todo
-                  </Button>
-                </div>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-2">
-                {fields.map((field, index) => {
-                  const currentBlock = currentBlocks[index];
-                  const isChecked = currentBlock?.checked;
-                  const currentType = currentBlock?.type || field.type;
-
-                  return (
-                    <div
-                      key={field.id}
-                      className="group flex items-start gap-3 rounded-md px-2 py-1.5 transition-colors hover:bg-muted/20"
-                    >
-                      {/* Vizuální indikátor podle typu */}
-                      <div className="flex h-6 items-center justify-center shrink-0 w-6">
-                        {currentType === "checkbox" && (
-                          <Controller
-                            control={control}
-                            name={`blocks.${index}.checked`}
-                            render={({ field: checkboxField }) => (
-                              <Checkbox
-                                checked={checkboxField.value}
-                                onCheckedChange={checkboxField.onChange}
-                                className="border-muted-foreground"
-                              />
-                            )}
-                          />
-                        )}
-                        {currentType === "bullet" && (
-                          <span className="size-1.5 rounded-full bg-muted-foreground" />
-                        )}
-                        {currentType === "text" && (
-                          <Type className="size-3 text-muted-foreground/50 opacity-0 group-hover:opacity-100" />
-                        )}
-                      </div>
-
-                      {(() => {
-                        const { ref: formRef, ...formRest } = register(
-                          `blocks.${index}.content`,
-                        );
-
-                        return (
-                          <Input
-                            {...formRest}
-                            ref={(el) => {
-                              formRef(el);
-                              inputRefs.current[index] = el;
-                            }}
-                            onChange={(e) => {
-                              formRest.onChange(e);
-                              handleInputChange(index, e.target.value);
-                            }}
-                            onKeyDown={(e) => {
-                              if (
-                                e.key === "Backspace" &&
-                                e.currentTarget.value === ""
-                              ) {
-                                e.preventDefault();
-                                remove(index);
-                                if (index > 0) {
-                                  setTimeout(
-                                    () => inputRefs.current[index - 1]?.focus(),
-                                    0,
-                                  );
-                                }
-                              }
-                              if (e.key === "Enter") {
-                                e.preventDefault();
-                                const newType =
-                                  currentType === "checkbox"
-                                    ? "checkbox"
-                                    : currentType;
-                                insert(index + 1, {
-                                  id: crypto.randomUUID(),
-                                  type: newType,
-                                  content: "",
-                                  checked: false,
-                                });
-                                setTimeout(
-                                  () => inputRefs.current[index + 1]?.focus(),
-                                  0,
-                                );
-                              }
-                            }}
-                            className={`h-6 flex-1 border-none bg-transparent p-0 text-sm shadow-none placeholder:text-muted-foreground/50 focus-visible:ring-0 ${
-                              currentType === "checkbox" && isChecked
-                                ? "text-muted-foreground line-through"
-                                : ""
-                            }`}
-                            placeholder={
-                              currentType === "checkbox"
-                                ? "To-do item..."
-                                : currentType === "bullet"
-                                  ? "List item..."
-                                  : "Type '[] ' for todo, '- ' for bullet..."
-                            }
-                            autoFocus={!field.id}
-                          />
-                        );
-                      })()}
-
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        size="icon"
-                        className="size-6 text-muted-foreground opacity-0 hover:text-destructive hover:bg-destructive/10 group-hover:opacity-100"
-                        onClick={() => remove(index)}
-                      >
-                        <Trash2 className="size-3" />
-                      </Button>
-                    </div>
-                  );
-                })}
-
-                <button
-                  type="button"
-                  onClick={() => addBlock("text")}
-                  className=" flex w-full items-center gap-2 rounded-md px-2 py-3 text-sm text-muted-foreground transition-colors hover:bg-muted/20 hover:text-foreground border border-dashed border-transparent hover:border-border"
-                >
-                  <Plus className="size-4" />
-                  Add a new block
-                </button>
-              </div>
-            </CardContent>
-          </Card>
+          <ProjectNotesEditor form={form} />
         </div>
 
         {/* --- SIDEBAR --- */}
@@ -452,7 +251,7 @@ export default function ProjectDetailPage() {
                   <span className="text-muted-foreground">Created</span>
                   <span className="font-medium">
                     {projectData?.created_at
-                      ? formatDate(projectData.created_at)
+                      ? formatDate(projectData.created_at, "with_time")
                       : "N/A"}
                   </span>
                 </div>
@@ -460,7 +259,7 @@ export default function ProjectDetailPage() {
                   <span className="text-muted-foreground">Last Modified</span>
                   <span className="font-medium">
                     {projectData?.last_modified
-                      ? formatDate(projectData.last_modified)
+                      ? formatDate(projectData.last_modified, "with_time")
                       : "N/A"}
                   </span>
                 </div>

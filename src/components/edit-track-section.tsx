@@ -58,7 +58,7 @@ export default function EditTrackSection() {
     });
   }
 
-  const { data, error, isLoading } = useQuery<AudioListItem[]>({
+  const { data } = useQuery<AudioListItem[]>({
     queryKey: ["BeatsForAdmin"],
     queryFn: fetchBeats,
   });

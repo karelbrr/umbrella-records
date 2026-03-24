@@ -1,5 +1,4 @@
 "use client";
-
 import * as React from "react";
 import {
   IconCamera,
@@ -11,8 +10,6 @@ import {
   IconFileWord,
   IconFolder,
   IconHelp,
-  IconInnerShadowTop,
-  IconListDetails,
   IconMusic,
   IconReport,
   IconSearch,
@@ -21,9 +18,7 @@ import {
   IconPlus,
 } from "@tabler/icons-react";
 
-import { NavDocuments } from "@/components/sidebar/nav-documents";
 import { NavMain } from "@/components/sidebar/nav-main";
-import { NavSecondary } from "@/components/sidebar/nav-secondary";
 import { NavUser } from "@/components/sidebar/nav-user";
 import {
   Sidebar,
@@ -35,7 +30,6 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import Image from "next/image";
-import { Database } from "lucide-react";
 
 const data = {
   user: {
@@ -83,7 +77,7 @@ const data = {
     {
       title: "Data",
       url: "/admin/dashboard/data",
-      icon: Database,
+      icon: IconDatabase,
       isDisabled: false,
     },
   ],

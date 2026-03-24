@@ -40,7 +40,7 @@ export default function ProjectsList() {
       const { data, error } = await supabase
         .from("projects")
         .select("*")
-        .order("last_modified", { ascending: true });
+        .order("last_modified", { ascending: false });
       if (error) throw new Error(error.message);
 
       return data;
@@ -98,8 +98,7 @@ export default function ProjectsList() {
     );
   }
 
-  // --- LOADED STATE (Když jsou data připravená) ---
-  const safeData = projectsData || []; // Bezpečný fallback, aby filter a length nepadaly
+  const safeData = projectsData || []; 
 
   return (
     <section>
@@ -181,7 +180,7 @@ export default function ProjectsList() {
                     </Badge>
                   </TableCell>
                   <TableCell className="text-right text-muted-foreground text-sm">
-                    {formatDate(project.last_modified)}
+                    {formatDate(project.last_modified, "with_time")}
                   </TableCell>
                 </TableRow>
               );

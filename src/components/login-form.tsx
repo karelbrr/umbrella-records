@@ -3,14 +3,12 @@
 import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { Loader2, AlertCircle } from "lucide-react";
-import Image from "next/image";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
   Field,
-  FieldDescription,
   FieldGroup,
   FieldLabel,
 } from "@/components/ui/field";

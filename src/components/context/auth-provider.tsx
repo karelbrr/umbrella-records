@@ -47,7 +47,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       setSession(session);
       setUser(session?.user ?? null);
       setLoading(false);
-      router.refresh(); // Refresh pro Middleware
+      router.refresh(); 
     });
 
     return () => {
@@ -56,7 +56,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }, [router]);
 
   const login = async (email: string, password: string) => {
-    // 1. Přihlášení
     const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,

@@ -9,15 +9,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
 
-import {
-  ArrowLeft,
-  Play,
-  ShoppingCart,
-  Calendar,
-  Clock,
-  Music2,
-  Pause,
-} from "lucide-react";
+import { Play, Calendar, Clock, Pause } from "lucide-react";
 import { usePlayer } from "@/components/context/player-context";
 
 export interface AudioDetails {
@@ -75,7 +67,7 @@ export function BeatDetails() {
     queryFn: fetchBeats,
   });
 
-  const { playBeat, activeBeat, togglePlay, isPlaying } = usePlayer();
+  const { playBeat, togglePlay, isPlaying } = usePlayer();
 
   return (
     <div className="pb-2">
@@ -202,7 +194,6 @@ export function BeatDetails() {
                 </h2>
                 <div className="flex flex-wrap gap-2 pt-2">
                   {isLoading ? (
-                    // Skeleton loader - zobrazí se vždy během načítání
                     <>
                       <Skeleton className="h-9 w-20" />
                       <Skeleton className="h-9 w-24" />
@@ -210,7 +201,6 @@ export function BeatDetails() {
                       <Skeleton className="h-9 w-28" />
                     </>
                   ) : (
-                    // Skutečná data - zobrazí se až po načtení
                     data?.beat_tags?.map((item, index) => (
                       <span
                         key={index}

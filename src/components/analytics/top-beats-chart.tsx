@@ -27,7 +27,6 @@ export function TopBeatsChart() {
   const { data, isLoading, error } = useTopBeatsPlays();
 
   return (
-    // Přidáno h-full pro zarovnání v gridu a flex-col pro vnitřní uspořádání
     <Card className="bg-zinc-950 border-zinc-800 w-full h-full flex flex-col overflow-hidden">
       <CardHeader className="pl-5 border-b border-zinc-800">
         <CardTitle className="text-white ">

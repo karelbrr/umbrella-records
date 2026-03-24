@@ -1,10 +1,8 @@
 "use client";
 import {
-  IconCreditCard,
   IconDotsVertical,
   IconLogout,
-  IconNotification,
-  IconUserCircle,
+
 } from "@tabler/icons-react";
 import {
   AlertDialog,
@@ -15,15 +13,12 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { Button } from "@/components/ui/button";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
@@ -62,7 +57,7 @@ export function NavUser({}: {}) {
     return data;
   }
 
-  const { data, error, isLoading } = useQuery<Profile>({
+  const { data } = useQuery<Profile>({
     queryKey: ["userDetailsForDashboard", user?.id],
     queryFn: fetchUser,
   });
@@ -71,7 +66,7 @@ export function NavUser({}: {}) {
   const [isAlertOpen, setIsAlertOpen] = useState(false);
 
   const getInitials = (name: string | null | undefined) => {
-    if (!name) return "??"; // Fallback, pokud jméno chybí
+    if (!name) return "??";
 
     const parts = name.trim().split(/\s+/);
     if (parts.length === 1) return parts[0].charAt(0).toUpperCase();

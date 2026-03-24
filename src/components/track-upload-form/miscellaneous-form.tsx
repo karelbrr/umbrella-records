@@ -45,14 +45,13 @@ export function MiscellaneousForm({ control }: { control: any }) {
           </div>
 
           <Controller
-            name="tags" // jméno pole ve tvém formuláři
+            name="tags"
             control={control}
             defaultValue={[]}
             render={({ field }) => (
               <div className="flex flex-wrap gap-2 pt-2">
                 {tagsLoading
-                  ? // Skeletony při načítání
-                    [1, 2, 3, 4, 5, 6].map((i) => (
+                  ? [1, 2, 3, 4, 5, 6].map((i) => (
                       <div
                         key={i}
                         className="h-8 w-16 animate-pulse bg-muted rounded-full"

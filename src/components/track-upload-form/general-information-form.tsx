@@ -16,8 +16,6 @@ import { toast } from "sonner";
 import { uploadFileToSupabase } from "@/hooks/upload";
 import { Badge } from "../ui/badge";
 import { Sparkles } from "lucide-react";
-import { supabase } from "@/hooks/create-client";
-import { useQuery } from "@tanstack/react-query";
 
 export function GeneralInformationForm({
   errors,
@@ -110,7 +108,6 @@ export function GeneralInformationForm({
       if (tags && Array.isArray(tags) && allTags) {
         const matchedTagIds = tags
           .map((aiTagName: string) => {
-            // Robustní porovnání (lowercase + trim)
             const foundTag = allTags.find(
               (dbTag) =>
                 dbTag.tag_title.toLowerCase().trim() ===
@@ -118,9 +115,8 @@ export function GeneralInformationForm({
             );
             return foundTag ? foundTag.id : null;
           })
-          .filter((id) => id !== null); // Odstraníme tagy, které jsme v DB nenašli
+          .filter((id) => id !== null);
 
-        // Nastavení do react-hook-form
         setValue("tags", matchedTagIds, {
           shouldValidate: true,
           shouldDirty: true,
@@ -308,7 +304,7 @@ export function GeneralInformationForm({
           )}
         </div>
 
-        {/* AI Generated Switch - Používáme Controller */}
+        {/* AI Generated Switch */}
         <div className="flex items-center justify-between rounded-lg border p-3">
           <div className="space-y-0.5">
             <Label
