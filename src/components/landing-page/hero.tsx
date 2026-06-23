@@ -2,7 +2,6 @@
 import { AudioWaveform } from "lucide-react";
 import { GridScan } from "../backgrounds/GridScan";
 import { motion } from "framer-motion";
-import { Badge } from "../ui/badge";
 
 export function Hero({}) {
   return (

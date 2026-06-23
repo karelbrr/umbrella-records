@@ -1,14 +1,6 @@
 "use client";
 
-import {
-  Flame,
-  Moon,
-  Zap,
-  HeartHandshake,
-  CloudRain,
-  Sparkles,
-} from "lucide-react";
-import Link from "next/link";
+import { Flame, Zap } from "lucide-react";
 import SpotlightCard from "../ui/SpotlightCard";
 import { motion } from "framer-motion";
 

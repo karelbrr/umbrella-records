@@ -1,5 +1,4 @@
 "use client";
-
 import * as React from "react";
 import {
   IconCamera,
@@ -11,8 +10,6 @@ import {
   IconFileWord,
   IconFolder,
   IconHelp,
-  IconInnerShadowTop,
-  IconListDetails,
   IconMusic,
   IconReport,
   IconSearch,
@@ -21,9 +18,7 @@ import {
   IconPlus,
 } from "@tabler/icons-react";
 
-import { NavDocuments } from "@/components/sidebar/nav-documents";
 import { NavMain } from "@/components/sidebar/nav-main";
-import { NavSecondary } from "@/components/sidebar/nav-secondary";
 import { NavUser } from "@/components/sidebar/nav-user";
 import {
   Sidebar,
@@ -53,7 +48,7 @@ const data = {
       title: "Projects",
       url: "/admin/dashboard/projects",
       icon: IconFolder,
-      isDisabled: true,
+      isDisabled: false,
     },
     {
       title: "Analytics",
@@ -77,6 +72,12 @@ const data = {
       title: "Team",
       url: "/admin/dashboard/team",
       icon: IconUsers,
+      isDisabled: false,
+    },
+    {
+      title: "Data",
+      url: "/admin/dashboard/data",
+      icon: IconDatabase,
       isDisabled: false,
     },
   ],
@@ -184,7 +185,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                   alt="Image"
                   width={20}
                   height={200}
-                  className=""
                 />
                 <span className="text-base font-semibold">
                   Umbrella Records

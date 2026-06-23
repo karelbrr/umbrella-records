@@ -64,7 +64,6 @@ export function DashboardLatestTracks() {
             key={track.id}
             className="group relative flex items-center gap-4 p-3 rounded-md border  transition-all shadow-sm"
           >
-            {/* Malý Cover Art */}
             <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-lg border">
               <Image
                 src={track.img_url || "/placeholder-img.png"}
@@ -74,7 +73,6 @@ export function DashboardLatestTracks() {
               />
             </div>
 
-            {/* Info o tracku */}
             <div className="flex-1 min-w-0">
               <h3 className="font-bold text-sm truncate group-hover:text-primary transition-colors">
                 {track.name}
@@ -89,7 +87,6 @@ export function DashboardLatestTracks() {
               </div>
             </div>
 
-            {/* Status/Badge napravo */}
             <div className="text-right pr-2">
               <Badge variant="outline" className="text-[9px] h-5">
                 {track.genres?.[0]?.genre ?? "No Genre"}

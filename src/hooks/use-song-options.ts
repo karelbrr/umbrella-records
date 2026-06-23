@@ -60,6 +60,6 @@ export const useSongFormOptions = () => {
     genres: genresToUse,
     keys: sortedKeys,
     tags: tagsToUse,
-    isLoading: genresLoading || keysLoading,
+    isLoading: genresLoading || keysLoading || tagsLoading,
   };
 };

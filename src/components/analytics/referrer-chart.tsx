@@ -19,7 +19,6 @@ import { useTrafficSources } from "@/lib/analytics-api";
 import { Loader2 } from "lucide-react";
 
 export function ReferrerChart() {
-  // Přidáme isLoading pro lepší UX
   const { data: trafficSources, isLoading } = useTrafficSources();
 
   const palette = [
@@ -32,7 +31,6 @@ export function ReferrerChart() {
     "#EF4444", // Red
   ];
 
-  // 1. Agregace dat
   type ReferrerAggregate = { source: string; count: number };
 
   const aggregatedData: ReferrerAggregate[] = Object.values(

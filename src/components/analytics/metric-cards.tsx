@@ -1,14 +1,5 @@
 "use client";
-
-import {
-  Eye,
-  Music2,
-  DollarSign,
-  TrendingUp,
-  ArrowUpRight,
-  ArrowDownRight,
-  Play,
-} from "lucide-react";
+import { Eye, Music2, Play } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   useBeatPlayStats,

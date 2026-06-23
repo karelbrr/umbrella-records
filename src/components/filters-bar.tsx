@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import {
@@ -16,7 +16,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Button } from "./ui/button";
-import { Checkbox } from "@/components/ui/checkbox"; // Předpokládám shadcn
+import { Checkbox } from "@/components/ui/checkbox";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
 
@@ -66,8 +66,8 @@ export function FiltersBar({ beatsFilters, setBeatsFilters }: FiltersBarProps) {
       return {
         ...prev,
         tags: isSelected
-          ? currentTags.filter((id: string) => id !== tagId) // Odebrat
-          : [...currentTags, tagId], // Přidat
+          ? currentTags.filter((id: string) => id !== tagId)
+          : [...currentTags, tagId],
       };
     });
   };

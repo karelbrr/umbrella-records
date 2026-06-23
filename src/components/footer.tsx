@@ -1,8 +1,5 @@
 "use client";
-import Link from "next/link";
-import { Twitter, Instagram, Mail, Mic } from "lucide-react";
 import { usePathname } from "next/navigation";
-import Image from "next/image";
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
