@@ -1,30 +1,26 @@
 # [DONE]
 
-# Umbrella Records 
-
-Current Version - **beta v2.1.0**
+# Umbrella Records
 
 Umbrella Records is a modern recording studio and online beat store platform. It provides a professional space for recording, music production, and purchasing high-quality beats for artists and producers.
 
-## Key Features
-
-- **Beat Store:** Browse, preview, and purchase high-quality beats.
-- **Advanced Audio Player:** Interactive waveform visualization and seamless playback using `wavesurfer.js`.
-- **Immersive 3D Experience:** WebGL and 3D elements powered by `three.js` and `react-three-fiber`.
-- **Admin Dashboard:** A dedicated portal for studio managers to upload beats, manage collections, and handle store operations.
-- **AI Integrations:** Features powered by Vercel AI SDK and Google Generative AI.
-- **Fluid Animations:** Smooth page transitions and micro-interactions built with Framer Motion and GSAP.
-
 ## Tech Stack
 
-- **Framework:** [Next.js 16 (App Router)](https://nextjs.org/) + React 19
-- **Language:** [TypeScript](https://www.typescriptlang.org/)
-- **Styling:** [Tailwind CSS v4](https://tailwindcss.com/)
-- **UI Components:** [Radix UI](https://www.radix-ui.com/) & [shadcn/ui](https://ui.shadcn.com/)
-- **Backend & Auth:** [Supabase](https://supabase.com/)
-- **Animations:** [Framer Motion](https://www.framer.com/motion/) & [GSAP](https://gsap.com/)
-- **Audio/Visuals:** wavesurfer.js, react-audio-visualize, Three.js
-- **State Management:** TanStack React Query
+- **Core:** Next.js, React, TypeScript
+- **Backend & Auth:** Supabase
+- **Data Fetching:** React Query
+- **Styling:** Tailwind CSS, Shadcn UI
+- **Animations:** Framer Motion
+- **Audio/Visuals:** wavesurfer.js, Three.js
+
+## Key Features
+
+- Browse, preview, and purchase high-quality beats.
+- Interactive waveform visualization and seamless playback using `wavesurfer.js`.
+- WebGL and 3D elements powered by `three.js`.
+- A dedicated portal for studio managers to upload beats, manage collections, and handle store operations.
+- Features powered by Vercel AI SDK and Google Generative AI.
+- Smooth page transitions and micro-interactions built with Framer Motion.
 
 ## Getting Started
 
@@ -36,12 +32,14 @@ Umbrella Records is a modern recording studio and online beat store platform. It
 ### Installation
 
 1. **Clone the repository** (if not already done)
+
    ```bash
    git clone <repository-url>
    cd umbrella-records
    ```
 
 2. **Install dependencies**
+
    ```bash
    npm install
    ```
