@@ -2,7 +2,7 @@
 
 # Umbrella Records
 
-Umbrella Records is a modern recording studio and online beat store platform. It provides a professional space for recording, music production, and purchasing high-quality beats for artists and producers.
+Umbrella Records is a modern recording studio and online beat platform. It provides a professional space for recording and music production.
 
 ## Tech Stack
 
